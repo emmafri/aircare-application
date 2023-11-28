@@ -1,0 +1,12 @@
+<resources>
+    <string name="app_name">AirCareLocal</string>
+    <string name="at">At </string>
+    <string name="temperature">Temperature</string>
+    <string name="degrees">ºC</string>
+    <string name="humidity">Humidity</string>
+    <string name="percent">%</string>
+    <string name="airquality">Air Quality:</string>
+    <string name="clickdetails">Click to see more details</string>
+    <string name="newreading">New Reading</string>
+    <string name="history">History</string>
+</resources>

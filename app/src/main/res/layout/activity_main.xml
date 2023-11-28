@@ -1,0 +1,312 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".MainActivity">
+
+
+    <Space
+        android:layout_width="match_parent"
+        android:layout_height="50dp" />
+
+
+    <LinearLayout
+        android:id="@+id/ReadingLayout"
+        android:layout_width="match_parent"
+        android:layout_height="433dp"
+        android:background="@drawable/gray_box"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:id="@+id/TimeLayout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="20dp"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/At"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/at" />
+
+            <TextView
+                android:id="@+id/Time"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="XX:XX" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/TopLayout"
+            android:layout_width="match_parent"
+            android:layout_height="160dp"
+            android:background="@color/gray"
+            android:gravity="center_horizontal"
+            android:orientation="horizontal">
+
+            <RelativeLayout
+                android:id="@+id/TopBox"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center">
+
+                <RelativeLayout
+                    android:id="@+id/temperatureBox"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginEnd="10dp"
+                    android:layout_marginBottom="10dp"
+                    android:background="@drawable/white_box"
+                    android:padding="12dp">
+
+                    <TextView
+                        android:id="@+id/temperature"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentTop="true"
+                        android:layout_centerHorizontal="true"
+                        android:fontFamily="@font/poppins_normal"
+                        android:text="@string/temperature"
+                        android:textColor="#000000"
+                        android:textSize="16sp" />
+
+                    <ImageView
+                        android:id="@+id/temperature_icon"
+                        android:layout_width="70dp"
+                        android:layout_height="70dp"
+                        android:layout_below="@id/temperature"
+                        android:layout_alignParentLeft="true"
+                        app:srcCompat="@drawable/temperature_icon" />
+
+                    <TextView
+                        android:id="@+id/temperature_value"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/temperature"
+                        android:layout_toRightOf="@+id/temperature_icon"
+                        android:fontFamily="@font/poppins_normal"
+                        android:text="XX.X"
+                        android:textColor="#000000"
+                        android:textSize="25sp" />
+
+                    <TextView
+                        android:id="@+id/degrees"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/temperature"
+                        android:layout_toRightOf="@+id/temperature_value"
+                        android:fontFamily="@font/poppins_normal"
+                        android:text="@string/degrees"
+                        android:textColor="#000000"
+                        android:textSize="25sp" />
+
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:id="@+id/humidityBox"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="false"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginEnd="10dp"
+                    android:layout_marginBottom="10dp"
+                    android:layout_toRightOf="@+id/temperatureBox"
+                    android:background="@drawable/white_box"
+                    android:padding="12dp">
+
+                    <TextView
+                        android:id="@+id/humidity"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentTop="true"
+                        android:layout_centerHorizontal="true"
+                        android:fontFamily="@font/poppins_normal"
+                        android:text="@string/humidity"
+                        android:textColor="#000000"
+                        android:textSize="16sp" />
+
+                    <ImageView
+                        android:id="@+id/humidity_icon"
+                        android:layout_width="70dp"
+                        android:layout_height="70dp"
+                        android:layout_below="@id/humidity"
+                        android:layout_alignParentLeft="true"
+                        app:srcCompat="@drawable/humidity_icon" />
+
+                    <TextView
+                        android:id="@+id/humidity_value"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/humidity"
+                        android:layout_toRightOf="@+id/humidity_icon"
+                        android:fontFamily="@font/poppins_normal"
+                        android:text="XX.X"
+                        android:textColor="#000000"
+                        android:textSize="25sp" />
+
+                    <TextView
+                        android:id="@+id/percent"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/humidity"
+                        android:layout_toRightOf="@+id/humidity_value"
+                        android:fontFamily="@font/poppins_normal"
+                        android:text="@string/percent"
+                        android:textColor="#000000"
+                        android:textSize="25sp" />
+
+                </RelativeLayout>
+            </RelativeLayout>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/BottomLayout"
+            android:layout_width="match_parent"
+            android:layout_height="210dp"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:background="@drawable/green_box"
+            android:clickable="true"
+            android:gravity="center_horizontal"
+            android:orientation="horizontal">
+
+            <RelativeLayout
+                android:id="@+id/overall_ratingBox"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center">
+
+                <TextView
+                    android:id="@+id/AirQuality"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true"
+                    android:fontFamily="@font/poppins_normal"
+                    android:text="@string/airquality"
+                    android:textColor="#000000"
+                    android:textSize="20dp" />"
+                />
+
+                <TextView
+                    android:id="@+id/Rating"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/AirQuality"
+                    android:layout_centerHorizontal="true"
+                    android:fontFamily="@font/siffon_titles"
+                    android:text="XXXXXXXXX"
+                    android:textColor="#000000"
+                    android:textSize="30dp" />
+
+                <TextView
+                    android:id="@+id/Details"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/Rating"
+                    android:layout_centerHorizontal="true"
+                    android:fontFamily="@font/poppins_normal"
+                    android:text="@string/clickdetails"
+                    android:textColor="#000000" />
+
+            </RelativeLayout>
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:id="@+id/HistoryLayout"
+        android:layout_width="match_parent"
+        android:layout_height="84dp"
+        android:orientation="horizontal">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/outlined_box"
+            android:clickable="true"
+            android:gravity="center"
+            android:orientation="horizontal"
+            android:padding="10dp">
+
+            <ImageView
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_marginRight="10dp"
+                android:scaleType="fitCenter"
+                android:src="@drawable/refresh" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/poppins_normal"
+                android:text="@string/newreading"
+                android:textAlignment="center"
+                android:textColor="#000000"
+                android:textSize="20dp" />
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/HistoryLayout"
+        android:layout_width="match_parent"
+        android:layout_height="79dp"
+        android:orientation="horizontal">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:background="@drawable/gray_box"
+            android:clickable="true"
+            android:gravity="center"
+            android:orientation="horizontal"
+            android:padding="10dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/poppins_normal"
+                android:text="@string/history"
+                android:textAlignment="center"
+                android:textColor="#000000"
+                android:textSize="20dp" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/test"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:clickable="true"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/textView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:text="TESTE!!"
+            android:textAlignment="center" />
+    </LinearLayout>
+
+
+</LinearLayout>

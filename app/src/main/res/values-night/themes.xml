@@ -1,0 +1,13 @@
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <!-- Base application theme. -->
+    <style name="Base.Theme.AirCareLocal" parent="Theme.AppCompat.Light.DarkActionBar">
+        <item name="android:actionBarStyle">@style/MyActionBar</item>
+        <item name="actionBarStyle">@style/MyActionBar</item>
+        <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
+    </style>
+
+    <style name="Theme.AirCareLocal" parent="Base.Theme.AirCareLocal" />
+    <style name="MyActionBar" parent="Widget.AppCompat.ActionBar">
+        <item name="android:background">@android:color/white</item> <!-- Set the background color to white -->
+    </style>
+</resources>
