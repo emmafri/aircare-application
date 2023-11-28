@@ -1,22 +1,27 @@
 package org.feup.apm.aircarelocal;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.preference.PreferenceManager;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import android.util.Log;
 
 public class DatabaseHelper extends SQLiteOpenHelper {
+    private final Context context;
     private static final String DATABASE_NAME = "AirQualityDatabase";
     private static final int DATABASE_VERSION = 1;
-    /*public static final String TEMPERATURE = "temperature";
-    public static final String HUMIDITY = "humidity";
-    public static final String CO2 = "co2";
-    public static final String VOC = "voc";
-    public static final String PM10 = "pm10";
-    public static final String PM25 = "pm25";*/
-
 
     public DatabaseHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
+        this.context = context;
+
     }
 
     @Override
@@ -33,6 +38,44 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.execSQL(createTableQuery);
     }
 
+    private boolean isDatabaseCopied() {
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
+        return preferences.getBoolean("DATABASE_COPIED", false);
+    }
+
+    private void setDatabaseCopied() {
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
+        preferences.edit().putBoolean("DATABASE_COPIED", true).apply();
+    }
+
+    public void copyDatabase() {
+        if (!isDatabaseCopied()) {
+            try {
+                InputStream inputStream = context.getAssets().open(DATABASE_NAME);
+                String outFileName = context.getDatabasePath(DATABASE_NAME).getPath();
+                OutputStream outputStream = Files.newOutputStream(Paths.get(outFileName));
+
+                byte[] buffer = new byte[1024];
+                int length;
+                while ((length = inputStream.read(buffer)) > 0) {
+                    outputStream.write(buffer, 0, length);
+                }
+
+                outputStream.flush();
+                outputStream.close();
+                inputStream.close();
+
+                Log.d("DatabaseHelper", "Database copied successfully");
+
+                // Set the flag to indicate that the database has been copied
+                setDatabaseCopied();
+
+            } catch (IOException e) {
+                e.printStackTrace();
+                Log.e("DatabaseHelper", "Error copying database");
+            }
+        }
+    }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {

@@ -4,15 +4,27 @@ import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteOpenHelper;
 import android.os.Bundle;
 import android.view.View;
 
 public class MainActivity extends AppCompatActivity {
 
+    private SQLiteDatabase db = null;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        DatabaseHelper databaseHelper = new DatabaseHelper(this);
+
+        databaseHelper.copyDatabase();
+
+        db = (databaseHelper).getWritableDatabase();
+
+        //add query etc
 
         ActionBar actionbar = getSupportActionBar();
         if (actionbar != null) {
