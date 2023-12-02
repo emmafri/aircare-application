@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="pm_measure"><![CDATA[\u03BCg/m]]></string>
+    <string name="other_measure">ppm</string>
+    <string name="pm25_detailed_value">XXX</string>
+</resources>
