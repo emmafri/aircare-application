@@ -5,7 +5,11 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
+import android.view.MotionEvent;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -21,19 +25,82 @@ public class MainActivity extends AppCompatActivity {
             actionbar.setDisplayShowHomeEnabled(true);
         }
 
-        // Find the LinearLayout with ID "test"
-        View testLayout = findViewById(R.id.test);
+        View detailedButton = findViewById(R.id.BottomLayout);
+        Handler handler = new Handler();
+        View historyButton = findViewById(R.id.HistoryButton);
 
-        // Set OnClickListener for "test" layout
-        testLayout.setOnClickListener(new View.OnClickListener() {
+        detailedButton.setOnTouchListener(new View.OnTouchListener() {
             @Override
-            public void onClick(View v) {
-                // Create an Intent to start ParameterInfoActivity
-                Intent intent = new Intent(MainActivity.this, ParameterInfoActivity.class);
+            public boolean onTouch(View v, MotionEvent event) {
+                switch (event.getAction()) {
+                    case MotionEvent.ACTION_DOWN:
+                        break;
 
-                // Start the new activity
-                startActivity(intent);
+                    case MotionEvent.ACTION_UP:
+                        startPopUpAnimation(v);
+                        break;
+                }
+                return false;
             }
         });
+
+        historyButton.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                switch (event.getAction()) {
+                    case MotionEvent.ACTION_DOWN:
+                        break;
+
+                    case MotionEvent.ACTION_UP:
+                        startPopUpAnimation(v);
+                        break;
+                }
+                return false;
+            }
+        });
+
+
+        // Set OnClickListener for "test" layout
+        detailedButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                handler.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        // Create an Intent to start ParameterInfoActivity
+                        Intent intent = new Intent(MainActivity.this, DetailedReadingActivity.class);
+                        // Start the new activity
+                        startActivity(intent);
+
+                    }
+                },300);
+
+            }
+        });
+
+
+        historyButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                handler.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        // Create an Intent to start ParameterInfoActivity
+                        Intent intent = new Intent(MainActivity.this, HistoryActivity.class);
+                        // Start the new activity
+                        startActivity(intent);
+
+                    }
+                },300);
+
+            }
+        });
+    }
+
+    private void startPopUpAnimation(View view) {
+        Animation popUpAnimation = AnimationUtils.loadAnimation(this, R.anim.pop_up);
+        view.startAnimation(popUpAnimation);
     }
 }

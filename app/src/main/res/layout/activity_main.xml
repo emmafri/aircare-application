@@ -263,9 +263,11 @@
         android:id="@+id/HistoryLayout"
         android:layout_width="match_parent"
         android:layout_height="79dp"
+        android:clickable="true"
         android:orientation="horizontal">
 
         <LinearLayout
+            android:id="@+id/HistoryButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
