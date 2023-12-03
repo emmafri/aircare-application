@@ -1,4 +1,265 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"/>
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="5dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="520dp"
+        android:layout_marginTop="50dp"
+        android:background="@drawable/green_box"
+        android:orientation="vertical"
+        android:paddingTop="20dp">
+
+        <TextView
+            android:id="@+id/H_detailed"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/poppins_normal"
+            android:gravity="center"
+            android:text="Air Quality"
+            android:textColor="#000000"
+            android:textSize="34sp" />
+
+        <TextView
+            android:id="@+id/rating_overall"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/siffon_titles"
+            android:gravity="center"
+            android:text="RATING"
+            android:textAllCaps="false"
+            android:textColor="#000000"
+            android:textIsSelectable="false"
+            android:textSize="48sp"
+            android:textStyle="bold" />
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <LinearLayout
+                android:id="@+id/details_left"
+                android:layout_width="205.5dp"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:orientation="vertical">
+
+                <RelativeLayout
+                    android:id="@+id/pm25_block"
+                    android:layout_width="150dp"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/transparent_box"
+                    android:gravity="center"
+                    android:padding="10dp">
+
+                    <TextView
+                        android:id="@+id/pm25_title"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/siffon_titles"
+                        android:gravity="center"
+                        android:text="PM2.5"
+                        android:textColor="#000000"
+                        android:textSize="24sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/pm25_value"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/pm25_title"
+                        android:layout_marginTop="10dp"
+                        android:fontFamily="@font/poppins_normal"
+                        android:gravity="center"
+                        android:text="@string/pm25_detailed_value"
+                        android:textSize="26sp" />
+
+                    <TextView
+                        android:id="@+id/pm25_units"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/pm25_value"
+                        android:fontFamily="@font/poppins_normal"
+                        android:gravity="center"
+                        android:text="@string/pm_measure"
+                        android:textColor="#000000"
+                        android:textSize="16sp" />
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:id="@+id/co2_block"
+                    android:layout_width="150dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="50dp"
+                    android:background="@drawable/transparent_box"
+                    android:gravity="center_horizontal|center_vertical"
+                    android:padding="10dp">
+
+                    <TextView
+                        android:id="@+id/co2_title"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/siffon_titles"
+                        android:gravity="center"
+                        android:text="CO2"
+                        android:textColor="#000000"
+                        android:textSize="24sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/co2_value"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/co2_title"
+                        android:layout_marginTop="10dp"
+                        android:fontFamily="@font/poppins_normal"
+                        android:gravity="center"
+                        android:text="@string/co2_detailed_value"
+                        android:textSize="26sp" />
+
+                    <TextView
+                        android:id="@+id/co2_units"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/co2_value"
+                        android:fontFamily="@font/poppins_normal"
+                        android:gravity="center"
+                        android:text="@string/other_measure"
+                        android:textColor="#000000"
+                        android:textSize="16sp" />
+
+                </RelativeLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/details_right"
+                android:layout_width="205.5dp"
+                android:layout_height="match_parent"
+                android:layout_toEndOf="@id/details_left"
+                android:gravity="center"
+                android:orientation="vertical">
+
+                <RelativeLayout
+                    android:id="@+id/pm10_block"
+                    android:layout_width="150dp"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/transparent_box"
+                    android:gravity="center"
+                    android:padding="10dp">
+
+                    <TextView
+                        android:id="@+id/pm10_title"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/siffon_titles"
+                        android:gravity="center"
+                        android:text="PM10"
+                        android:textColor="#000000"
+                        android:textSize="24sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/pm10_value"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/pm10_title"
+                        android:layout_marginTop="10dp"
+                        android:fontFamily="@font/poppins_normal"
+                        android:gravity="center"
+                        android:text="@string/pm10_detailed_value"
+                        android:textSize="26sp" />
+
+                    <TextView
+                        android:id="@+id/pm10_units"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/pm10_value"
+                        android:fontFamily="@font/poppins_normal"
+                        android:gravity="center"
+                        android:text="@string/pm_measure"
+                        android:textColor="#000000"
+                        android:textSize="16sp" />
+
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:id="@+id/vocs_block"
+                    android:layout_width="150dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="50dp"
+                    android:background="@drawable/transparent_box"
+                    android:gravity="center"
+                    android:padding="10dp">
+
+                    <TextView
+                        android:id="@+id/vocs_title"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/siffon_titles"
+                        android:gravity="center"
+                        android:text="VOCs"
+                        android:textColor="#000000"
+                        android:textSize="24sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/vocs_value"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/vocs_title"
+                        android:layout_marginTop="10dp"
+                        android:fontFamily="@font/poppins_normal"
+                        android:gravity="center"
+                        android:text="@string/vocs_detailed_value"
+                        android:textSize="26sp" />
+
+                    <TextView
+                        android:id="@+id/vocs_units"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/vocs_value"
+                        android:fontFamily="@font/poppins_normal"
+                        android:gravity="center"
+                        android:text="@string/other_measure"
+                        android:textColor="#000000"
+                        android:textSize="16sp" />
+
+                </RelativeLayout>
+            </LinearLayout>
+
+        </RelativeLayout>
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/histpry_detailed_reading"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="horizontal">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:background="@drawable/gray_box"
+            android:clickable="true"
+            android:gravity="center"
+            android:orientation="horizontal"
+            android:padding="10dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/poppins_normal"
+                android:text="@string/history"
+                android:textAlignment="center"
+                android:textColor="#000000"
+                android:textSize="20dp" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</LinearLayout>

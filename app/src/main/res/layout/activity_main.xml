@@ -6,18 +6,15 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:padding="5dp"
     tools:context=".MainActivity">
-
-
-    <Space
-        android:layout_width="match_parent"
-        android:layout_height="50dp" />
 
 
     <LinearLayout
         android:id="@+id/ReadingLayout"
         android:layout_width="match_parent"
         android:layout_height="433dp"
+        android:layout_marginTop="50dp"
         android:background="@drawable/gray_box"
         android:orientation="vertical">
 
@@ -196,8 +193,7 @@
                     android:fontFamily="@font/poppins_normal"
                     android:text="@string/airquality"
                     android:textColor="#000000"
-                    android:textSize="20dp" />"
-                />
+                    android:textSize="20sp" />
 
                 <TextView
                     android:id="@+id/Rating"
@@ -228,7 +224,7 @@
 
 
     <LinearLayout
-        android:id="@+id/HistoryLayout"
+        android:id="@+id/NewReadingLayout"
         android:layout_width="match_parent"
         android:layout_height="84dp"
         android:orientation="horizontal">
@@ -267,9 +263,11 @@
         android:id="@+id/HistoryLayout"
         android:layout_width="match_parent"
         android:layout_height="79dp"
+        android:clickable="true"
         android:orientation="horizontal">
 
         <LinearLayout
+            android:id="@+id/HistoryButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center"

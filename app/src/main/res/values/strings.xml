@@ -9,4 +9,7 @@
     <string name="clickdetails">Click to see more details</string>
     <string name="newreading">New Reading</string>
     <string name="history">History</string>
+    <string name="co2_detailed_value">XXX</string>
+    <string name="pm10_detailed_value">XXX</string>
+    <string name="vocs_detailed_value">XXX</string>
 </resources>

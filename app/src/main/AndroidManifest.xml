@@ -25,6 +25,16 @@
             android:name=".ParameterInfoActivity"
             android:label="Parameter Info Activity">
         </activity>
+
+        <activity
+            android:name=".DetailedReadingActivity"
+            android:label="Detailed Reading Activity">
+        </activity>
+
+        <activity
+            android:name=".HistoryActivity"
+            android:label="History Activity">
+        </activity>
     </application>
 
 </manifest>
