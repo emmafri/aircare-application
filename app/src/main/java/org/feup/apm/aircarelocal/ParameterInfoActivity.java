@@ -47,6 +47,7 @@ public class ParameterInfoActivity extends AppCompatActivity {
             String mediumValues = getIntent().getStringExtra("MEDIUM_VALUES");
             String badValues = getIntent().getStringExtra("BAD_VALUES");
             String vrybadValues = getIntent().getStringExtra("VERYBAD_VALUES");
+            String parameterAdvice = getIntent().getStringExtra("PARAM_ADVICE");
 
             TextView parameterTitle = findViewById(R.id.Parameter);
             parameterTitle.setText(parameterName);
@@ -66,11 +67,10 @@ public class ParameterInfoActivity extends AppCompatActivity {
             TextView parameterVB = findViewById(R.id.VeryBadValues);
             parameterVB.setText(vrybadValues);
 
+            TextView parameterAdv = findViewById(R.id.advice);
+            parameterAdv.setText(parameterAdvice);
 
         }
-
-
-
 
     }
 

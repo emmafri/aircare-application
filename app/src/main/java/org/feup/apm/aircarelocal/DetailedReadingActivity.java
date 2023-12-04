@@ -113,16 +113,13 @@ public class DetailedReadingActivity extends AppCompatActivity {
                     @Override
                     public void run() {
                         Intent intent = new Intent(DetailedReadingActivity.this, ParameterInfoActivity.class);
-                        intent.putExtra("PARAM_NAME", "PM2.5");
-                        intent.putExtra("PARAM_DESCR", "PM2.5 particles are tiny airborne particles with a diameter of 2.5 micrometers or smaller.\n" +
-                                "\n" +
-                                "These can accumulate from various sources like cooking, cleaning products, and even outdoor air infiltration.\n" +
-                                "\n" +
-                                "Due to their minuscule size, PM2.5 particles can penetrate deep into the lungs when inhaled, potentially causing respiratory and cardiovascular issues.");
-                        intent.putExtra("GOOD_VALUES", "0-12µg/m³");
-                        intent.putExtra("MEDIUM_VALUES", "13-35µg/m³");
-                        intent.putExtra("BAD_VALUES", "36-50µg/m³");
-                        intent.putExtra("VERYBAD_VALUES", ">50µg/m³");
+                        intent.putExtra("PARAM_NAME", getString(R.string.param_name_pm25));
+                        intent.putExtra("PARAM_DESCR", getString(R.string.param_descr_pm25));
+                        intent.putExtra("GOOD_VALUES", getString(R.string.good_values_pm25));
+                        intent.putExtra("MEDIUM_VALUES", getString(R.string.medium_values_pm25));
+                        intent.putExtra("BAD_VALUES", getString(R.string.bad_values_pm25));
+                        intent.putExtra("VERYBAD_VALUES", getString(R.string.very_bad_values_pm25));
+                        intent.putExtra("PARAM_ADVICE",getString(R.string.advice_pm25));
                         startActivity(intent);
                     }
                 }, 300);
@@ -152,12 +149,13 @@ public class DetailedReadingActivity extends AppCompatActivity {
                     @Override
                     public void run() {
                         Intent intent = new Intent(DetailedReadingActivity.this, ParameterInfoActivity.class);
-                        intent.putExtra("PARAM_NAME", "PM10");
-                        intent.putExtra("PARAM_DESCR", "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam eget ligula eu lectus lobortis condimentum. Aliquam nonummy auctor massa. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Nulla at risus. Quisque purus magna, auctor et, sagittis ac, posuere eu, lectus. Nam mattis, felis ut adipiscing.");
-                        intent.putExtra("GOOD_VALUES", "0-54 µg/m³");
-                        intent.putExtra("MEDIUM_VALUES", "55-254 µg/m³");
-                        intent.putExtra("BAD_VALUES", "255-354 µg/m³");
-                        intent.putExtra("VERYBAD_VALUES", ">354 µg/m³");
+                        intent.putExtra("PARAM_NAME", getString(R.string.param_name_pm10));
+                        intent.putExtra("PARAM_DESCR", getString(R.string.param_descr_pm10));
+                        intent.putExtra("GOOD_VALUES", getString(R.string.good_values_pm10));
+                        intent.putExtra("MEDIUM_VALUES", getString(R.string.medium_values_pm10));
+                        intent.putExtra("BAD_VALUES", getString(R.string.bad_values_pm10));
+                        intent.putExtra("VERYBAD_VALUES", getString(R.string.very_bad_values_pm10));
+                        intent.putExtra("PARAM_ADVICE",getString(R.string.advice_pm10));
                         startActivity(intent);
                     }
                 }, 300);
@@ -186,12 +184,13 @@ public class DetailedReadingActivity extends AppCompatActivity {
                     @Override
                     public void run() {
                         Intent intent = new Intent(DetailedReadingActivity.this, ParameterInfoActivity.class);
-                        intent.putExtra("PARAM_NAME", "VOCs");
-                        intent.putExtra("PARAM_DESCR", "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam eget ligula eu lectus lobortis condimentum. Aliquam nonummy auctor massa. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Nulla at risus. Quisque purus magna, auctor et, sagittis ac, posuere eu, lectus. Nam mattis, felis ut adipiscing.");
-                        intent.putExtra("GOOD_VALUES", "0-0.4 ppm");
-                        intent.putExtra("MEDIUM_VALUES", "0.5 - 2.2 ppm");
-                        intent.putExtra("BAD_VALUES", "2.3 - 30 ppm");
-                        intent.putExtra("VERYBAD_VALUES", ">30 ppm");
+                        intent.putExtra("PARAM_NAME", getString(R.string.param_name_voc));
+                        intent.putExtra("PARAM_DESCR", getString(R.string.param_descr_voc));
+                        intent.putExtra("GOOD_VALUES", getString(R.string.good_values_voc));
+                        intent.putExtra("MEDIUM_VALUES", getString(R.string.medium_values_voc));
+                        intent.putExtra("BAD_VALUES", getString(R.string.bad_values_voc));
+                        intent.putExtra("VERYBAD_VALUES", getString(R.string.very_bad_values_voc));
+                        intent.putExtra("PARAM_ADVICE",getString(R.string.advice_voc));
                         startActivity(intent);
                     }
                 }, 300);
@@ -220,12 +219,13 @@ public class DetailedReadingActivity extends AppCompatActivity {
                     @Override
                     public void run() {
                         Intent intent = new Intent(DetailedReadingActivity.this, ParameterInfoActivity.class);
-                        intent.putExtra("PARAM_NAME", "CO₂");
-                        intent.putExtra("PARAM_DESCR", "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam eget ligula eu lectus lobortis condimentum. Aliquam nonummy auctor massa. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Nulla at risus. Quisque purus magna, auctor et, sagittis ac, posuere eu, lectus. Nam mattis, felis ut adipiscing.");
-                        intent.putExtra("GOOD_VALUES", "0-800 ppm");
-                        intent.putExtra("MEDIUM_VALUES", "801 - 1200 ppm");
-                        intent.putExtra("BAD_VALUES", "1201 - 2000 ppm");
-                        intent.putExtra("VERYBAD_VALUES", ">2000 ppm");
+                        intent.putExtra("PARAM_NAME", getString(R.string.param_name_co2));
+                        intent.putExtra("PARAM_DESCR", getString(R.string.param_descr_co2));
+                        intent.putExtra("GOOD_VALUES", getString(R.string.good_values_co2));
+                        intent.putExtra("MEDIUM_VALUES", getString(R.string.medium_values_co2));
+                        intent.putExtra("BAD_VALUES", getString(R.string.bad_values_co2));
+                        intent.putExtra("VERYBAD_VALUES", getString(R.string.very_bad_values_co2));
+                        intent.putExtra("PARAM_ADVICE",getString(R.string.advice_co2));
                         startActivity(intent);
                     }
                 }, 300);

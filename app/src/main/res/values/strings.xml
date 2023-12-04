@@ -15,4 +15,55 @@
     <string name="back">Back Arrow Icon</string>
     <string name="app_logo">App Logo</string>
     <string name="menu">Menu Icon</string>
+
+    <string name="param_name_pm25">PM2.5</string>
+    <string name="param_descr_pm25">ratory and cardiovascular issues.</string>
+    <string name="good_values_pm25">0 - 12µg/m³</string>
+    <string name="medium_values_pm25">13 - 35µg/m³</string>
+    <string name="bad_values_pm25">36 - 50µg/m³</string>
+    <string name="very_bad_values_pm25">>50µg/m³</string>
+    <string name="advice_pm25">
+    • Ensure proper ventilation while cooking and cleaning.\n
+    • Dust and vacuum frequently.\n
+    • Use air purifiers equipped with HEPA filters.
+    </string>
+
+    <string name="param_name_pm10">PM10</string>
+    <string name="param_descr_pm10">PM10 particles are airborne particles with a diameter of up to 10 micrometers.\n\nThey originate from sources such as dust, pollen, smoke, and vehicle emissions.\n\nWhile larger than PM2.5, they can still pose health risks when inhaled, affecting the respiratory system and potentially causing breathing difficulties and aggravated asthma.</string>
+    <string name="good_values_pm10">0 - 54 µg/m³</string>
+    <string name="medium_values_pm10">55 - 254 µg/m³</string>
+    <string name="bad_values_pm10">255 - 354 µg/m³</string>
+    <string name="very_bad_values_pm10">>354 µg/m³</string>
+    <string name="advice_pm10">
+    • Regularly clean indoor surfaces.\n
+    • Use a vacuum cleaner equipped with HEPA filters and damp mop floors.\n
+    • Avoid smoking indoors.
+    </string>
+
+    <string name="param_name_voc">VOCs</string>
+    <string name="param_descr_voc">Volatile Organic Compounds (VOC’s) are emitted as gases from various household products such as paints, varnishes, cleaning supplies, and building materials.\n\nThese chemicals can linger indoors and lead to adverse health effects upon prolonged exposure, including eye, nose, and throat irritation, headaches, and even damage to the liver, kidney, or central nervous system.</string>
+    <string name="good_values_voc">0 - 0.4 ppm</string>
+    <string name="medium_values_voc">0.5 - 2.2 ppm</string>
+    <string name="bad_values_voc">2.3 - 30 ppm</string>
+    <string name="very_bad_values_voc">>30 ppm</string>
+    <string name="advice_voc">
+    • Choose paints, cleaning supplies, and furniture labelled as low VOC or VOC-free.\n
+    • Ensure adequate ventilation by opening windows and using exhaust fans while painting, varnishing, or using cleaning products.\n
+    • Consider Indoor Plants, such as peace lilies or spider plants, since they can assist in absorbing VOC’s.
+    </string>
+
+
+    <string name="param_name_co2">CO₂</string>
+    <string name="param_descr_co2">Carbon Dioxide (CO₂) is a colorless and odorless gas naturally present in the air.\nHowever, high concentrations indoors can indicate poor ventilation.\n\nIncreased CO₂ levels can cause symptoms like headaches, dizziness, and drowsiness, and long-term exposure to elevated levels may impair cognitive function and decision-making abilities.</string>
+    <string name="good_values_co2">0 - 800 ppm</string>
+    <string name="medium_values_co2">801 - 1200 ppm</string>
+    <string name="bad_values_co2">1201 - 2000 ppm</string>
+    <string name="very_bad_values_co2">>2000 ppm</string>
+    <string name="advice_co2">
+    • Ensure proper airflow by opening windows or using ventilation systems.\n
+    • Minimize activities such as burning candles or using gas stoves without proper ventilation.\n
+    • Opt for electric appliances or those that produce fewer emissions.
+    </string>
+
+
 </resources>
