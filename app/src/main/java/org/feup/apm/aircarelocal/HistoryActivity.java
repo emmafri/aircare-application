@@ -6,9 +6,11 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -28,13 +30,30 @@ public class HistoryActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.history);
 
+        //TOOLBAR
+        Toolbar toolbar = findViewById(R.id.customToolbar); // Find your toolbar by its ID
+        setSupportActionBar(toolbar); // Set the toolbar as the ActionBar
 
-        ActionBar actionbar = getSupportActionBar();
-        if (actionbar != null) {
-            actionbar.setLogo(R.drawable.aircare_logo);
-            actionbar.setDisplayUseLogoEnabled(true);
-            actionbar.setDisplayShowHomeEnabled(true);
-        }
+        ImageView backButton = findViewById(R.id.backButton);
+        ImageView menuButton = findViewById(R.id.menuButton);
+
+        backButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onBackPressed();
+            }
+        });
+
+        menuButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Add  action when menuButton is clicked
+                // For example, show a popup menu or perform some action
+            }
+        });
+
+
+
 
         RecyclerView recyclerView = findViewById(R.id.historyList);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));

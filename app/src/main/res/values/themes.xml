@@ -1,16 +1,6 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!-- Base application theme. -->
-    <style name="Base.Theme.AirCareLocal" parent="Theme.AppCompat.Light.DarkActionBar">
-        <item name="android:actionBarStyle">@style/MyActionBar</item>
-        <item name="actionBarStyle">@style/MyActionBar</item>
-        <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
+    <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="windowActionBar">false</item>
     </style>
-
-    <style name="Theme.AirCareLocal" parent="Base.Theme.AirCareLocal" />
-    <style name="MyActionBar" parent="Widget.AppCompat.ActionBar">
-        <item name="android:textColorPrimary">@color/black</item> <!-- Change text color -->
-        <item name="android:background">@color/white</item> <!-- Change background color -->
-        <item name="colorControlNormal">@color/black</item> <!-- Change back arrow color -->
-    </style>
-
 </resources>

@@ -8,6 +8,7 @@
     android:orientation="vertical"
     android:padding="10dp"
     tools:context=".MainActivity">
+    <include layout="@layout/custom_action_bar"/>
 
 
     <LinearLayout

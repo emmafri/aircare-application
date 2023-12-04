@@ -2,6 +2,7 @@ package org.feup.apm.aircarelocal;
 
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 
 import android.content.Intent;
 import android.database.Cursor;
@@ -13,6 +14,8 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.widget.ImageView;
+import android.widget.Space;
 import android.widget.TextView;
 
 import java.text.ParseException;
@@ -31,6 +34,15 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        //TOOLBAR
+        Toolbar toolbar = findViewById(R.id.customToolbar);
+        setSupportActionBar(toolbar);
+        //Hide backbutton on main activity and show empty space instead
+        ImageView backButton = findViewById(R.id.backButton);
+        backButton.setVisibility(View.GONE);
+        Space backButtonSpace = findViewById(R.id.backButtonSpace);
+        backButtonSpace.setVisibility(View.VISIBLE);
+
         DatabaseHelper databaseHelper = new DatabaseHelper(this);
 
         databaseHelper.copyDatabase();
@@ -42,12 +54,6 @@ public class MainActivity extends AppCompatActivity {
         timeTextView = findViewById(R.id.Time);
         updateLatestReadingTime();
 
-        ActionBar actionbar = getSupportActionBar();
-        if (actionbar != null) {
-            actionbar.setLogo(R.drawable.aircare_logo);
-            actionbar.setDisplayUseLogoEnabled(true);
-            actionbar.setDisplayShowHomeEnabled(true);
-        }
 
         View detailedButton = findViewById(R.id.BottomLayout);
         Handler handler = new Handler();

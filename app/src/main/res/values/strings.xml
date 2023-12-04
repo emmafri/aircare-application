@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">AirCareLocal</string>
+    <string name="app_name">AirCare</string>
     <string name="at">At </string>
     <string name="temperature">Temperature</string>
     <string name="degrees">ºC</string>
@@ -12,4 +12,7 @@
     <string name="co2_detailed_value">XXX</string>
     <string name="pm10_detailed_value">XXX</string>
     <string name="vocs_detailed_value">XXX</string>
+    <string name="back">Back Arrow Icon</string>
+    <string name="app_logo">App Logo</string>
+    <string name="menu">Menu Icon</string>
 </resources>

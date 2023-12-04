@@ -3,10 +3,13 @@ package org.feup.apm.aircarelocal;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 
 public class ParameterInfoActivity extends AppCompatActivity {
 
@@ -15,13 +18,26 @@ public class ParameterInfoActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.parameter_info);
 
-        ActionBar actionBar = getSupportActionBar();
-        if (actionBar != null) {
-            actionBar.setDisplayHomeAsUpEnabled(true);
-            actionBar.setLogo(R.drawable.aircare_logo);
-            actionBar.setDisplayUseLogoEnabled(true);
-            actionBar.setDisplayShowHomeEnabled(true);
-        }
+        //TOOLBAR
+        Toolbar toolbar = findViewById(R.id.customToolbar); // Find your toolbar by its ID
+        setSupportActionBar(toolbar); // Set the toolbar as the ActionBar
+
+        ImageView backButton = findViewById(R.id.backButton);
+        ImageView menuButton = findViewById(R.id.menuButton);
+
+        backButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onBackPressed();
+            }
+        });
+
+        menuButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Add  action when menuButton is clicked
+            }
+        });
 
         Intent intent = getIntent();
         if (intent != null) {
