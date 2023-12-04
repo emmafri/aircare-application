@@ -3,6 +3,7 @@ package org.feup.apm.aircarelocal;
 import android.icu.text.SimpleDateFormat;
 import android.os.Bundle;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
@@ -27,12 +28,14 @@ public class HistoryActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.history);
 
+
         ActionBar actionbar = getSupportActionBar();
         if (actionbar != null) {
             actionbar.setLogo(R.drawable.aircare_logo);
             actionbar.setDisplayUseLogoEnabled(true);
             actionbar.setDisplayShowHomeEnabled(true);
         }
+
         RecyclerView recyclerView = findViewById(R.id.historyList);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
@@ -82,5 +85,15 @@ public class HistoryActivity extends AppCompatActivity {
 
         return cal1.get(Calendar.DAY_OF_YEAR) == cal2.get(Calendar.DAY_OF_YEAR) &&
                 cal1.get(Calendar.YEAR) == cal2.get(Calendar.YEAR);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle the Up button click
+        if (item.getItemId() == android.R.id.home) {
+            onBackPressed();
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 }
