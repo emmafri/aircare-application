@@ -19,24 +19,18 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:fontFamily="@font/siffon_titles"
-            android:text="PM 2.5"
             android:textAlignment="center"
             android:textColor="#000000"
             android:textSize="40dp" />
     </LinearLayout>
 
     <TextView
-        android:id="@+id/ParameterDetails"
+        android:id="@+id/ParameterDescription"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
 
         android:layout_margin="20dp"
         android:fontFamily="@font/poppins_normal"
-        android:text="   PM2.5 particles are tiny airborne particles with a diameter of 2.5 micrometers or smaller.
-
-These can accumulate from various sources like cooking, cleaning products, and even outdoor air infiltration.
-
-Due to their minuscule size, PM2.5 particles can penetrate deep into the lungs when inhaled, potentially causing respiratory and cardiovascular issues. "
         android:textColor="#000000"
         android:textSize="16dp" />
 
@@ -76,7 +70,6 @@ Due to their minuscule size, PM2.5 particles can penetrate deep into the lungs w
                     android:layout_weight="1"
                     android:fontFamily="@font/poppins_normal"
                     android:padding="8dp"
-                    android:text="0-12 µg/m³"
                     android:textAlignment="center"
                     android:textColor="#000000"
                     android:textSize="16sp" />
@@ -107,7 +100,6 @@ Due to their minuscule size, PM2.5 particles can penetrate deep into the lungs w
                     android:layout_weight="1"
                     android:fontFamily="@font/poppins_normal"
                     android:padding="8dp"
-                    android:text="13-35 µg/m³"
                     android:textAlignment="center"
                     android:textColor="#000000"
                     android:textSize="16sp" />
@@ -138,7 +130,6 @@ Due to their minuscule size, PM2.5 particles can penetrate deep into the lungs w
                     android:layout_weight="1"
                     android:fontFamily="@font/poppins_normal"
                     android:padding="8dp"
-                    android:text="36-50 µg/m³"
                     android:textAlignment="center"
                     android:textColor="#000000"
                     android:textSize="16sp" />
@@ -169,7 +160,6 @@ Due to their minuscule size, PM2.5 particles can penetrate deep into the lungs w
                     android:layout_weight="1"
                     android:fontFamily="@font/poppins_normal"
                     android:padding="8dp"
-                    android:text=">50 µg/m³"
                     android:textAlignment="center"
                     android:textColor="#000000"
                     android:textSize="16sp" />
