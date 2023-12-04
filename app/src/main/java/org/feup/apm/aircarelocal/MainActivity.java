@@ -25,9 +25,13 @@ import java.util.Locale;
 
 
 public class MainActivity extends AppCompatActivity {
-
+    private DatabaseHelper databaseHelper;
     private SQLiteDatabase db = null;
     private TextView timeTextView;
+    private TextView temperatureTextView;
+    private TextView humidityTextView;
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,16 +47,20 @@ public class MainActivity extends AppCompatActivity {
         Space backButtonSpace = findViewById(R.id.backButtonSpace);
         backButtonSpace.setVisibility(View.VISIBLE);
 
+
+        databaseHelper = new DatabaseHelper(this);
+
+
         DatabaseHelper databaseHelper = new DatabaseHelper(this);
 
         databaseHelper.copyDatabase();
 
         db = (databaseHelper).getWritableDatabase();
 
-        //add query etc ??
-
         timeTextView = findViewById(R.id.Time);
-        updateLatestReadingTime();
+        temperatureTextView = findViewById(R.id.temperature_value);
+        humidityTextView = findViewById(R.id.humidity_value);
+        updateLatestReading();
 
 
         View detailedButton = findViewById(R.id.BottomLayout);
@@ -129,10 +137,10 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    private void updateLatestReadingTime() {
+    private void updateLatestReading() {
 
         // Define the columns you want to retrieve
-        String[] projection = {"Timestamp"};
+        String[] projection = {"Timestamp", "Temperature", "Humidity"};
 
         // Query the database to get the latest timestamp
         Cursor cursor = db.query(
@@ -156,11 +164,27 @@ public class MainActivity extends AppCompatActivity {
 
             // Update the TextView with the formatted time
             timeTextView.setText(formattedTime);
+
+            float temperature = cursor.getFloat(cursor.getColumnIndexOrThrow("Temperature"));
+            temperatureTextView.setText(formatValue(temperature,1));
+
+            float humidity = cursor.getFloat(cursor.getColumnIndexOrThrow("Humidity"));
+            humidityTextView.setText(formatValue(humidity,1));
+
         }
 
         // Close the cursor and database
         cursor.close();
     }
+
+    // Format value from database to only show desired number of decimals
+    private String formatValue(float originalValue, int decimalPlacesToShow) {
+
+        String formattedValue = String.format("%." + decimalPlacesToShow + "f", originalValue);
+
+        return formattedValue;
+    }
+
 
     private String formatTimestamp(String timestampString) {
         // Parse the timestamp string into a Date object
@@ -175,7 +199,7 @@ public class MainActivity extends AppCompatActivity {
         }
 
         // Format the Date object to the desired HH:mm format
-        SimpleDateFormat outputFormat = new SimpleDateFormat("HH:mm", Locale.getDefault());
+        SimpleDateFormat outputFormat = new SimpleDateFormat("HH:mm:ss", Locale.getDefault());
         return outputFormat.format(date);
     }
 
