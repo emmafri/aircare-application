@@ -15,8 +15,8 @@ import android.util.Log;
 
 public class DatabaseHelper extends SQLiteOpenHelper {
     private final Context context;
-    private static final String DATABASE_NAME = "AirQualityDatabase";
-    private static final int DATABASE_VERSION = 1;
+    private static final String DATABASE_NAME = "aircare.db";
+    private static final int DATABASE_VERSION = 2;
 
     public DatabaseHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -26,7 +26,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        String createTableQuery = "CREATE TABLE AirQualityData (" +
+        /*String createTableQuery = "CREATE TABLE AirQualityData (" +
                 "_id INTEGER PRIMARY KEY AUTOINCREMENT," +
                 "timestamp DATETIME DEFAULT CURRENT_TIMESTAMP," +
                 "temperature REAL," +
@@ -35,7 +35,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 "voc REAL," +
                 "pm10 REAL," +
                 "pm25 REAL);";
-        db.execSQL(createTableQuery);
+        db.execSQL(createTableQuery);*/
     }
 
     private boolean isDatabaseCopied() {
