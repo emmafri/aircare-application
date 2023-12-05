@@ -285,7 +285,36 @@ public class DetailedReadingActivity extends AppCompatActivity {
             float voc = cursor.getFloat(cursor.getColumnIndexOrThrow("VOC"));
             vocTextView.setText(formatValue(voc,5));
 
+            AirQualityCalculator.AirQualityResult airQualityResult = AirQualityCalculator.getAirQualityResult(pm25, pm10,co2,voc);
 
+            AirQualityCalculator.AirQualityCategory overallCategory = airQualityResult.getOverallCategory();
+
+            // Updates air quality box based on the air quality category
+            switch (overallCategory) {
+                case GOOD:
+                    findViewById(R.id.Rating).setBackgroundResource(R.drawable.green_box);
+                    TextView good = findViewById(R.id.rating_text);
+                    good.setText(getString(R.string.good_rating));
+                    break;
+                case MEDIUM:
+                    findViewById(R.id.Rating).setBackgroundResource(R.drawable.yellow_box);
+                    TextView medium = findViewById(R.id.rating_text);
+                    medium.setText(getString(R.string.medium_rating));
+                    break;
+                case BAD:
+                    findViewById(R.id.Rating).setBackgroundResource(R.drawable.red_box);
+                    TextView bad = findViewById(R.id.rating_text);
+                    bad.setText(getString(R.string.bad_rating));
+                    break;
+                case VERY_BAD:
+                    findViewById(R.id.Rating).setBackgroundResource(R.drawable.purple_box);
+                    TextView vrybad = findViewById(R.id.rating_text);
+                    vrybad.setText(getString(R.string.vrybad_rating));
+                    break;
+                default:
+                    // Handle default case if needed
+                    break;
+            }
 
 
         }
