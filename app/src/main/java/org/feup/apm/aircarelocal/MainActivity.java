@@ -31,6 +31,8 @@ public class MainActivity extends AppCompatActivity {
     private TextView timeTextView;
     private TextView temperatureTextView;
     private TextView humidityTextView;
+    private TextView rating = findViewById(R.id.Rating);
+    View detailedButton = findViewById(R.id.BottomLayout);
     private double pm25;
     private double pm10;
     private double co2;
@@ -68,17 +70,8 @@ public class MainActivity extends AppCompatActivity {
         updateLatestReading();
 
 
-        AirQualityCalculator.AirQualityResult airQualityResult = AirQualityCalculator.getAirQualityResult(pm25, pm10,co2,voc);
-
-        AirQualityCalculator.AirQualityCategory overallCategory = airQualityResult.getOverallCategory();
-
-
-        View detailedButton = findViewById(R.id.BottomLayout);
         Handler handler = new Handler();
         View historyButton = findViewById(R.id.HistoryButton);
-        TextView rating = findViewById(R.id.Rating);
-
-        rating.setText(overallCategory.toString());
 
         detailedButton.setOnTouchListener(new View.OnTouchListener() {
             @Override
@@ -190,6 +183,13 @@ public class MainActivity extends AppCompatActivity {
             co2 = cursor.getDouble(cursor.getColumnIndexOrThrow("CO2"));
             voc = cursor.getDouble(cursor.getColumnIndexOrThrow("VOC"));
 
+            AirQualityCalculator.AirQualityResult airQualityResult = AirQualityCalculator.getAirQualityResult(pm25, pm10,co2,voc);
+
+            AirQualityCalculator.AirQualityCategory overallCategory = airQualityResult.getOverallCategory();
+
+            updateMainUI(overallCategory);
+
+
         }
 
         // Close the cursor and database
@@ -236,6 +236,24 @@ public class MainActivity extends AppCompatActivity {
         if (db != null && db.isOpen()) {
             db.close();
         }
+    }
+
+    private void updateMainUI(AirQualityCalculator.AirQualityCategory newestReading){
+
+        switch(newestReading){
+
+            case GOOD:
+
+                rating.setText("Good");
+
+            case MEDIUM:
+            case BAD:
+            case VERY_BAD:
+
+        }
+
+
+
     }
 }
 
