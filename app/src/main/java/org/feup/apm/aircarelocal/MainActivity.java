@@ -9,6 +9,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.media.Rating;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.MotionEvent;
@@ -16,6 +17,7 @@ import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.Space;
 import android.widget.TextView;
 
@@ -23,6 +25,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
+
 
 
 public class MainActivity extends AppCompatActivity {
@@ -36,6 +39,7 @@ public class MainActivity extends AppCompatActivity {
     private double pm10;
     private double co2;
     private double voc;
+    private BluetoothHelper bluetoothHelper;
 
 
 
@@ -43,6 +47,9 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        bluetoothHelper = new BluetoothHelper();
+        bluetoothHelper.initializeBluetooth();
 
         //TOOLBAR
         Toolbar toolbar = findViewById(R.id.customToolbar);
@@ -55,13 +62,9 @@ public class MainActivity extends AppCompatActivity {
 
 
         databaseHelper = new DatabaseHelper(this);
-
-
-        DatabaseHelper databaseHelper = new DatabaseHelper(this);
-
         databaseHelper.copyDatabase();
-
         db = (databaseHelper).getWritableDatabase();
+
 
         timeTextView = findViewById(R.id.Time);
         temperatureTextView = findViewById(R.id.temperature_value);
@@ -141,7 +144,37 @@ public class MainActivity extends AppCompatActivity {
 
             }
         });
+
+
+        // Set OnClickListener for "New Reading" button
+        LinearLayout newReadingButton = findViewById(R.id.NewReadingButton);
+        newReadingButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                new ConnectBluetoothTask().execute();
+            }
+
+        });
+
     }
+
+    // AsyncTask to perform Bluetooth operations in the background
+    private class ConnectBluetoothTask extends AsyncTask<Void, Void, Void> {
+        @Override
+        protected Void doInBackground(Void... params) {
+            // Perform background Bluetooth operations here
+            bluetoothHelper.connectBluetoothDevice(); // Replace with your actual device address
+            // You can read data from the inputStream and write data to the outputStream
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void result) {
+            // Update UI or perform any post-execution tasks
+        }
+    }
+
+
 
     private void updateLatestReading() {
 
@@ -247,7 +280,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-
     private void startPopUpAnimation(View view) {
         Animation popUpAnimation = AnimationUtils.loadAnimation(this, R.anim.pop_up);
         view.startAnimation(popUpAnimation);
@@ -256,6 +288,9 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
+
+        bluetoothHelper.closeBluetoothConnection(); // Close the Bluetooth connection after use
+
         // Close the database when the activity is destroyed
         if (db != null && db.isOpen()) {
             db.close();
