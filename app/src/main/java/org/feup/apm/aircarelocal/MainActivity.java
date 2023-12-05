@@ -31,6 +31,7 @@ public class MainActivity extends AppCompatActivity {
     private TextView timeTextView;
     private TextView temperatureTextView;
     private TextView humidityTextView;
+    private TextView rating;
     private double pm25;
     private double pm10;
     private double co2;
