@@ -31,8 +31,7 @@ public class MainActivity extends AppCompatActivity {
     private TextView timeTextView;
     private TextView temperatureTextView;
     private TextView humidityTextView;
-    private TextView rating = findViewById(R.id.Rating);
-    View detailedButton = findViewById(R.id.BottomLayout);
+    private TextView rating;
     private double pm25;
     private double pm10;
     private double co2;
@@ -69,7 +68,7 @@ public class MainActivity extends AppCompatActivity {
         humidityTextView = findViewById(R.id.humidity_value);
         updateLatestReading();
 
-
+        View detailedButton = findViewById(R.id.BottomLayout);
         Handler handler = new Handler();
         View historyButton = findViewById(R.id.HistoryButton);
 

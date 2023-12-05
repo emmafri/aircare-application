@@ -1,5 +1,7 @@
 package org.feup.apm.aircarelocal;
 
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.icu.text.SimpleDateFormat;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -17,6 +19,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
@@ -58,15 +61,40 @@ public class HistoryActivity extends AppCompatActivity {
         RecyclerView recyclerView = findViewById(R.id.historyList);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
-        List<HistoryScroll.Item> itemList = generateItemList();
+        List<HistoryScroll.Item> itemList = fetchItemFromDatabase();
         HistoryScroll adapter = new HistoryScroll(itemList);
         recyclerView.setAdapter(adapter);
     }
-    private List<HistoryScroll.Item> generateItemList() {
+    private List<HistoryScroll.Item> fetchItemFromDatabase() {
         List<HistoryScroll.Item> itemList = new ArrayList<>();
-        itemList.add(new HistoryScroll.Item("Entry 3", false, parseTimestamp("2023-11-27 10:15:30.987654")));
-        itemList.add(new HistoryScroll.Item("Entry 2", false, parseTimestamp("2023-11-26 18:45:12.123456")));
-        itemList.add(new HistoryScroll.Item("Entry 1", false, parseTimestamp("2023-11-26 16:31:47.307125")));
+        DatabaseHelper databaseHelper = new DatabaseHelper(this);
+
+        String[] time = {"Timestamp"};
+
+        SQLiteDatabase db = databaseHelper.getReadableDatabase();
+        Cursor cursor = db.query("sensor_data", time, null, null, null, null, null);
+
+
+        if (cursor.moveToFirst()) {
+            do {
+                String timestampStr = cursor.getString(cursor.getColumnIndexOrThrow("Timestamp"));
+
+                Date timestamp = parseTimestamp(timestampStr);
+                itemList.add(new HistoryScroll.Item(timestamp, false));
+            } while (cursor.moveToNext());
+        }
+
+        cursor.close();
+        db.close();
+
+        Collections.reverse(itemList);
+
+        if (!itemList.isEmpty()){
+
+            Date firstEntryDate = itemList.get(0).getTimestamp();
+            itemList.add(0, new HistoryScroll.Item(firstEntryDate,true));
+
+        }
 
         // Add dividers based on date change
         for (int i = 0; i < itemList.size() - 1; i++) {
@@ -78,7 +106,7 @@ public class HistoryActivity extends AppCompatActivity {
                 Date nextDate = next.getTimestamp();
 
                 if (!isSameDay(currentDate, nextDate)) {
-                    itemList.add(i + 1, new HistoryScroll.Item("", true, nextDate)); // Divider with default time
+                    itemList.add(i + 1, new HistoryScroll.Item( nextDate, true)); // Divider with default time
                 }
             }
         }

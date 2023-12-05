@@ -86,7 +86,7 @@ public class HistoryScroll extends RecyclerView.Adapter<RecyclerView.ViewHolder>
         private int hour;
         private int minute;
 
-        public Item(String data, boolean isDivider, Date timestamp) {
+        public Item( Date timestamp, boolean isDivider) {
             this.data = data;
             this.isDivider = isDivider;
             this.timestamp = timestamp;
