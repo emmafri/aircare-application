@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.media.Rating;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.MotionEvent;
@@ -30,6 +31,10 @@ public class MainActivity extends AppCompatActivity {
     private TextView timeTextView;
     private TextView temperatureTextView;
     private TextView humidityTextView;
+    private double pm25;
+    private double pm10;
+    private double co2;
+    private double voc;
 
 
 
@@ -63,9 +68,17 @@ public class MainActivity extends AppCompatActivity {
         updateLatestReading();
 
 
+        AirQualityCalculator.AirQualityResult airQualityResult = AirQualityCalculator.getAirQualityResult(pm25, pm10,co2,voc);
+
+        AirQualityCalculator.AirQualityCategory overallCategory = airQualityResult.getOverallCategory();
+
+
         View detailedButton = findViewById(R.id.BottomLayout);
         Handler handler = new Handler();
         View historyButton = findViewById(R.id.HistoryButton);
+        TextView rating = findViewById(R.id.Rating);
+
+        rating.setText(overallCategory.toString());
 
         detailedButton.setOnTouchListener(new View.OnTouchListener() {
             @Override
@@ -140,7 +153,8 @@ public class MainActivity extends AppCompatActivity {
     private void updateLatestReading() {
 
         // Define the columns you want to retrieve
-        String[] projection = {"Timestamp", "Temperature", "Humidity"};
+        String[] projection = {"Timestamp", "Temperature", "Humidity","CO2", "VOC", "PM25", "PM10"};
+        String[] measures = {};
 
         // Query the database to get the latest timestamp
         Cursor cursor = db.query(
@@ -170,6 +184,11 @@ public class MainActivity extends AppCompatActivity {
 
             float humidity = cursor.getFloat(cursor.getColumnIndexOrThrow("Humidity"));
             humidityTextView.setText(formatValue(humidity,1));
+
+            pm25 = cursor.getDouble(cursor.getColumnIndexOrThrow("PM25"));
+            pm10 = cursor.getDouble(cursor.getColumnIndexOrThrow("PM10"));
+            co2 = cursor.getDouble(cursor.getColumnIndexOrThrow("CO2"));
+            voc = cursor.getDouble(cursor.getColumnIndexOrThrow("VOC"));
 
         }
 

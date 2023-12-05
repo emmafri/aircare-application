@@ -47,7 +47,7 @@ public class HistoryScroll extends RecyclerView.Adapter<RecyclerView.ViewHolder>
             EntryViewHolder entryViewHolder = (EntryViewHolder) holder;
             SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm", Locale.getDefault());
             String formattedTime = timeFormat.format(item.getTimestamp());
-            entryViewHolder.textView.setText(item.getData() + " at " + formattedTime);
+            entryViewHolder.textView.setText(formattedTime);
         } else if (holder instanceof DividerViewHolder) {
             DividerViewHolder dividerViewHolder = (DividerViewHolder) holder;
             SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
