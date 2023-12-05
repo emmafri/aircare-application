@@ -3,9 +3,9 @@ package org.feup.apm.aircarelocal;
 public class AirQualityCalculator {
 
     private static final double[] PM25_THRESHOLDS = {12.0, 35.0, 50.0};
-    private static final double[] PM10_THRESHOLDS = {54.0, 254.0, 354.0};
-    private static final double[] CO2_THRESHOLDS = {800.0, 1200.0, 2000.0};
-    private static final double[] VOC_THRESHOLDS = {0.4, 2.2, 30};
+    private static final double[] PM10_THRESHOLDS = {50, 150, 250};
+    private static final double[] CO2_THRESHOLDS = {700, 1000, 2000};
+    private static final double[] VOC_THRESHOLDS = {400, 2200, 30000};
 
     public enum AirQualityCategory {
         GOOD,
@@ -76,6 +76,8 @@ public class AirQualityCalculator {
             this.co2Category = co2Category;
             this.vocCategory = vocCategory;
             this.overallCategory = overallCategory;
+
+
         }
 
         public AirQualityCategory getPm25Category() {
@@ -99,6 +101,8 @@ public class AirQualityCalculator {
         }
 
     }
+
+
 
 
 }

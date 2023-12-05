@@ -203,7 +203,6 @@
                     android:layout_below="@+id/AirQuality"
                     android:layout_centerHorizontal="true"
                     android:fontFamily="@font/siffon_titles"
-                    android:text="XXXXXXXXX"
                     android:textColor="#000000"
                     android:textSize="30dp" />
 

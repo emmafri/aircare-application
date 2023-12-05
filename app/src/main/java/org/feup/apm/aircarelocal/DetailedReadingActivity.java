@@ -285,6 +285,8 @@ public class DetailedReadingActivity extends AppCompatActivity {
             float voc = cursor.getFloat(cursor.getColumnIndexOrThrow("VOC"));
             vocTextView.setText(formatValue(voc,5));
 
+
+
         }
 
         // Close the cursor and database

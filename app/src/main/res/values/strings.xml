@@ -17,7 +17,7 @@
     <string name="menu">Menu Icon</string>
 
     <string name="param_name_pm25">PM2.5</string>
-    <string name="param_descr_pm25">ratory and cardiovascular issues.</string>
+    <string name="param_descr_pm25">PM2.5 particles are tiny airborne particles with a diameter of 2.5 micrometers or smaller.\n\n These can accumulate from various sources like cooking, cleaning products, and even outdoor air infiltration.\n\nDue to their minuscule size, PM2.5 particles can penetrate deep into the lungs when inhaled and even enter the bloodstream, potentially causing respiratory and cardiovascular issues.</string>
     <string name="good_values_pm25">0 - 12µg/m³</string>
     <string name="medium_values_pm25">13 - 35µg/m³</string>
     <string name="bad_values_pm25">36 - 50µg/m³</string>
@@ -65,5 +65,9 @@
     • Opt for electric appliances or those that produce fewer emissions.
     </string>
 
+    <string name="good_rating">GOOD</string>
+    <string name="medium_rating">MEDIUM</string>
+    <string name="bad_rating">BAD</string>
+    <string name="vrybad_rating">HAZARDOUS</string>
 
 </resources>

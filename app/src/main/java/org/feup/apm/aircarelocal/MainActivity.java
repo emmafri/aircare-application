@@ -31,8 +31,6 @@ public class MainActivity extends AppCompatActivity {
     private TextView timeTextView;
     private TextView temperatureTextView;
     private TextView humidityTextView;
-    private TextView rating = findViewById(R.id.Rating);
-    View detailedButton = findViewById(R.id.BottomLayout);
     private double pm25;
     private double pm10;
     private double co2;
@@ -72,6 +70,7 @@ public class MainActivity extends AppCompatActivity {
 
         Handler handler = new Handler();
         View historyButton = findViewById(R.id.HistoryButton);
+        View detailedButton = findViewById(R.id.BottomLayout);
 
         detailedButton.setOnTouchListener(new View.OnTouchListener() {
             @Override
@@ -187,8 +186,32 @@ public class MainActivity extends AppCompatActivity {
 
             AirQualityCalculator.AirQualityCategory overallCategory = airQualityResult.getOverallCategory();
 
-            updateMainUI(overallCategory);
-
+            // Updates air quality box based on the air quality category
+            switch (overallCategory) {
+                case GOOD:
+                    findViewById(R.id.BottomLayout).setBackgroundResource(R.drawable.green_box);
+                    TextView good = findViewById(R.id.Rating);
+                    good.setText(getString(R.string.good_rating));
+                    break;
+                case MEDIUM:
+                    findViewById(R.id.BottomLayout).setBackgroundResource(R.drawable.yellow_box);
+                    TextView medium = findViewById(R.id.Rating);
+                    medium.setText(getString(R.string.medium_rating));
+                    break;
+                case BAD:
+                    findViewById(R.id.BottomLayout).setBackgroundResource(R.drawable.red_box);
+                    TextView bad = findViewById(R.id.Rating);
+                    bad.setText(getString(R.string.bad_rating));
+                    break;
+                case VERY_BAD:
+                    findViewById(R.id.BottomLayout).setBackgroundResource(R.drawable.purple_box);
+                    TextView vrybad = findViewById(R.id.Rating);
+                    vrybad.setText(getString(R.string.vrybad_rating));
+                    break;
+                default:
+                    // Handle default case if needed
+                    break;
+            }
 
         }
 
@@ -238,22 +261,5 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    private void updateMainUI(AirQualityCalculator.AirQualityCategory newestReading){
-
-        switch(newestReading){
-
-            case GOOD:
-
-                rating.setText("Good");
-
-            case MEDIUM:
-            case BAD:
-            case VERY_BAD:
-
-        }
-
-
-
-    }
 }
 

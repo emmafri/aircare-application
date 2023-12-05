@@ -19,8 +19,8 @@ public class ParameterInfoActivity extends AppCompatActivity {
         setContentView(R.layout.parameter_info);
 
         //TOOLBAR
-        Toolbar toolbar = findViewById(R.id.customToolbar); // Find your toolbar by its ID
-        setSupportActionBar(toolbar); // Set the toolbar as the ActionBar
+        Toolbar toolbar = findViewById(R.id.customToolbar);
+        setSupportActionBar(toolbar);
 
         ImageView backButton = findViewById(R.id.backButton);
         ImageView menuButton = findViewById(R.id.menuButton);
