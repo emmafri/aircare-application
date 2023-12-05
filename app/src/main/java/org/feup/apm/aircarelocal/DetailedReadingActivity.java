@@ -287,6 +287,7 @@ public class DetailedReadingActivity extends AppCompatActivity {
 
 
 
+
         }
 
         // Close the cursor and database
