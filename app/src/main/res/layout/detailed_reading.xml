@@ -8,6 +8,7 @@
     <include layout="@layout/custom_action_bar" />
 
     <LinearLayout
+        android:id="@+id/Rating"
         android:layout_width="match_parent"
         android:layout_height="520dp"
         android:layout_marginTop="50dp"
@@ -26,7 +27,7 @@
             android:textSize="34sp" />
 
         <TextView
-            android:id="@+id/rating_overall"
+            android:id="@+id/rating_text"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:fontFamily="@font/siffon_titles"
