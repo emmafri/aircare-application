@@ -60,6 +60,13 @@ public class DetailedReadingActivity extends AppCompatActivity {
         View co2Button = findViewById(R.id.co2_block);
         View vocButton = findViewById(R.id.vocs_block);
 
+        pm25TextView = findViewById(R.id.pm25_value);
+        pm10TextView = findViewById(R.id.pm10_value);
+        co2TextView = findViewById(R.id.co2_value);
+        vocTextView = findViewById(R.id.vocs_value);
+        updateLatestReading();
+
+
         //history button
         historyButton.setOnTouchListener(new View.OnTouchListener() {
             @Override
