@@ -46,18 +46,45 @@ public class MainActivity extends AppCompatActivity implements BluetoothHelper.C
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        databaseHelper = new DatabaseHelper(this);
+        databaseHelper.copyDatabase();
+        db = (databaseHelper).getWritableDatabase();
+
+
         // BLUETOOTH
        /* bluetoothHelper = new BluetoothHelper(this);
-        bluetoothHelper.initializeBluetooth();
+        bluetoothHelper.initializeBluetooth();*/
 
-        // Set OnClickListener for "New Reading" button
-        LinearLayout newReadingButton = findViewById(R.id.NewReadingButton);
+        //Set OnClickListener for "New Reading" button
+        View newReadingButton = findViewById(R.id.NewReadingButton);
+        newReadingButton.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                switch (event.getAction()) {
+                    case MotionEvent.ACTION_DOWN:
+                        break;
+
+                    case MotionEvent.ACTION_UP:
+                        startPopUpAnimation(v);
+                        break;
+                }
+                return false;
+            }
+        });
         newReadingButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                bluetoothHelper.connectToSensor();
+
+                //bluetoothHelper.connectToSensor();
+                //get data from sensor
+
+                // Insert a new entry in the database
+                databaseHelper.insertNewEntry(30, 60, 3, 1, 3000, 23);
+
+                //update ui elements
+                updateLatestReading();
             }
-        });*/
+        });
 
 
         // TOOLBAR
@@ -69,10 +96,6 @@ public class MainActivity extends AppCompatActivity implements BluetoothHelper.C
         Space backButtonSpace = findViewById(R.id.backButtonSpace);
         backButtonSpace.setVisibility(View.VISIBLE);
 
-
-        databaseHelper = new DatabaseHelper(this);
-        databaseHelper.copyDatabase();
-        db = (databaseHelper).getWritableDatabase();
 
 
         timeTextView = findViewById(R.id.Time);
@@ -158,80 +181,95 @@ public class MainActivity extends AppCompatActivity implements BluetoothHelper.C
 
 
     private void updateLatestReading() {
+        SQLiteDatabase db = null;
+        Cursor cursor = null;
 
-        // Define the columns you want to retrieve
-        String[] projection = {"Timestamp", "Temperature", "Humidity","CO2", "VOC", "PM25", "PM10"};
-        String[] measures = {};
+        try {
+            // Get a readable database
+            db = databaseHelper.getReadableDatabase();
 
-        // Query the database to get the latest timestamp
-        Cursor cursor = db.query(
-                "sensor_data",
-                projection,
-                null,
-                null,
-                null,
-                null,
-                "Timestamp DESC",  // Order by timestamp in descending order to get the latest
-                "1"  // Limit to 1 result to get only the latest timestamp
-        );
+            // Define the columns you want to retrieve
+            String[] projection = {"Timestamp", "Temperature", "Humidity", "CO2", "VOC", "PM25", "PM10"};
+            String[] measures = {};
 
-        // Check if there is data in the cursor
-        if (cursor.moveToFirst()) {
-            // Retrieve the timestamp from the cursor
-            String timestampString = cursor.getString(cursor.getColumnIndexOrThrow("Timestamp"));
+            // Query the database to get the latest timestamp
+            cursor = db.query(
+                    "sensor_data",
+                    projection,
+                    null,
+                    null,
+                    null,
+                    null,
+                    "Timestamp DESC",  // Order by timestamp in descending order to get the latest
+                    "1"  // Limit to 1 result to get only the latest timestamp
+            );
 
-            // Convert timestamp to a human-readable format
-            String formattedTime = formatTimestamp(timestampString);
+            // Check if there is data in the cursor
+            if (cursor.moveToFirst()) {
+                // Retrieve the timestamp from the cursor
+                String timestampString = cursor.getString(cursor.getColumnIndexOrThrow("Timestamp"));
 
-            // Update the TextView with the formatted time
-            timeTextView.setText(formattedTime);
+                // Convert timestamp to a human-readable format
+                String formattedTime = formatTimestamp(timestampString);
 
-            float temperature = cursor.getFloat(cursor.getColumnIndexOrThrow("Temperature"));
-            temperatureTextView.setText(formatValue(temperature,1));
+                // Update the TextView with the formatted time
+                timeTextView.setText(formattedTime);
 
-            float humidity = cursor.getFloat(cursor.getColumnIndexOrThrow("Humidity"));
-            humidityTextView.setText(formatValue(humidity,1));
+                float temperature = cursor.getFloat(cursor.getColumnIndexOrThrow("Temperature"));
+                temperatureTextView.setText(formatValue(temperature, 1));
 
-            pm25 = cursor.getDouble(cursor.getColumnIndexOrThrow("PM25"));
-            pm10 = cursor.getDouble(cursor.getColumnIndexOrThrow("PM10"));
-            co2 = cursor.getDouble(cursor.getColumnIndexOrThrow("CO2"));
-            voc = cursor.getDouble(cursor.getColumnIndexOrThrow("VOC"));
+                float humidity = cursor.getFloat(cursor.getColumnIndexOrThrow("Humidity"));
+                humidityTextView.setText(formatValue(humidity, 1));
 
-            AirQualityCalculator.AirQualityResult airQualityResult = AirQualityCalculator.getAirQualityResult(pm25, pm10,co2,voc);
+                pm25 = cursor.getDouble(cursor.getColumnIndexOrThrow("PM25"));
+                pm10 = cursor.getDouble(cursor.getColumnIndexOrThrow("PM10"));
+                co2 = cursor.getDouble(cursor.getColumnIndexOrThrow("CO2"));
+                voc = cursor.getDouble(cursor.getColumnIndexOrThrow("VOC"));
 
-            AirQualityCalculator.AirQualityCategory overallCategory = airQualityResult.getOverallCategory();
+                AirQualityCalculator.AirQualityResult airQualityResult = AirQualityCalculator.getAirQualityResult(pm25, pm10, co2, voc);
 
-            // Updates air quality box based on the air quality category
-            switch (overallCategory) {
-                case GOOD:
-                    findViewById(R.id.BottomLayout).setBackgroundResource(R.drawable.green_box);
-                    TextView good = findViewById(R.id.Rating);
-                    good.setText(getString(R.string.good_rating));
-                    break;
-                case MEDIUM:
-                    findViewById(R.id.BottomLayout).setBackgroundResource(R.drawable.yellow_box);
-                    TextView medium = findViewById(R.id.Rating);
-                    medium.setText(getString(R.string.medium_rating));
-                    break;
-                case BAD:
-                    findViewById(R.id.BottomLayout).setBackgroundResource(R.drawable.red_box);
-                    TextView bad = findViewById(R.id.Rating);
-                    bad.setText(getString(R.string.bad_rating));
-                    break;
-                case VERY_BAD:
-                    findViewById(R.id.BottomLayout).setBackgroundResource(R.drawable.purple_box);
-                    TextView vrybad = findViewById(R.id.Rating);
-                    vrybad.setText(getString(R.string.vrybad_rating));
-                    break;
-                default:
-                    // Handle default case if needed
-                    break;
+                AirQualityCalculator.AirQualityCategory overallCategory = airQualityResult.getOverallCategory();
+
+                // Updates air quality box based on the air quality category
+                switch (overallCategory) {
+                    case GOOD:
+                        findViewById(R.id.BottomLayout).setBackgroundResource(R.drawable.green_box);
+                        TextView good = findViewById(R.id.Rating);
+                        good.setText(getString(R.string.good_rating));
+                        break;
+                    case MEDIUM:
+                        findViewById(R.id.BottomLayout).setBackgroundResource(R.drawable.yellow_box);
+                        TextView medium = findViewById(R.id.Rating);
+                        medium.setText(getString(R.string.medium_rating));
+                        break;
+                    case BAD:
+                        findViewById(R.id.BottomLayout).setBackgroundResource(R.drawable.red_box);
+                        TextView bad = findViewById(R.id.Rating);
+                        bad.setText(getString(R.string.bad_rating));
+                        break;
+                    case VERY_BAD:
+                        findViewById(R.id.BottomLayout).setBackgroundResource(R.drawable.purple_box);
+                        TextView vrybad = findViewById(R.id.Rating);
+                        vrybad.setText(getString(R.string.vrybad_rating));
+                        break;
+                    default:
+                        // Handle default case if needed
+                        break;
+                }
+
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            // Close the cursor and database in a finally block to ensure they get closed
+            if (cursor != null && !cursor.isClosed()) {
+                cursor.close();
             }
 
+            if (db != null && db.isOpen()) {
+                db.close();
+            }
         }
-
-        // Close the cursor and database
-        cursor.close();
     }
 
     // Format value from database to only show desired number of decimals
@@ -241,7 +279,7 @@ public class MainActivity extends AppCompatActivity implements BluetoothHelper.C
     }
 
     private String formatTimestamp(String timestampString) {
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSSSSS", Locale.getDefault());
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS", Locale.getDefault());
         Date date;
         try {
             date = sdf.parse(timestampString);
@@ -251,7 +289,7 @@ public class MainActivity extends AppCompatActivity implements BluetoothHelper.C
         }
 
         // Format the Date object to the desired HH:mm:ss format
-        SimpleDateFormat outputFormat = new SimpleDateFormat("HH:mm:ss", Locale.getDefault());
+        SimpleDateFormat outputFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault());
         return outputFormat.format(date);
     }
 

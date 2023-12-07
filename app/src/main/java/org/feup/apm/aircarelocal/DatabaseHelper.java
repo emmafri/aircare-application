@@ -1,16 +1,22 @@
 package org.feup.apm.aircarelocal;
 
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.preference.PreferenceManager;
+import java.util.Date;
+import java.util.Locale;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.text.SimpleDateFormat;
+
 import android.util.Log;
 
 public class DatabaseHelper extends SQLiteOpenHelper {
@@ -23,14 +29,37 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         this.context = context;
 
     }
+    @Override
+    public void onOpen(SQLiteDatabase db) {
+        super.onOpen(db);
+
+        // Check if the sensor_values table exists
+        Cursor cursor = db.rawQuery("SELECT name FROM sqlite_master WHERE type='table' AND name='sensor_data'", null);
+
+        if (cursor.getCount() == 0) {
+            // The table doesn't exist, create it
+            String createTableQuery = "CREATE TABLE sensor_data (" +
+                    "_id INTEGER PRIMARY KEY AUTOINCREMENT," +
+                    "timestamp DATETIME DEFAULT CURRENT_TIMESTAMP," +
+                    "humidity FLOAT," +
+                    "temperature FLOAT," +
+                    "co2 FLOAT," +
+                    "voc FLOAT," +
+                    "pm10 FLOAT," +
+                    "pm25 FLOAT);";
+            db.execSQL(createTableQuery);
+        }
+
+        cursor.close();
+    }
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        /*String createTableQuery = "CREATE TABLE AirQualityData (" +
+        /*String createTableQuery = "CREATE TABLE sensor_data (" +
                 "_id INTEGER PRIMARY KEY AUTOINCREMENT," +
                 "timestamp DATETIME DEFAULT CURRENT_TIMESTAMP," +
-                "temperature REAL," +
                 "humidity REAL," +
+                "temperature REAL," +
                 "co2 REAL," +
                 "voc REAL," +
                 "pm10 REAL," +
@@ -76,6 +105,42 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             }
         }
     }
+
+    public void insertNewEntry(float temperature, float humidity, float co2, float voc, float pm10, float pm25) {
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        try {
+            ContentValues values = new ContentValues();
+            values.put("Temperature", temperature);
+            values.put("Humidity", humidity);
+            values.put("CO2", co2);
+            values.put("VOC", voc);
+            values.put("PM10", pm10);
+            values.put("PM25", pm25);
+
+            // Get the current time in milliseconds
+            long currentTimeMillis = System.currentTimeMillis();
+
+            // Convert the time to a formatted date string
+            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS", Locale.getDefault());
+            String formattedTime = dateFormat.format(new Date(currentTimeMillis));
+
+            //values.put("Timestamp", formattedTime);
+            values.put("Timestamp", "2024-03-14 22:28:37.189509"); //CHANGE ONCE WE REMOVED FAKE VALUES IN DB
+
+            // Insert the new entry
+            db.insert("sensor_data", null, values);
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            // Close the database connection in a finally block to ensure it gets closed
+            if (db != null && db.isOpen()) {
+                db.close();
+            }
+        }
+    }
+
+
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
