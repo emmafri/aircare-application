@@ -10,79 +10,101 @@ import java.io.OutputStream;
 import java.util.Set;
 import java.util.UUID;
 
+import android.bluetooth.BluetoothAdapter;
+import android.bluetooth.BluetoothDevice;
+import android.bluetooth.BluetoothSocket;
+import android.os.AsyncTask;
+import android.util.Log;
+import android.widget.Toast;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.util.UUID;
+
 public class BluetoothHelper {
 
+    private static final String TAG = "BluetoothHelper";
+    private static final UUID MY_UUID = UUID.fromString("00001101-0000-1000-8000-00805F9B34FB");
+    private BluetoothAdapter bluetoothAdapter;
     private BluetoothSocket bluetoothSocket;
     private InputStream inputStream;
     private OutputStream outputStream;
+    private String sensorAddress;
+    private ConnectionListener connectionListener;
 
-    // UUID for Serial Port Profile (SPP)
-    private static final UUID MY_UUID = UUID.fromString("00001101-0000-1000-8000-00805F9B34FB");
-    private String deviceAddress;
+    public interface ConnectionListener {
+        void onConnectionResult(boolean isConnected);
+    }
 
-    public BluetoothHelper() {
+    public BluetoothHelper(ConnectionListener listener) {
+        bluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
+        sensorAddress = getSensorAddress();
+        connectionListener = listener;
 
     }
 
-    public void initializeBluetooth() {
-        // Check if the device supports Bluetooth
-        BluetoothAdapter bluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
-        if (bluetoothAdapter == null) {
-            // Device doesn't support Bluetooth
-            return;
-        }
-
-        // Check if Bluetooth is enabled
-        if (!bluetoothAdapter.isEnabled()) {
-            // Bluetooth is not enabled, you can prompt the user to enable it
-            return;
-        }
-
+    private String getSensorAddress() {
         // Get the list of paired devices
         Set<BluetoothDevice> pairedDevices = bluetoothAdapter.getBondedDevices();
 
-        // Example: Choose the first paired device, you may want to implement a selection mechanism
-        if (!pairedDevices.isEmpty()) {
-            BluetoothDevice selectedDevice = pairedDevices.iterator().next();
-            deviceAddress = selectedDevice.getAddress();
+        // Iterate through the list of paired devices
+        for (BluetoothDevice device : pairedDevices) {
+            String deviceName = device.getName();
+            String deviceAddress = device.getAddress(); // This is the Bluetooth address
+
+            if (deviceName.equals("AmbiUnit")) {
+                return deviceAddress;
+            }
+        }
+        return null; //null if device is not in paired devices - temporary!!!
+    }
+
+    public void initializeBluetooth() {
+        if (bluetoothAdapter == null) {
+            Log.e(TAG, "Device doesn't support Bluetooth");
+            return;
+        }
+
+        if (!bluetoothAdapter.isEnabled()) {
+            Log.e(TAG, "Bluetooth is not enabled");
+            return;
         }
     }
 
-    public void connectBluetoothDevice() {
-        // Check if the Bluetooth socket is already connected
-        if (bluetoothSocket != null && bluetoothSocket.isConnected()) {
-            return; // Already connected, no need to reconnect
+    public void connectToSensor() {
+        if (!sensorAddress.equals(null)) {
+            new ConnectTask().execute();
         }
+    }
 
-        // Check if the Bluetooth socket is null (not created in initializeBluetooth)
-        if (bluetoothSocket == null) {
-            return; // Socket not created, cannot proceed with connection
-        }
-
-        // Connect to the Bluetooth device in a separate thread
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    // Attempt to connect to the Bluetooth device
-                    bluetoothSocket.connect();
-
-                    // If the connection is successful, obtain input and output streams
-                    inputStream = bluetoothSocket.getInputStream();
-                    outputStream = bluetoothSocket.getOutputStream();
-
-                    // Now you can use inputStream and outputStream for communication
-                } catch (IOException e) {
-                    // Handle connection error (e.g., device is not available, or connection fails)
-                    e.printStackTrace();
-                }
+    private class ConnectTask extends AsyncTask<Void, Void, Boolean> {
+        @Override
+        protected Boolean doInBackground(Void... params) {
+            try {
+                BluetoothDevice device = bluetoothAdapter.getRemoteDevice(sensorAddress);
+                bluetoothSocket = device.createRfcommSocketToServiceRecord(MY_UUID);
+                bluetoothSocket.connect();
+                inputStream = bluetoothSocket.getInputStream();
+                outputStream = bluetoothSocket.getOutputStream();
+                Log.d(TAG, "Connected to AmbiUnit");
+                return true;
+            } catch (IOException e) {
+                Log.e(TAG, "Error connecting to AmbiUnit", e);
+                return false;
             }
-        }).start();
+        }
+
+        @Override
+        protected void onPostExecute(Boolean connectionSuccessful) {
+            if (connectionListener != null) {
+                connectionListener.onConnectionResult(connectionSuccessful);
+            }
+        }
+
     }
 
     public void closeBluetoothConnection() {
-        // Close the Bluetooth connection
-
         try {
             if (outputStream != null) {
                 outputStream.close();
@@ -93,10 +115,10 @@ public class BluetoothHelper {
             if (bluetoothSocket != null) {
                 bluetoothSocket.close();
             }
+            Log.d(TAG, "Bluetooth connection closed");
         } catch (IOException e) {
-            e.printStackTrace();
+            Log.e(TAG, "Error closing Bluetooth connection", e);
         }
     }
-
 }
 

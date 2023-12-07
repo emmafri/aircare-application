@@ -4,6 +4,8 @@ import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
+import android.bluetooth.BluetoothAdapter;
+import android.bluetooth.BluetoothDevice;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -20,27 +22,23 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Space;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
+import java.util.Set;
 
 
-
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements BluetoothHelper.ConnectionListener {
     private DatabaseHelper databaseHelper;
     private SQLiteDatabase db = null;
-    private TextView timeTextView;
-    private TextView temperatureTextView;
-    private TextView humidityTextView;
-    private TextView rating;
-    private double pm25;
-    private double pm10;
-    private double co2;
-    private double voc;
+    private TextView timeTextView, temperatureTextView, humidityTextView;
+    private TextView rating; //not used??????
+    private double pm25, pm10, co2, voc;
     private BluetoothHelper bluetoothHelper;
-
+    private static final int REQUEST_BLUETOOTH_PERMISSION = 1;
 
 
     @Override
@@ -48,10 +46,21 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        bluetoothHelper = new BluetoothHelper();
+        // BLUETOOTH
+       /* bluetoothHelper = new BluetoothHelper(this);
         bluetoothHelper.initializeBluetooth();
 
-        //TOOLBAR
+        // Set OnClickListener for "New Reading" button
+        LinearLayout newReadingButton = findViewById(R.id.NewReadingButton);
+        newReadingButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                bluetoothHelper.connectToSensor();
+            }
+        });*/
+
+
+        // TOOLBAR
         Toolbar toolbar = findViewById(R.id.customToolbar);
         setSupportActionBar(toolbar);
         //Hide backbutton on main activity and show empty space instead
@@ -145,35 +154,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-
-        // Set OnClickListener for "New Reading" button
-        LinearLayout newReadingButton = findViewById(R.id.NewReadingButton);
-        newReadingButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                new ConnectBluetoothTask().execute();
-            }
-
-        });
-
     }
-
-    // AsyncTask to perform Bluetooth operations in the background
-    private class ConnectBluetoothTask extends AsyncTask<Void, Void, Void> {
-        @Override
-        protected Void doInBackground(Void... params) {
-            // Perform background Bluetooth operations here
-            bluetoothHelper.connectBluetoothDevice(); // Replace with your actual device address
-            // You can read data from the inputStream and write data to the outputStream
-            return null;
-        }
-
-        @Override
-        protected void onPostExecute(Void result) {
-            // Update UI or perform any post-execution tasks
-        }
-    }
-
 
 
     private void updateLatestReading() {
@@ -255,30 +236,24 @@ public class MainActivity extends AppCompatActivity {
 
     // Format value from database to only show desired number of decimals
     private String formatValue(float originalValue, int decimalPlacesToShow) {
-
         String formattedValue = String.format("%." + decimalPlacesToShow + "f", originalValue);
-
         return formattedValue;
     }
 
-
     private String formatTimestamp(String timestampString) {
-        // Parse the timestamp string into a Date object
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSSSSS", Locale.getDefault());
         Date date;
         try {
             date = sdf.parse(timestampString);
         } catch (ParseException e) {
-            // Handle the parse exception if needed
             e.printStackTrace();
             return ""; // Return an empty string in case of an error
         }
 
-        // Format the Date object to the desired HH:mm format
+        // Format the Date object to the desired HH:mm:ss format
         SimpleDateFormat outputFormat = new SimpleDateFormat("HH:mm:ss", Locale.getDefault());
         return outputFormat.format(date);
     }
-
 
     private void startPopUpAnimation(View view) {
         Animation popUpAnimation = AnimationUtils.loadAnimation(this, R.anim.pop_up);
@@ -289,7 +264,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onDestroy() {
         super.onDestroy();
 
-        bluetoothHelper.closeBluetoothConnection(); // Close the Bluetooth connection after use
+        bluetoothHelper.closeBluetoothConnection();
 
         // Close the database when the activity is destroyed
         if (db != null && db.isOpen()) {
@@ -297,5 +272,15 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    @Override
+    public void onConnectionResult(boolean isConnected) {
+        if (isConnected) {
+            // Connection successful
+            Toast.makeText(MainActivity.this, "Connected to AmbiUnit", Toast.LENGTH_SHORT).show();
+        } else {
+            // Connection failed
+            Toast.makeText(MainActivity.this, "Failed to connect to AmbiUnit", Toast.LENGTH_SHORT).show();
+        }
+    }
 }
 
