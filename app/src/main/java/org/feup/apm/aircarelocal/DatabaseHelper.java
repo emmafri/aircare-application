@@ -126,7 +126,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             String formattedTime = dateFormat.format(new Date(currentTimeMillis));
 
             //values.put("Timestamp", formattedTime);
-            values.put("Timestamp", "2024-03-14 22:28:37.189509"); //CHANGE ONCE WE REMOVED FAKE VALUES IN DB
+            values.put("Timestamp", "2024-03-14 23:35:37.189509"); //CHANGE ONCE WE REMOVED FAKE VALUES IN DB
 
             // Insert the new entry
             db.insert("sensor_data", null, values);

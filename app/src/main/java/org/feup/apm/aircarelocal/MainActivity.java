@@ -77,9 +77,20 @@ public class MainActivity extends AppCompatActivity implements BluetoothHelper.C
 
                 //bluetoothHelper.connectToSensor();
                 //get data from sensor
+                // Bluetooth data received (replace this with actual data)
+                String sensorData = "&AMB21 30;0;1013.88;4;21.51;2541;7356;0;8;32;0;100|\n";
+
+                // Parse sensor data to extract individual parameters
+                float temperature = parseSensorData(sensorData, 4);
+                float humidity = parseSensorData(sensorData, 3);
+                float co2 = parseSensorData(sensorData, 2); //OBS its CO not CO2
+                float voc = parseSensorData(sensorData, 11);
+                float pm10 = parseSensorData(sensorData, 10);
+                float pm25 = parseSensorData(sensorData, 9);
+
 
                 // Insert a new entry in the database
-                databaseHelper.insertNewEntry(30, 60, 3, 1, 3000, 23);
+                databaseHelper.insertNewEntry(temperature, humidity, co2, voc, pm10, pm25);
 
                 //update ui elements
                 updateLatestReading();
@@ -269,6 +280,20 @@ public class MainActivity extends AppCompatActivity implements BluetoothHelper.C
             if (db != null && db.isOpen()) {
                 db.close();
             }
+        }
+    }
+
+    // Helper method to parse sensor data and extract a specific parameter
+    private float parseSensorData(String sensorData, int index) {
+        try {
+            // Split the sensor data using ';' as the delimiter
+            String[] dataParts = sensorData.split(";");
+
+            // Extract the parameter at the specified index
+            return Float.parseFloat(dataParts[index]);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return 0.0f;  // Default value if parsing fails
         }
     }
 
