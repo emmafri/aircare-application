@@ -22,7 +22,7 @@ import android.util.Log;
 public class DatabaseHelper extends SQLiteOpenHelper {
     private final Context context;
     private static final String DATABASE_NAME = "aircare.db";
-    private static final int DATABASE_VERSION = 2;
+    private static final int DATABASE_VERSION = 4;
 
     public DatabaseHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -126,7 +126,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             String formattedTime = dateFormat.format(new Date(currentTimeMillis));
 
             //values.put("Timestamp", formattedTime);
-            values.put("Timestamp", "2024-03-14 23:35:37.189509"); //CHANGE ONCE WE REMOVED FAKE VALUES IN DB
+            values.put("Timestamp", "2024-03-14 23:47:37.189509"); //CHANGE ONCE WE REMOVED FAKE VALUES IN DB
 
             // Insert the new entry
             db.insert("sensor_data", null, values);

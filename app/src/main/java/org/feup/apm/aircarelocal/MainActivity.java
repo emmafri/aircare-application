@@ -83,10 +83,10 @@ public class MainActivity extends AppCompatActivity implements BluetoothHelper.C
                 // Parse sensor data to extract individual parameters
                 float temperature = parseSensorData(sensorData, 4);
                 float humidity = parseSensorData(sensorData, 3);
-                float co2 = parseSensorData(sensorData, 2); //OBS its CO not CO2
-                float voc = parseSensorData(sensorData, 11);
-                float pm10 = parseSensorData(sensorData, 10);
-                float pm25 = parseSensorData(sensorData, 9);
+                float co2 = parseSensorData(sensorData, 1); //OBS its CO not CO2
+                float voc = parseSensorData(sensorData, 10);
+                float pm10 = parseSensorData(sensorData, 9);
+                float pm25 = parseSensorData(sensorData, 8);
 
 
                 // Insert a new entry in the database
