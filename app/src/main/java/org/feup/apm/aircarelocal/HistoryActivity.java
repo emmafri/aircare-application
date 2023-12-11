@@ -23,6 +23,7 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
+import java.util.Random;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -96,11 +97,13 @@ public class HistoryActivity extends AppCompatActivity {
         db.close();
 
         Collections.reverse(itemList);
+        Random random = new Random();
+        float randomFloat = random.nextFloat();
 
         if (!itemList.isEmpty()){
 
             Date firstEntryDate = itemList.get(0).getTimestamp();
-            itemList.add(0, new HistoryScroll.Item(firstEntryDate,null,null,null,null,true));
+            itemList.add(0, new HistoryScroll.Item(firstEntryDate,randomFloat,randomFloat,randomFloat,randomFloat,true));
 
         }
 
@@ -114,7 +117,7 @@ public class HistoryActivity extends AppCompatActivity {
                 Date nextDate = next.getTimestamp();
 
                 if (!isSameDay(currentDate, nextDate)) {
-                    itemList.add(i + 1, new HistoryScroll.Item( nextDate, null,null,null,null,true)); // Divider with default time
+                    itemList.add(i + 1, new HistoryScroll.Item( nextDate, randomFloat,randomFloat,randomFloat,randomFloat,true));// Divider with default time
                 }
             }
         }

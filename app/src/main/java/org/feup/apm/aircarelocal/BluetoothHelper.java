@@ -116,7 +116,6 @@ public class BluetoothHelper {
                 connectionListener.onConnectionResult(connectionSuccessful);
             }
         }
-
     }
 
     public void closeBluetoothConnection() {
