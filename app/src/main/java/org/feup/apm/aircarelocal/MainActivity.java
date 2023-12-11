@@ -71,26 +71,27 @@ public class MainActivity extends AppCompatActivity implements BluetoothHelper.C
                 return false;
             }
         });
+
         newReadingButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
-                //bluetoothHelper.connectToSensor();
-                //get data from sensor
+                bluetoothHelper.connectToSensor();
                 // Bluetooth data received (replace this with actual data)
                 String sensorData = "&AMB21 30;0;1013.88;4;21.51;2541;7356;0;8;32;0;100|\n";
+
+                //String sensorData = bluetoothHelper.getLatestSensorData();
 
                 // Parse sensor data to extract individual parameters
                 float temperature = parseSensorData(sensorData, 4);
                 float humidity = parseSensorData(sensorData, 3);
-                float co2 = parseSensorData(sensorData, 1); //OBS its CO not CO2
+                float co = parseSensorData(sensorData, 1); //OBS its CO not CO2
                 float voc = parseSensorData(sensorData, 10);
                 float pm10 = parseSensorData(sensorData, 9);
                 float pm25 = parseSensorData(sensorData, 8);
 
-
                 // Insert a new entry in the database
-                databaseHelper.insertNewEntry(temperature, humidity, co2, voc, pm10, pm25);
+                databaseHelper.insertNewEntry(temperature, humidity, co, voc, pm10, pm25);
 
                 //update ui elements
                 updateLatestReading();
