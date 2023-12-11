@@ -43,13 +43,13 @@ public class DatabaseHelper extends SQLiteOpenHelper {
              //The table doesn't exist, create it
             String createTableQuery = "CREATE TABLE sensor_data (" +
                     "_id INTEGER PRIMARY KEY AUTOINCREMENT," +
-                    "timestamp DATETIME DEFAULT CURRENT_TIMESTAMP," +
-                    "humidity FLOAT," +
-                    "temperature FLOAT," +
-                    "co FLOAT," +
-                    "voc FLOAT," +
-                    "pm10 FLOAT," +
-                    "pm25 FLOAT);";
+                    "Timestamp DATETIME DEFAULT CURRENT_TIMESTAMP," +
+                    "Humidity FLOAT," +
+                    "Temperature FLOAT," +
+                    "CO FLOAT," +
+                    "VOC FLOAT," +
+                    "PM10 FLOAT," +
+                    "PM25 FLOAT);";
             db.execSQL(createTableQuery);
         }
 
@@ -149,8 +149,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        android.util.Log.w("AirQualityData", "Upgrading database, which will destroy all old data");
-        db.execSQL("DROP TABLE IF EXISTS AirQualityData");
+        android.util.Log.w("sensor_data", "Upgrading database, which will destroy all old data");
+        db.execSQL("DROP TABLE IF EXISTS sensor_data");
         onCreate(db);
     }
 }
