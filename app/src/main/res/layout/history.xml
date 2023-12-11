@@ -2,8 +2,10 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical" >
-    <include layout="@layout/custom_action_bar"/>
+    android:gravity="center_horizontal"
+    android:orientation="vertical">
+
+    <include layout="@layout/custom_action_bar" />
 
     <TextView
         android:id="@+id/histotry_title"
@@ -17,6 +19,7 @@
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/historyList"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_gravity="center_horizontal" />
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:paddingHorizontal="10dp" />
 </LinearLayout>

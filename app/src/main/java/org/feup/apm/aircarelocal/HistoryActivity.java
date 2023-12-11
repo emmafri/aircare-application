@@ -60,7 +60,7 @@ public class HistoryActivity extends AppCompatActivity {
 
 
         RecyclerView recyclerView = findViewById(R.id.historyList);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
+        recyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
 
         List<HistoryScroll.Item> itemList = fetchItemFromDatabase();
         HistoryScroll adapter = new HistoryScroll(itemList);
