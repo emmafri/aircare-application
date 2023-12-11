@@ -76,8 +76,6 @@ public class AirQualityCalculator {
             this.coCategory = coCategory;
             this.vocCategory = vocCategory;
             this.overallCategory = overallCategory;
-
-
         }
 
         public AirQualityCategory getPm25Category() {

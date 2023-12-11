@@ -71,14 +71,17 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     }
 
     private boolean isDatabaseCopied() {
-        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
+        SharedPreferences preferences = context.getSharedPreferences("your_preference_name", Context.MODE_PRIVATE);
         return preferences.getBoolean("DATABASE_COPIED", false);
     }
 
     private void setDatabaseCopied() {
-        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
-        preferences.edit().putBoolean("DATABASE_COPIED", true).apply();
+        SharedPreferences preferences = context.getSharedPreferences("your_preference_name", Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = preferences.edit();
+        editor.putBoolean("DATABASE_COPIED", true);
+        editor.apply();
     }
+
 
     public void copyDatabase() {
         if (!isDatabaseCopied()) {
@@ -130,8 +133,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS", Locale.getDefault());
             String formattedTime = dateFormat.format(new Date(currentTimeMillis));
 
-            //values.put("Timestamp", formattedTime);
-            values.put("Timestamp", "2024-03-14 23:48:37.189509"); //CHANGE ONCE WE REMOVED FAKE VALUES IN DB
+            values.put("Timestamp", formattedTime);
+            //values.put("Timestamp", "2024-03-14 23:48:37.189509"); //CHANGE ONCE WE REMOVED FAKE VALUES IN DB
 
             // Insert the new entry
             db.insert("sensor_data", null, values);
