@@ -13,9 +13,13 @@ import java.util.UUID;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothSocket;
+import android.content.Context;
+import android.content.pm.PackageManager;
 import android.os.AsyncTask;
 import android.util.Log;
 import android.widget.Toast;
+
+import androidx.core.app.ActivityCompat;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -32,33 +36,42 @@ public class BluetoothHelper {
     private OutputStream outputStream;
     private String sensorAddress;
     private ConnectionListener connectionListener;
+    private Context context;
 
     public interface ConnectionListener {
         void onConnectionResult(boolean isConnected);
     }
 
-    public BluetoothHelper(ConnectionListener listener) {
+    public BluetoothHelper(Context context, ConnectionListener listener) {
+        this.context = context;
         bluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
         sensorAddress = getSensorAddress();
         connectionListener = listener;
+
 
     }
 
     private String getSensorAddress() {
         // Get the list of paired devices
-        Set<BluetoothDevice> pairedDevices = bluetoothAdapter.getBondedDevices();
+        if (context != null &&
+                ActivityCompat.checkSelfPermission(context, android.Manifest.permission.BLUETOOTH_CONNECT)
+                        == PackageManager.PERMISSION_GRANTED) {
 
-        // Iterate through the list of paired devices
-        for (BluetoothDevice device : pairedDevices) {
-            String deviceName = device.getName();
-            String deviceAddress = device.getAddress(); // This is the Bluetooth address
+            Set<BluetoothDevice> pairedDevices = bluetoothAdapter.getBondedDevices();
 
-            if (deviceName.equals("AmbiUnit")) {
-                return deviceAddress;
+            // Iterate through the list of paired devices
+            for (BluetoothDevice device : pairedDevices) {
+                String deviceName = device.getName();
+                String deviceAddress = device.getAddress(); // This is the Bluetooth address
+
+                if ("AmbiUnit".equals(deviceName)) {
+                    return deviceAddress;
+                }
             }
         }
-        return null; //null if device is not in paired devices - temporary!!!
+        return null; // Handle missing Bluetooth permission or "AmbiUnit" not found
     }
+
 
     public void initializeBluetooth() {
         if (bluetoothAdapter == null) {

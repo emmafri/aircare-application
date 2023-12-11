@@ -38,7 +38,7 @@ public class MainActivity extends AppCompatActivity implements BluetoothHelper.C
     private TextView rating; //not used??????
     private double pm25, pm10, co2, voc;
     private BluetoothHelper bluetoothHelper;
-    private static final int REQUEST_BLUETOOTH_PERMISSION = 1;
+    private BluetoothHelper.ConnectionListener connectionListener = this;
 
 
     @Override
@@ -52,8 +52,8 @@ public class MainActivity extends AppCompatActivity implements BluetoothHelper.C
 
 
         // BLUETOOTH
-       /* bluetoothHelper = new BluetoothHelper(this);
-        bluetoothHelper.initializeBluetooth();*/
+        bluetoothHelper = new BluetoothHelper(this, connectionListener);
+        bluetoothHelper.initializeBluetooth();
 
         //Set OnClickListener for "New Reading" button
         View newReadingButton = findViewById(R.id.NewReadingButton);
