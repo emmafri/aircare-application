@@ -51,8 +51,8 @@ public class BluetoothHelper {
         bluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
         sensorAddress = getSensorAddress();
         connectionListener = listener;
-    }
 
+    }
 
     private String getSensorAddress() {
 

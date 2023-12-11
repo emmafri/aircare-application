@@ -7,6 +7,9 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.preference.PreferenceManager;
+
+import java.io.File;
+import java.io.FileOutputStream;
 import java.util.Date;
 import java.util.Locale;
 
@@ -21,8 +24,8 @@ import android.util.Log;
 
 public class DatabaseHelper extends SQLiteOpenHelper {
     private final Context context;
-    private static final String DATABASE_NAME = "aircare.db";
-    private static final int DATABASE_VERSION = 4;
+    private static final String DATABASE_NAME = "aircare_small.db";
+    private static final int DATABASE_VERSION = 1;
 
     public DatabaseHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -37,16 +40,16 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         Cursor cursor = db.rawQuery("SELECT name FROM sqlite_master WHERE type='table' AND name='sensor_data'", null);
 
         if (cursor.getCount() == 0) {
-            // The table doesn't exist, create it
+             //The table doesn't exist, create it
             String createTableQuery = "CREATE TABLE sensor_data (" +
                     "_id INTEGER PRIMARY KEY AUTOINCREMENT," +
-                    "timestamp DATETIME DEFAULT CURRENT_TIMESTAMP," +
-                    "humidity FLOAT," +
-                    "temperature FLOAT," +
-                    "co2 FLOAT," +
-                    "voc FLOAT," +
-                    "pm10 FLOAT," +
-                    "pm25 FLOAT);";
+                    "Timestamp DATETIME DEFAULT CURRENT_TIMESTAMP," +
+                    "Humidity FLOAT," +
+                    "Temperature FLOAT," +
+                    "CO FLOAT," +
+                    "VOC FLOAT," +
+                    "PM10 FLOAT," +
+                    "PM25 FLOAT);";
             db.execSQL(createTableQuery);
         }
 
@@ -60,7 +63,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 "timestamp DATETIME DEFAULT CURRENT_TIMESTAMP," +
                 "humidity REAL," +
                 "temperature REAL," +
-                "co2 REAL," +
+                "co REAL," +
                 "voc REAL," +
                 "pm10 REAL," +
                 "pm25 REAL);";
@@ -68,14 +71,17 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     }
 
     private boolean isDatabaseCopied() {
-        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
+        SharedPreferences preferences = context.getSharedPreferences("your_preference_name", Context.MODE_PRIVATE);
         return preferences.getBoolean("DATABASE_COPIED", false);
     }
 
     private void setDatabaseCopied() {
-        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
-        preferences.edit().putBoolean("DATABASE_COPIED", true).apply();
+        SharedPreferences preferences = context.getSharedPreferences("your_preference_name", Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = preferences.edit();
+        editor.putBoolean("DATABASE_COPIED", true);
+        editor.apply();
     }
+
 
     public void copyDatabase() {
         if (!isDatabaseCopied()) {
@@ -113,7 +119,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             ContentValues values = new ContentValues();
             values.put("Temperature", temperature);
             values.put("Humidity", humidity);
-            values.put("CO2", co2);
+            values.put("CO", co);
             values.put("VOC", voc);
             values.put("PM10", pm10);
             values.put("PM25", pm25);
@@ -125,9 +131,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS", Locale.getDefault());
             String formattedTime = dateFormat.format(new Date(currentTimeMillis));
 
-            //values.put("Timestamp", formattedTime);
-            String datetime = "2024-03-14 23:50:37.189509";
-            values.put("Timestamp", datetime); //CHANGE ONCE WE REMOVED FAKE VALUES IN DB
+            values.put("Timestamp", formattedTime);
+            //values.put("Timestamp", "2024-03-14 23:48:37.189509"); //CHANGE ONCE WE REMOVED FAKE VALUES IN DB
 
             // Insert the new entry
             db.insert("sensor_data", null, values);
@@ -146,7 +151,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         android.util.Log.w("AirQualityData", "Upgrading database, which will destroy all old data");
-        db.execSQL("DROP TABLE IF EXISTS AirQualityData");
+        db.execSQL("DROP TABLE IF EXISTS sensor_data");
         onCreate(db);
     }
 }

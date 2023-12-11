@@ -21,7 +21,7 @@ public class DetailedReadingActivity extends AppCompatActivity {
     private DatabaseHelper dbHelper;
     private TextView pm25TextView;
     private TextView pm10TextView;
-    private TextView co2TextView;
+    private TextView coTextView;
     private TextView vocTextView;
 
     @Override
@@ -57,12 +57,12 @@ public class DetailedReadingActivity extends AppCompatActivity {
         View historyButton = findViewById(R.id.HistoryButton);
         View pm25Button = findViewById(R.id.pm25_block);
         View pm10Button = findViewById(R.id.pm10_block);
-        View co2Button = findViewById(R.id.co2_block);
+        View coButton = findViewById(R.id.co_block);
         View vocButton = findViewById(R.id.vocs_block);
 
         pm25TextView = findViewById(R.id.pm25_value);
         pm10TextView = findViewById(R.id.pm10_value);
-        co2TextView = findViewById(R.id.co2_value);
+        coTextView = findViewById(R.id.co_value);
         vocTextView = findViewById(R.id.vocs_value);
         updateLatestReading();
 
@@ -204,8 +204,8 @@ public class DetailedReadingActivity extends AppCompatActivity {
             }
         });
 
-        //co2 button
-        co2Button.setOnTouchListener(new View.OnTouchListener() {
+        //co button
+        coButton.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
                 switch (event.getAction()) {
@@ -219,20 +219,20 @@ public class DetailedReadingActivity extends AppCompatActivity {
                 return false;
             }
         });
-        co2Button.setOnClickListener(new View.OnClickListener() {
+        coButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 handler.postDelayed(new Runnable() {
                     @Override
                     public void run() {
                         Intent intent = new Intent(DetailedReadingActivity.this, ParameterInfoActivity.class);
-                        intent.putExtra("PARAM_NAME", getString(R.string.param_name_co2));
-                        intent.putExtra("PARAM_DESCR", getString(R.string.param_descr_co2));
-                        intent.putExtra("GOOD_VALUES", getString(R.string.good_values_co2));
-                        intent.putExtra("MEDIUM_VALUES", getString(R.string.medium_values_co2));
-                        intent.putExtra("BAD_VALUES", getString(R.string.bad_values_co2));
-                        intent.putExtra("VERYBAD_VALUES", getString(R.string.very_bad_values_co2));
-                        intent.putExtra("PARAM_ADVICE",getString(R.string.advice_co2));
+                        intent.putExtra("PARAM_NAME", getString(R.string.param_name_co));
+                        intent.putExtra("PARAM_DESCR", getString(R.string.param_descr_co));
+                        intent.putExtra("GOOD_VALUES", getString(R.string.good_values_co));
+                        intent.putExtra("MEDIUM_VALUES", getString(R.string.medium_values_co));
+                        intent.putExtra("BAD_VALUES", getString(R.string.bad_values_co));
+                        intent.putExtra("VERYBAD_VALUES", getString(R.string.very_bad_values_co));
+                        intent.putExtra("PARAM_ADVICE",getString(R.string.advice_co));
                         startActivity(intent);
                     }
                 }, 300);
@@ -250,7 +250,7 @@ public class DetailedReadingActivity extends AppCompatActivity {
 
     private void updateLatestReading() {
         SQLiteDatabase db = dbHelper.getReadableDatabase(); // or getWritableDatabase() depending on your needs
-        String[] projection = {"Timestamp", "PM25", "PM10", "CO2", "VOC"};
+        String[] projection = {"Timestamp", "PM25", "PM10", "CO", "VOC"};
 
         Cursor cursor = db.query(
                 "sensor_data",
@@ -279,13 +279,13 @@ public class DetailedReadingActivity extends AppCompatActivity {
             float pm10 = cursor.getFloat(cursor.getColumnIndexOrThrow("PM10"));
             pm10TextView.setText(formatValue(pm10,2));
 
-            float co2 = cursor.getFloat(cursor.getColumnIndexOrThrow("CO2"));
-            co2TextView.setText(formatValue(co2,2));
+            float co = cursor.getFloat(cursor.getColumnIndexOrThrow("CO"));
+            coTextView.setText(formatValue(co,2));
 
             float voc = cursor.getFloat(cursor.getColumnIndexOrThrow("VOC"));
             vocTextView.setText(formatValue(voc,5));
 
-            AirQualityCalculator.AirQualityResult airQualityResult = AirQualityCalculator.getAirQualityResult(pm25, pm10,co2,voc);
+            AirQualityCalculator.AirQualityResult airQualityResult = AirQualityCalculator.getAirQualityResult(pm25, pm10,co,voc);
 
             AirQualityCalculator.AirQualityCategory overallCategory = airQualityResult.getOverallCategory();
 

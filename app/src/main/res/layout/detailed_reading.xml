@@ -93,7 +93,7 @@
                 </RelativeLayout>
 
                 <RelativeLayout
-                    android:id="@+id/co2_block"
+                    android:id="@+id/co_block"
                     android:layout_width="150dp"
                     android:layout_height="150dp"
                     android:layout_marginTop="50dp"
@@ -102,35 +102,35 @@
                     android:padding="10dp">
 
                     <TextView
-                        android:id="@+id/co2_title"
+                        android:id="@+id/co_title"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/siffon_titles"
                         android:gravity="center"
-                        android:text="CO₂"
+                        android:text="CO"
                         android:textColor="#000000"
                         android:textSize="24sp"
                         android:textStyle="bold" />
 
                     <TextView
-                        android:id="@+id/co2_value"
+                        android:id="@+id/co_value"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_below="@id/co2_title"
+                        android:layout_below="@id/co_title"
                         android:layout_marginTop="10dp"
                         android:fontFamily="@font/poppins_normal"
                         android:gravity="center"
-                        android:text="@string/co2_detailed_value"
+                        android:text="@string/co_detailed_value"
                         android:textSize="26sp" />
 
                     <TextView
-                        android:id="@+id/co2_units"
+                        android:id="@+id/co_units"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_below="@id/co2_value"
+                        android:layout_below="@id/co_value"
                         android:fontFamily="@font/poppins_normal"
                         android:gravity="center"
-                        android:text="@string/other_measure"
+                        android:text="@string/measure_CO"
                         android:textColor="#000000"
                         android:textSize="16sp" />
 
@@ -226,7 +226,7 @@
                         android:layout_below="@id/vocs_value"
                         android:fontFamily="@font/poppins_normal"
                         android:gravity="center"
-                        android:text="@string/other_measure"
+                        android:text="@string/measure_VOC"
                         android:textColor="#000000"
                         android:textSize="16sp" />
 

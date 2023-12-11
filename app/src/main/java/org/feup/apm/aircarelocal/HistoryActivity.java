@@ -23,6 +23,7 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
+import java.util.Random;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -59,7 +60,7 @@ public class HistoryActivity extends AppCompatActivity {
 
 
         RecyclerView recyclerView = findViewById(R.id.historyList);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        recyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
 
         List<HistoryScroll.Item> itemList = fetchItemFromDatabase();
         HistoryScroll adapter = new HistoryScroll(itemList);
@@ -69,7 +70,7 @@ public class HistoryActivity extends AppCompatActivity {
         List<HistoryScroll.Item> itemList = new ArrayList<>();
         DatabaseHelper databaseHelper = new DatabaseHelper(this);
 
-        String[] time = {"Timestamp"};
+        String[] time = {"Timestamp", "PM25", "PM10", "CO", "VOC"};
 
         SQLiteDatabase db = databaseHelper.getReadableDatabase();
         Cursor cursor = db.query("sensor_data", time, null, null, null, null, null);
@@ -80,7 +81,15 @@ public class HistoryActivity extends AppCompatActivity {
                 String timestampStr = cursor.getString(cursor.getColumnIndexOrThrow("Timestamp"));
 
                 Date timestamp = parseTimestamp(timestampStr);
-                itemList.add(new HistoryScroll.Item(timestamp, false));
+                float pm25 = cursor.getFloat(cursor.getColumnIndexOrThrow("PM25"));
+
+                float pm10 = cursor.getFloat(cursor.getColumnIndexOrThrow("PM10"));
+
+                float co = cursor.getFloat(cursor.getColumnIndexOrThrow("CO"));
+
+                float voc = cursor.getFloat(cursor.getColumnIndexOrThrow("VOC"));
+
+                itemList.add(new HistoryScroll.Item(timestamp,pm25,pm10,co,voc, false));
             } while (cursor.moveToNext());
         }
 
@@ -88,11 +97,13 @@ public class HistoryActivity extends AppCompatActivity {
         db.close();
 
         Collections.reverse(itemList);
+        Random random = new Random();
+        float randomFloat = random.nextFloat();
 
         if (!itemList.isEmpty()){
 
             Date firstEntryDate = itemList.get(0).getTimestamp();
-            itemList.add(0, new HistoryScroll.Item(firstEntryDate,true));
+            itemList.add(0, new HistoryScroll.Item(firstEntryDate,randomFloat,randomFloat,randomFloat,randomFloat,true));
 
         }
 
@@ -106,7 +117,7 @@ public class HistoryActivity extends AppCompatActivity {
                 Date nextDate = next.getTimestamp();
 
                 if (!isSameDay(currentDate, nextDate)) {
-                    itemList.add(i + 1, new HistoryScroll.Item( nextDate, true)); // Divider with default time
+                    itemList.add(i + 1, new HistoryScroll.Item( nextDate, randomFloat,randomFloat,randomFloat,randomFloat,true));// Divider with default time
                 }
             }
         }
