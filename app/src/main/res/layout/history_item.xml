@@ -3,6 +3,7 @@
     android:id="@+id/textViewEntry"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:background="@drawable/green_box"
     android:gravity="center"
     android:padding="16dp"
     android:textSize="18sp" />

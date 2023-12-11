@@ -69,7 +69,7 @@ public class HistoryActivity extends AppCompatActivity {
         List<HistoryScroll.Item> itemList = new ArrayList<>();
         DatabaseHelper databaseHelper = new DatabaseHelper(this);
 
-        String[] time = {"Timestamp"};
+        String[] time = {"Timestamp", "PM25", "PM10", "CO", "VOC"};
 
         SQLiteDatabase db = databaseHelper.getReadableDatabase();
         Cursor cursor = db.query("sensor_data", time, null, null, null, null, null);
@@ -80,7 +80,15 @@ public class HistoryActivity extends AppCompatActivity {
                 String timestampStr = cursor.getString(cursor.getColumnIndexOrThrow("Timestamp"));
 
                 Date timestamp = parseTimestamp(timestampStr);
-                itemList.add(new HistoryScroll.Item(timestamp, false));
+                float pm25 = cursor.getFloat(cursor.getColumnIndexOrThrow("PM25"));
+
+                float pm10 = cursor.getFloat(cursor.getColumnIndexOrThrow("PM10"));
+
+                float co = cursor.getFloat(cursor.getColumnIndexOrThrow("CO"));
+
+                float voc = cursor.getFloat(cursor.getColumnIndexOrThrow("VOC"));
+
+                itemList.add(new HistoryScroll.Item(timestamp,pm25,pm10,co,voc, false));
             } while (cursor.moveToNext());
         }
 
@@ -92,7 +100,7 @@ public class HistoryActivity extends AppCompatActivity {
         if (!itemList.isEmpty()){
 
             Date firstEntryDate = itemList.get(0).getTimestamp();
-            itemList.add(0, new HistoryScroll.Item(firstEntryDate,true));
+            itemList.add(0, new HistoryScroll.Item(firstEntryDate,null,null,null,null,true));
 
         }
 
@@ -106,7 +114,7 @@ public class HistoryActivity extends AppCompatActivity {
                 Date nextDate = next.getTimestamp();
 
                 if (!isSameDay(currentDate, nextDate)) {
-                    itemList.add(i + 1, new HistoryScroll.Item( nextDate, true)); // Divider with default time
+                    itemList.add(i + 1, new HistoryScroll.Item( nextDate, null,null,null,null,true)); // Divider with default time
                 }
             }
         }

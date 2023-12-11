@@ -47,7 +47,34 @@ public class HistoryScroll extends RecyclerView.Adapter<RecyclerView.ViewHolder>
             EntryViewHolder entryViewHolder = (EntryViewHolder) holder;
             SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm", Locale.getDefault());
             String formattedTime = timeFormat.format(item.getTimestamp());
+            Float pm25 = item.getPM25();
+            Float pm10 = item.getPM10();
+            Float co = item.getCO();
+            Float voc = item.getVOC();
+
             entryViewHolder.textView.setText(formattedTime);
+            AirQualityCalculator.AirQualityResult airQualityResult = AirQualityCalculator.getAirQualityResult(pm25, pm10,co,voc);
+
+            AirQualityCalculator.AirQualityCategory overallCategory = airQualityResult.getOverallCategory();
+
+            // Updates air quality box based on the air quality category
+            switch (overallCategory) {
+                case GOOD:
+                    entryViewHolder.textView.setBackgroundResource(R.drawable.green_box);
+                    break;
+                case MEDIUM:
+                    entryViewHolder.textView.setBackgroundResource(R.drawable.yellow_box);
+                    break;
+                case BAD:
+                    entryViewHolder.textView.setBackgroundResource(R.drawable.red_box);
+                    break;
+                case VERY_BAD:
+                    entryViewHolder.textView.setBackgroundResource(R.drawable.purple_box);
+                    break;
+                default:
+                    // Handle default case if needed
+                    break;
+            }
         } else if (holder instanceof DividerViewHolder) {
             DividerViewHolder dividerViewHolder = (DividerViewHolder) holder;
             SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
@@ -83,13 +110,21 @@ public class HistoryScroll extends RecyclerView.Adapter<RecyclerView.ViewHolder>
         private String data;
         private boolean isDivider;
         private Date timestamp;
+        private float pm25;
+        private float pm10;
+        private float co;
+        private float voc;
         private int hour;
         private int minute;
 
-        public Item( Date timestamp, boolean isDivider) {
+        public Item( Date timestamp,Float pm25,Float pm10,Float co,Float voc, boolean isDivider) {
             this.data = data;
             this.isDivider = isDivider;
             this.timestamp = timestamp;
+            this.pm25 = pm25;
+            this.pm10 = pm10;
+            this.co = co;
+            this.voc = voc;
             this.hour = hour;
             this.minute = minute;
         }
@@ -104,6 +139,18 @@ public class HistoryScroll extends RecyclerView.Adapter<RecyclerView.ViewHolder>
 
         public Date getTimestamp() {
             return timestamp;
+        }
+        public Float getPM25() {
+            return pm25;
+        }
+        public Float getPM10() {
+            return pm10;
+        }
+        public Float getCO() {
+            return co;
+        }
+        public Float getVOC() {
+            return voc;
         }
 
         public int getHour() {
