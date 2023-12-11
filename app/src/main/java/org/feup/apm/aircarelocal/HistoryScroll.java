@@ -81,6 +81,10 @@ public class HistoryScroll extends RecyclerView.Adapter<RecyclerView.ViewHolder>
             String formattedDate = sdf.format(item.getTimestamp());
             dividerViewHolder.textView.setText(formattedDate);
         }
+        if(position < getItemCount()-1){
+
+
+        }
     }
 
     @Override
