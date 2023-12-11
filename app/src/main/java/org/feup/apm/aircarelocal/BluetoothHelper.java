@@ -48,6 +48,8 @@ public class BluetoothHelper {
         sensorAddress = getSensorAddress();
         connectionListener = listener;
 
+        // add code for retrieval of parameters
+
 
     }
 

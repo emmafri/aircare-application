@@ -9,7 +9,7 @@
     <string name="clickdetails">Click to see more details</string>
     <string name="newreading">New Reading</string>
     <string name="history">History</string>
-    <string name="co2_detailed_value">XXX</string>
+    <string name="co_detailed_value">XXX</string>
     <string name="pm10_detailed_value">XXX</string>
     <string name="vocs_detailed_value">XXX</string>
     <string name="back">Back Arrow Icon</string>
@@ -53,13 +53,13 @@
     </string>
 
 
-    <string name="param_name_co2">CO₂</string>
-    <string name="param_descr_co2">Carbon Dioxide (CO₂) is a colorless and odorless gas naturally present in the air.\nHowever, high concentrations indoors can indicate poor ventilation.\n\nIncreased CO₂ levels can cause symptoms like headaches, dizziness, and drowsiness, and long-term exposure to elevated levels may impair cognitive function and decision-making abilities.</string>
-    <string name="good_values_co2">0 - 800 ppm</string>
-    <string name="medium_values_co2">801 - 1200 ppm</string>
-    <string name="bad_values_co2">1201 - 2000 ppm</string>
-    <string name="very_bad_values_co2">>2000 ppm</string>
-    <string name="advice_co2">
+    <string name="param_name_co">CO₂</string>
+    <string name="param_descr_co">Carbon Dioxide (CO₂) is a colorless and odorless gas naturally present in the air.\nHowever, high concentrations indoors can indicate poor ventilation.\n\nIncreased CO₂ levels can cause symptoms like headaches, dizziness, and drowsiness, and long-term exposure to elevated levels may impair cognitive function and decision-making abilities.</string>
+    <string name="good_values_co">0 - 800 ppm</string>
+    <string name="medium_values_co">801 - 1200 ppm</string>
+    <string name="bad_values_co">1201 - 2000 ppm</string>
+    <string name="very_bad_values_co">>2000 ppm</string>
+    <string name="advice_co">
     • Ensure proper airflow by opening windows or using ventilation systems.\n
     • Minimize activities such as burning candles or using gas stoves without proper ventilation.\n
     • Opt for electric appliances or those that produce fewer emissions.

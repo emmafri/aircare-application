@@ -35,8 +35,7 @@ public class MainActivity extends AppCompatActivity implements BluetoothHelper.C
     private DatabaseHelper databaseHelper;
     private SQLiteDatabase db = null;
     private TextView timeTextView, temperatureTextView, humidityTextView;
-    private TextView rating; //not used??????
-    private double pm25, pm10, co2, voc;
+    private double pm25, pm10, co, voc;
     private BluetoothHelper bluetoothHelper;
     private BluetoothHelper.ConnectionListener connectionListener = this;
 
@@ -83,14 +82,14 @@ public class MainActivity extends AppCompatActivity implements BluetoothHelper.C
                 // Parse sensor data to extract individual parameters
                 float temperature = parseSensorData(sensorData, 4);
                 float humidity = parseSensorData(sensorData, 3);
-                float co2 = parseSensorData(sensorData, 1); //OBS its CO not CO2
+                float co = parseSensorData(sensorData, 1); //OBS its CO not CO2
                 float voc = parseSensorData(sensorData, 10);
                 float pm10 = parseSensorData(sensorData, 9);
                 float pm25 = parseSensorData(sensorData, 8);
 
 
                 // Insert a new entry in the database
-                databaseHelper.insertNewEntry(temperature, humidity, co2, voc, pm10, pm25);
+                databaseHelper.insertNewEntry(temperature, humidity, co, voc, pm10, pm25);
 
                 //update ui elements
                 updateLatestReading();
@@ -200,7 +199,7 @@ public class MainActivity extends AppCompatActivity implements BluetoothHelper.C
             db = databaseHelper.getReadableDatabase();
 
             // Define the columns you want to retrieve
-            String[] projection = {"Timestamp", "Temperature", "Humidity", "CO2", "VOC", "PM25", "PM10"};
+            String[] projection = {"Timestamp", "Temperature", "Humidity", "CO", "VOC", "PM25", "PM10"};
             String[] measures = {};
 
             // Query the database to get the latest timestamp
@@ -234,10 +233,10 @@ public class MainActivity extends AppCompatActivity implements BluetoothHelper.C
 
                 pm25 = cursor.getDouble(cursor.getColumnIndexOrThrow("PM25"));
                 pm10 = cursor.getDouble(cursor.getColumnIndexOrThrow("PM10"));
-                co2 = cursor.getDouble(cursor.getColumnIndexOrThrow("CO2"));
+                co = cursor.getDouble(cursor.getColumnIndexOrThrow("CO"));
                 voc = cursor.getDouble(cursor.getColumnIndexOrThrow("VOC"));
 
-                AirQualityCalculator.AirQualityResult airQualityResult = AirQualityCalculator.getAirQualityResult(pm25, pm10, co2, voc);
+                AirQualityCalculator.AirQualityResult airQualityResult = AirQualityCalculator.getAirQualityResult(pm25, pm10, co, voc);
 
                 AirQualityCalculator.AirQualityCategory overallCategory = airQualityResult.getOverallCategory();
 

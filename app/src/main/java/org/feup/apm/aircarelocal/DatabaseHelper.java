@@ -7,6 +7,9 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.preference.PreferenceManager;
+
+import java.io.File;
+import java.io.FileOutputStream;
 import java.util.Date;
 import java.util.Locale;
 
@@ -21,8 +24,8 @@ import android.util.Log;
 
 public class DatabaseHelper extends SQLiteOpenHelper {
     private final Context context;
-    private static final String DATABASE_NAME = "aircare.db";
-    private static final int DATABASE_VERSION = 4;
+    private static final String DATABASE_NAME = "aircare_small.db";
+    private static final int DATABASE_VERSION = 1;
 
     public DatabaseHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -37,13 +40,13 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         Cursor cursor = db.rawQuery("SELECT name FROM sqlite_master WHERE type='table' AND name='sensor_data'", null);
 
         if (cursor.getCount() == 0) {
-            // The table doesn't exist, create it
+             //The table doesn't exist, create it
             String createTableQuery = "CREATE TABLE sensor_data (" +
                     "_id INTEGER PRIMARY KEY AUTOINCREMENT," +
                     "timestamp DATETIME DEFAULT CURRENT_TIMESTAMP," +
                     "humidity FLOAT," +
                     "temperature FLOAT," +
-                    "co2 FLOAT," +
+                    "co FLOAT," +
                     "voc FLOAT," +
                     "pm10 FLOAT," +
                     "pm25 FLOAT);";
@@ -60,7 +63,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 "timestamp DATETIME DEFAULT CURRENT_TIMESTAMP," +
                 "humidity REAL," +
                 "temperature REAL," +
-                "co2 REAL," +
+                "co REAL," +
                 "voc REAL," +
                 "pm10 REAL," +
                 "pm25 REAL);";
@@ -106,14 +109,16 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         }
     }
 
-    public void insertNewEntry(float temperature, float humidity, float co2, float voc, float pm10, float pm25) {
+
+
+    public void insertNewEntry(float temperature, float humidity, float co, float voc, float pm10, float pm25) {
         SQLiteDatabase db = this.getWritableDatabase();
 
         try {
             ContentValues values = new ContentValues();
             values.put("Temperature", temperature);
             values.put("Humidity", humidity);
-            values.put("CO2", co2);
+            values.put("CO", co);
             values.put("VOC", voc);
             values.put("PM10", pm10);
             values.put("PM25", pm25);
