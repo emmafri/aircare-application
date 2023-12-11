@@ -4,7 +4,7 @@ public class AirQualityCalculator {
 
     private static final double[] PM25_THRESHOLDS = {12.0, 35.0, 50.0};
     private static final double[] PM10_THRESHOLDS = {50, 150, 250};
-    private static final double[] CO_THRESHOLDS = {700, 1000, 2000};
+    private static final double[] CO_THRESHOLDS = {50, 100, 200};
     private static final double[] VOC_THRESHOLDS = {400, 2200, 30000};
 
     public enum AirQualityCategory {

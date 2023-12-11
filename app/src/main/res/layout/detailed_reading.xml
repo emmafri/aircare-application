@@ -107,7 +107,7 @@
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/siffon_titles"
                         android:gravity="center"
-                        android:text="CO₂"
+                        android:text="CO"
                         android:textColor="#000000"
                         android:textSize="24sp"
                         android:textStyle="bold" />
@@ -130,7 +130,7 @@
                         android:layout_below="@id/co_value"
                         android:fontFamily="@font/poppins_normal"
                         android:gravity="center"
-                        android:text="@string/other_measure"
+                        android:text="@string/measure_CO"
                         android:textColor="#000000"
                         android:textSize="16sp" />
 
@@ -226,7 +226,7 @@
                         android:layout_below="@id/vocs_value"
                         android:fontFamily="@font/poppins_normal"
                         android:gravity="center"
-                        android:text="@string/other_measure"
+                        android:text="@string/measure_VOC"
                         android:textColor="#000000"
                         android:textSize="16sp" />
 
