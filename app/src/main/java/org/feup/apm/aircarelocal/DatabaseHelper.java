@@ -112,7 +112,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         }
     }
 
-    public void insertNewEntry(float temperature, float humidity, float co2, float voc, float pm10, float pm25) {
+    public void insertNewEntry(float temperature, float humidity, float co, float voc, float pm10, float pm25) {
         SQLiteDatabase db = this.getWritableDatabase();
 
         try {
