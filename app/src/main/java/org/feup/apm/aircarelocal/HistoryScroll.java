@@ -1,8 +1,11 @@
 package org.feup.apm.aircarelocal;
 import android.icu.text.SimpleDateFormat;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.TextView;
 import androidx.recyclerview.widget.RecyclerView;
 import java.util.Date;
@@ -39,6 +42,17 @@ public class HistoryScroll extends RecyclerView.Adapter<RecyclerView.ViewHolder>
         }
     }
 
+    public interface OnItemClickListener {
+
+        void onItemClick(Item item);
+    }
+    private OnItemClickListener onItemClickListener;
+
+    public void setOnItemClickListener(OnItemClickListener listener) {
+        this.onItemClickListener = listener;
+    }
+
+
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
         Item item = itemList.get(position);
@@ -74,17 +88,39 @@ public class HistoryScroll extends RecyclerView.Adapter<RecyclerView.ViewHolder>
                 default:
                     // Handle default case if needed
                     break;
+
+
             }
+
+            entryViewHolder.itemView.setOnTouchListener(new View.OnTouchListener() {
+                @Override
+                public boolean onTouch(View v, MotionEvent event) {
+                    switch (event.getAction()) {
+                    case MotionEvent.ACTION_DOWN:
+                    break;
+
+                    case MotionEvent.ACTION_UP:
+                    startPopUpAnimation(v);
+                    break;
+                }
+                    return false; // Return true if the event is consumed and shouldn't propagate further
+                }
+            });
+
+            entryViewHolder.itemView.setOnClickListener(v -> {
+                if (onItemClickListener != null) {
+                    onItemClickListener.onItemClick(item);
+                }
+            });
+
         } else if (holder instanceof DividerViewHolder) {
             DividerViewHolder dividerViewHolder = (DividerViewHolder) holder;
             SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
             String formattedDate = sdf.format(item.getTimestamp());
             dividerViewHolder.textView.setText(formattedDate);
         }
-        if(position < getItemCount()-1){
 
 
-        }
     }
 
     @Override
@@ -165,4 +201,11 @@ public class HistoryScroll extends RecyclerView.Adapter<RecyclerView.ViewHolder>
             return minute;
         }
     }
+
+    private void startPopUpAnimation(View view) {
+        Animation popUpAnimation = AnimationUtils.loadAnimation(view.getContext(), R.anim.pop_up);
+        view.startAnimation(popUpAnimation);
+    }
+
+
 }

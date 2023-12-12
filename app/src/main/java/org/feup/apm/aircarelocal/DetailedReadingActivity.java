@@ -23,11 +23,16 @@ public class DetailedReadingActivity extends AppCompatActivity {
     private TextView pm10TextView;
     private TextView coTextView;
     private TextView vocTextView;
+    private View pm25Button;
+    private View pm10Button;
+    private View coButton;
+    private View vocButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.detailed_reading);
+        String source = getIntent().getStringExtra("source");
 
         Toolbar toolbar = findViewById(R.id.customToolbar); // Find your toolbar by its ID
         setSupportActionBar(toolbar); // Set the toolbar as the ActionBar
@@ -55,17 +60,22 @@ public class DetailedReadingActivity extends AppCompatActivity {
 
         Handler handler = new Handler();
         View historyButton = findViewById(R.id.HistoryButton);
-        View pm25Button = findViewById(R.id.pm25_block);
-        View pm10Button = findViewById(R.id.pm10_block);
-        View coButton = findViewById(R.id.co_block);
-        View vocButton = findViewById(R.id.vocs_block);
+        pm25Button = findViewById(R.id.pm25_block);
+        pm10Button = findViewById(R.id.pm10_block);
+        coButton = findViewById(R.id.co_block);
+        vocButton = findViewById(R.id.vocs_block);
 
         pm25TextView = findViewById(R.id.pm25_value);
         pm10TextView = findViewById(R.id.pm10_value);
         coTextView = findViewById(R.id.co_value);
         vocTextView = findViewById(R.id.vocs_value);
-        updateLatestReading();
 
+        if ("MainActivity".equals(source)) {
+            updateLatestReading();
+        }
+        else{
+            getSelectedReading();
+        }
 
         //history button
         historyButton.setOnTouchListener(new View.OnTouchListener() {
@@ -283,11 +293,15 @@ public class DetailedReadingActivity extends AppCompatActivity {
             coTextView.setText(formatValue(co,2));
 
             float voc = cursor.getFloat(cursor.getColumnIndexOrThrow("VOC"));
-            vocTextView.setText(formatValue(voc,5));
+            vocTextView.setText(formatValue(voc,2));
 
             AirQualityCalculator.AirQualityResult airQualityResult = AirQualityCalculator.getAirQualityResult(pm25, pm10,co,voc);
 
             AirQualityCalculator.AirQualityCategory overallCategory = airQualityResult.getOverallCategory();
+            AirQualityCalculator.AirQualityCategory pm25Category = airQualityResult.getPm25Category();
+            AirQualityCalculator.AirQualityCategory pm10Category = airQualityResult.getPm10Category();
+            AirQualityCalculator.AirQualityCategory coCategory = airQualityResult.getCoCategory();
+            AirQualityCalculator.AirQualityCategory vocCategory = airQualityResult.getVocCategory();
 
             // Updates air quality box based on the air quality category
             switch (overallCategory) {
@@ -316,11 +330,218 @@ public class DetailedReadingActivity extends AppCompatActivity {
                     break;
             }
 
+            if(!pm25Category.equals(overallCategory)) {
+                switch (pm25Category) {
+                    case GOOD:
+                        pm25Button.setBackgroundResource(R.drawable.green_box);
+                        break;
+                    case MEDIUM:
+                        pm25Button.setBackgroundResource(R.drawable.yellow_box);
+                        break;
+                    case BAD:
+                        pm25Button.setBackgroundResource(R.drawable.red_box);
+                        break;
+                    case VERY_BAD:
+                        pm25Button.setBackgroundResource(R.drawable.purple_box);
+                        break;
+                    default:
+                        // Handle default case if needed
+                        break;
+                }
+            }
+
+            if(!pm10Category.equals(overallCategory)) {
+                switch (pm10Category) {
+                    case GOOD:
+                        pm10Button.setBackgroundResource(R.drawable.green_box);
+                        break;
+                    case MEDIUM:
+                        pm10Button.setBackgroundResource(R.drawable.yellow_box);
+                        break;
+                    case BAD:
+                        pm10Button.setBackgroundResource(R.drawable.red_box);
+                        break;
+                    case VERY_BAD:
+                        pm10Button.setBackgroundResource(R.drawable.purple_box);
+                        break;
+                    default:
+                        // Handle default case if needed
+                        break;
+                }
+            }
+
+            if(!coCategory.equals(overallCategory)) {
+                switch (coCategory) {
+                    case GOOD:
+                        coButton.setBackgroundResource(R.drawable.green_box);
+                        break;
+                    case MEDIUM:
+                        coButton.setBackgroundResource(R.drawable.yellow_box);
+                        break;
+                    case BAD:
+                        coButton.setBackgroundResource(R.drawable.red_box);
+                        break;
+                    case VERY_BAD:
+                        coButton.setBackgroundResource(R.drawable.purple_box);
+                        break;
+                    default:
+                        // Handle default case if needed
+                        break;
+                }
+            }
+
+            if(!vocCategory.equals(overallCategory)) {
+                switch (vocCategory) {
+                    case GOOD:
+                        vocButton.setBackgroundResource(R.drawable.green_box);
+                        break;
+                    case MEDIUM:
+                        vocButton.setBackgroundResource(R.drawable.yellow_box);
+                        break;
+                    case BAD:
+                        vocButton.setBackgroundResource(R.drawable.red_box);
+                        break;
+                    case VERY_BAD:
+                        vocButton.setBackgroundResource(R.drawable.purple_box);
+                        break;
+                    default:
+                        // Handle default case if needed
+                        break;
+                }
+            }
 
         }
 
         // Close the cursor and database
         cursor.close();
+    }
+
+    private void getSelectedReading(){
+        long timestamp = getIntent().getLongExtra("timestamp", 0L); // Replace with the default value or appropriate handling
+        float pm25 = getIntent().getFloatExtra("pm25", 0.0f);
+        float pm10 = getIntent().getFloatExtra("pm10", 0.0f);
+        float co = getIntent().getFloatExtra("co", 0.0f);
+        float voc = getIntent().getFloatExtra("voc", 0.0f);
+
+        pm25TextView.setText(formatValue(pm25,2));
+        pm10TextView.setText(formatValue(pm10,2));
+        coTextView.setText(formatValue(co,2));
+        vocTextView.setText(formatValue(voc,2));
+        AirQualityCalculator.AirQualityResult airQualityResult = AirQualityCalculator.getAirQualityResult(pm25, pm10,co,voc);
+
+        AirQualityCalculator.AirQualityCategory overallCategory = airQualityResult.getOverallCategory();
+        AirQualityCalculator.AirQualityCategory pm25Category = airQualityResult.getPm25Category();
+        AirQualityCalculator.AirQualityCategory pm10Category = airQualityResult.getPm10Category();
+        AirQualityCalculator.AirQualityCategory coCategory = airQualityResult.getCoCategory();
+        AirQualityCalculator.AirQualityCategory vocCategory = airQualityResult.getVocCategory();
+
+        // Updates air quality box based on the air quality category
+        switch (overallCategory) {
+            case GOOD:
+                findViewById(R.id.Rating).setBackgroundResource(R.drawable.green_box);
+                TextView good = findViewById(R.id.rating_text);
+                good.setText(getString(R.string.good_rating));
+                break;
+            case MEDIUM:
+                findViewById(R.id.Rating).setBackgroundResource(R.drawable.yellow_box);
+                TextView medium = findViewById(R.id.rating_text);
+                medium.setText(getString(R.string.medium_rating));
+                break;
+            case BAD:
+                findViewById(R.id.Rating).setBackgroundResource(R.drawable.red_box);
+                TextView bad = findViewById(R.id.rating_text);
+                bad.setText(getString(R.string.bad_rating));
+                break;
+            case VERY_BAD:
+                findViewById(R.id.Rating).setBackgroundResource(R.drawable.purple_box);
+                TextView vrybad = findViewById(R.id.rating_text);
+                vrybad.setText(getString(R.string.vrybad_rating));
+                break;
+            default:
+                // Handle default case if needed
+                break;
+        }
+
+        if(!pm25Category.equals(overallCategory)) {
+            switch (pm25Category) {
+                case GOOD:
+                    pm25Button.setBackgroundResource(R.drawable.green_box);
+                    break;
+                case MEDIUM:
+                    pm25Button.setBackgroundResource(R.drawable.yellow_box);
+                    break;
+                case BAD:
+                    pm25Button.setBackgroundResource(R.drawable.red_box);
+                    break;
+                case VERY_BAD:
+                    pm25Button.setBackgroundResource(R.drawable.purple_box);
+                    break;
+                default:
+                    // Handle default case if needed
+                    break;
+            }
+        }
+
+        if(!pm10Category.equals(overallCategory)) {
+            switch (pm10Category) {
+                case GOOD:
+                    pm10Button.setBackgroundResource(R.drawable.green_box);
+                    break;
+                case MEDIUM:
+                    pm10Button.setBackgroundResource(R.drawable.yellow_box);
+                    break;
+                case BAD:
+                    pm10Button.setBackgroundResource(R.drawable.red_box);
+                    break;
+                case VERY_BAD:
+                    pm10Button.setBackgroundResource(R.drawable.purple_box);
+                    break;
+                default:
+                    // Handle default case if needed
+                    break;
+            }
+        }
+
+        if(!coCategory.equals(overallCategory)) {
+            switch (coCategory) {
+                case GOOD:
+                    coButton.setBackgroundResource(R.drawable.green_box);
+                    break;
+                case MEDIUM:
+                    coButton.setBackgroundResource(R.drawable.yellow_box);
+                    break;
+                case BAD:
+                    coButton.setBackgroundResource(R.drawable.red_box);
+                    break;
+                case VERY_BAD:
+                    coButton.setBackgroundResource(R.drawable.purple_box);
+                    break;
+                default:
+                    // Handle default case if needed
+                    break;
+            }
+        }
+
+        if(!vocCategory.equals(overallCategory)) {
+            switch (vocCategory) {
+                case GOOD:
+                    vocButton.setBackgroundResource(R.drawable.green_box);
+                    break;
+                case MEDIUM:
+                    vocButton.setBackgroundResource(R.drawable.yellow_box);
+                    break;
+                case BAD:
+                    vocButton.setBackgroundResource(R.drawable.red_box);
+                    break;
+                case VERY_BAD:
+                    vocButton.setBackgroundResource(R.drawable.purple_box);
+                    break;
+                default:
+                    // Handle default case if needed
+                    break;
+            }
+        }
+
     }
 
     // Format value from database to only show desired amount of decimals

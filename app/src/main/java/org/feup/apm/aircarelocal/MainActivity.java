@@ -152,6 +152,7 @@ public class MainActivity extends AppCompatActivity implements BluetoothHelper.C
 
         // Set OnClickListener for "test" layout
         detailedButton.setOnClickListener(new View.OnClickListener() {
+
             @Override
             public void onClick(View v) {
 
@@ -160,6 +161,7 @@ public class MainActivity extends AppCompatActivity implements BluetoothHelper.C
                     public void run() {
                         // Create an Intent to start ParameterInfoActivity
                         Intent intent = new Intent(MainActivity.this, DetailedReadingActivity.class);
+                        intent.putExtra("source", "MainActivity");
                         // Start the new activity
                         startActivity(intent);
 

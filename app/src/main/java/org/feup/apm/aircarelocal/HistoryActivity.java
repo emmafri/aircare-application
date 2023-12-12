@@ -1,17 +1,17 @@
 package org.feup.apm.aircarelocal;
 
+import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.icu.text.SimpleDateFormat;
 import android.os.Bundle;
-import android.view.LayoutInflater;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
-import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
-import android.widget.TextView;
 
-import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -27,7 +27,7 @@ import java.util.Random;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-public class HistoryActivity extends AppCompatActivity {
+public class HistoryActivity extends AppCompatActivity implements HistoryScroll.OnItemClickListener{
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,6 +64,7 @@ public class HistoryActivity extends AppCompatActivity {
 
         List<HistoryScroll.Item> itemList = fetchItemFromDatabase();
         HistoryScroll adapter = new HistoryScroll(itemList);
+        adapter.setOnItemClickListener(this);
         recyclerView.setAdapter(adapter);
     }
     private List<HistoryScroll.Item> fetchItemFromDatabase() {
@@ -154,4 +155,25 @@ public class HistoryActivity extends AppCompatActivity {
         }
         return super.onOptionsItemSelected(item);
     }
+
+    @Override
+    public void onItemClick(HistoryScroll.Item item) {
+        // Handle the item click, e.g., start a new activity
+        if (!item.isDivider()) {
+            Intent intent = new Intent(this, DetailedReadingActivity.class);
+
+            // Pass any data you need to the new activity
+            intent.putExtra("timestamp", item.getTimestamp().getTime());
+            intent.putExtra("source", "HistoryActivity");
+
+            // Pass additional data
+            intent.putExtra("pm25", item.getPM25());
+            intent.putExtra("pm10", item.getPM10());
+            intent.putExtra("co", item.getCO());
+            intent.putExtra("voc", item.getVOC());
+
+            startActivity(intent);
+        }
+    }
+
 }
