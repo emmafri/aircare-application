@@ -1,0 +1,873 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <include layout="@layout/custom_action_bar" />
+
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="50dp" />
+
+        <LinearLayout
+            android:id="@+id/TitleBox"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/Title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/siffon_titles"
+                android:text="Welcome to AirCare!"
+                android:textAlignment="center"
+                android:textColor="#000000"
+                android:textSize="27dp" />
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/ParameterDescription"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="20dp"
+            android:fontFamily="@font/poppins_normal"
+            android:text="  AirCare is an innovative application that provides hourly and upon user request readings of PM2.5, PM10, CO, and VOC measurements sourced from AmbiUnit23 —a Bluetooth-connected external device. These parameters hold substantial influence over indoor air quality. By providing this crucial data, AirCare empowers users with invaluable insights, enhancing their awareness of their living environment."
+            android:justificationMode="inter_word"
+            android:textColor="#000000"
+            android:textSize="16dp" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/gray_box"
+            android:paddingTop="40px"
+            android:paddingBottom="50px"
+            android:layout_margin="15px"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/siffon_titles"
+                android:text="How do we measure the Air Quality Rating?"
+                android:textAlignment="center"
+                android:textColor="#000000"
+                android:layout_marginRight="200px"
+                android:layout_marginLeft="200px"
+                android:textSize="20dp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="20dp"
+                android:fontFamily="@font/poppins_normal"
+                android:text="  AirCare takes the readings of the individual parameters and assigns them a category (Good, Medium, Bad or Hazardous) according to established thresholds."
+                android:justificationMode="inter_word"
+                android:textColor="#000000"
+                android:textSize="16dp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:fontFamily="@font/poppins_normal"
+                android:text="Select a parameter to know more details:"
+                android:textAlignment="center"
+                android:textAllCaps="false"
+                android:textColor="#72000000"
+                android:textSize="16dp" />
+
+            <LinearLayout
+                android:id="@+id/ParamButtons"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:paddingLeft="16dp"
+                android:paddingRight="16dp">
+
+
+
+                        <TextView
+                            android:id="@+id/ParamButton_PM25"
+                            android:text= "@string/param_name_pm25"
+                            android:background="@drawable/white_box"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="5dp"
+                            android:layout_weight="1"
+                            android:fontFamily="@font/siffon_titles"
+                            android:padding="8dp"
+                            android:textAlignment="center"
+                            android:textColor="#000000"
+                            android:textSize="16sp" />
+                        <TextView
+                            android:id="@+id/ParamButton_PM10"
+                            android:text="@string/param_name_pm10"
+                            android:background="@drawable/white_box"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="5dp"
+                            android:layout_weight="1"
+                            android:fontFamily="@font/siffon_titles"
+                            android:padding="8dp"
+                            android:textAlignment="center"
+                            android:textColor="#000000"
+                            android:textSize="16sp" />
+                        <TextView
+                            android:id="@+id/ParamButton_CO"
+                            android:text="@string/param_name_co"
+                            android:background="@drawable/white_box"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="5dp"
+                            android:layout_weight="1"
+                            android:fontFamily="@font/siffon_titles"
+                            android:padding="8dp"
+                            android:textAlignment="center"
+                            android:textColor="#000000"
+                            android:textSize="16sp" />
+                        <TextView
+                            android:id="@+id/ParamButton_VOC"
+                            android:text="@string/param_name_voc"
+                            android:background="@drawable/white_box"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="5dp"
+                            android:layout_weight="1"
+                            android:fontFamily="@font/siffon_titles"
+                            android:padding="8dp"
+                            android:textAlignment="center"
+                            android:textColor="#000000"
+                            android:textSize="16sp" />
+            </LinearLayout>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/poppins_normal"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="20dp"
+                android:text="  Our app takes the individual parameter ratings and combines them into an overall Air Quality Rating (AQR). This rating mostly reflects the air quality based on the most concerning parameter. However, for a 'Medium' rating, it requires at least two factors at that level to impact the overall score. "
+                android:justificationMode="inter_word"
+                android:textColor="#000000"
+                android:padding="16dp"
+                android:textSize="16dp" />
+
+
+            <TableLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="25px"
+                android:paddingTop="40px"
+                android:paddingBottom="30px"
+                android:paddingLeft="40px"
+                android:background="@drawable/white_box"
+                android:layout_gravity="center_horizontal"
+                >
+
+                <TableRow>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Overall AQR"
+                        android:fontFamily="@font/siffon_titles"
+                        android:textColor="#000000"
+                        android:textAlignment="center"
+                        />
+
+                    <TextView
+                        android:layout_width="30dp"
+                        android:layout_height="wrap_content"
+                        android:text="  P1  "
+                        android:background="@drawable/white_box"
+                        android:fontFamily="@font/siffon_titles"
+                        android:textColor="#000000"
+                        android:textAlignment="center"
+                        />
+
+                    <TextView
+                        android:layout_width="30dp"
+                        android:layout_height="wrap_content"
+                        android:text="  P2  "
+                        android:background="@drawable/white_box"
+                        android:fontFamily="@font/siffon_titles"
+                        android:textColor="#000000"
+                        android:textAlignment="center"
+                        />
+
+                    <TextView
+                        android:layout_width="30dp"
+                        android:layout_height="wrap_content"
+                        android:text="  P3  "
+                        android:background="@drawable/white_box"
+                        android:fontFamily="@font/siffon_titles"
+                        android:textColor="#000000"
+                        android:textAlignment="center"
+                        />
+
+                    <TextView
+                        android:layout_width="30dp"
+                        android:layout_height="wrap_content"
+                        android:text="  P4  "
+                        android:background="@drawable/white_box"
+                        android:fontFamily="@font/siffon_titles"
+                        android:textColor="#000000"
+                        android:textAlignment="center"
+                        />
+
+                    <Space
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        />
+
+                </TableRow>
+
+                <TableRow>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Good"
+                        android:background="@drawable/green_box"
+                        android:fontFamily="@font/siffon_titles"
+                        android:textColor="#000000"
+                        android:textAlignment="center"
+                        android:padding="10px"
+                        android:layout_margin="10px"
+                    />
+
+                    <ImageView
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:layout_margin="10dp"
+                        android:src="@drawable/green_box"
+                        android:alpha="0.6"
+                    />
+
+                    <ImageView
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:layout_margin="10dp"
+                        android:src="@drawable/green_box"
+                        android:alpha="0.6"
+
+                        />
+
+                    <ImageView
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:layout_margin="10dp"
+                        android:src="@drawable/green_box"
+                        android:alpha="0.6"
+                        />
+
+                    <ImageView
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:layout_margin="10dp"
+                        android:src="@drawable/green_box"
+                        android:alpha="0.6"
+                        />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="5dp"
+                        android:fontFamily="@font/poppins_normal"
+                        android:text="4x Good" />
+
+                </TableRow>
+
+                <TableRow>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Good"
+                        android:background="@drawable/green_box"
+                        android:fontFamily="@font/siffon_titles"
+                        android:textColor="#000000"
+                        android:textAlignment="center"
+                        android:padding="10px"
+                        android:layout_margin="10px"
+                        />
+
+                    <ImageView
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:layout_margin="10dp"
+                        android:src="@drawable/green_box"
+                        android:alpha="0.6"
+                        />
+
+                    <ImageView
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:layout_margin="10dp"
+                        android:src="@drawable/yellow_box"
+                        android:alpha="0.6"
+                        />
+
+                    <ImageView
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:layout_margin="10dp"
+                        android:src="@drawable/green_box"
+                        android:alpha="0.6"
+                        />
+
+                    <ImageView
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:layout_margin="10dp"
+                        android:src="@drawable/green_box"
+                        android:alpha="0.6"
+                        />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="5dp"
+                        android:fontFamily="@font/poppins_normal"
+                        android:text="1x Medium" />
+                </TableRow>
+
+                <TableRow>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Medium"
+                        android:fontFamily="@font/siffon_titles"
+                        android:textColor="#000000"
+                        android:textAlignment="center"
+                        android:background="@drawable/yellow_box"
+                        android:padding="10px"
+                        android:layout_margin="10px"
+                        />
+                    <ImageView
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:layout_margin="10dp"
+                        android:src="@drawable/green_box"
+                        android:alpha="0.6"
+                        />
+
+                    <ImageView
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:layout_margin="10dp"
+                        android:src="@drawable/yellow_box"
+                        android:alpha="0.6"
+                        />
+
+                    <ImageView
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:layout_margin="10dp"
+                        android:src="@drawable/yellow_box"
+                        android:alpha="0.6"
+                        />
+
+                    <ImageView
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:layout_margin="10dp"
+                        android:src="@drawable/green_box"
+                        android:alpha="0.6"
+                        />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="5dp"
+                        android:fontFamily="@font/poppins_normal"
+                        android:text="2x Medium" />
+
+                </TableRow>
+
+                <TableRow>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Medium"
+                        android:fontFamily="@font/siffon_titles"
+                        android:textColor="#000000"
+                        android:textAlignment="center"
+                        android:background="@drawable/yellow_box"
+                        android:padding="10px"
+                        android:layout_margin="10px"
+                        />
+                    <ImageView
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:layout_margin="10dp"
+                        android:src="@drawable/yellow_box"
+                        android:alpha="0.6"
+                        />
+
+                    <ImageView
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:layout_margin="10dp"
+                        android:src="@drawable/yellow_box"
+                        android:alpha="0.6"
+                        />
+
+                    <ImageView
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:layout_margin="10dp"
+                        android:src="@drawable/yellow_box"
+                        android:alpha="0.6"
+                        />
+
+                    <ImageView
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:layout_margin="10dp"
+                        android:src="@drawable/green_box"
+                        android:alpha="0.6"
+                        />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="5dp"
+                        android:fontFamily="@font/poppins_normal"
+                        android:text="3x Medium" />
+
+                </TableRow>
+
+                <TableRow>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Bad"
+                        android:fontFamily="@font/siffon_titles"
+                        android:textColor="#000000"
+                        android:padding="10px"
+                        android:layout_margin="10px"
+                        android:textAlignment="center"
+                        android:background="@drawable/red_box"
+                        />
+                    <ImageView
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:layout_margin="10dp"
+                        android:src="@drawable/green_box"
+                        android:alpha="0.6"
+                        />
+
+                    <ImageView
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:layout_margin="10dp"
+                        android:src="@drawable/red_box"
+                        android:alpha="0.6"
+                        />
+
+                    <ImageView
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:layout_margin="10dp"
+                        android:src="@drawable/green_box"
+                        android:alpha="0.6"
+                        />
+
+                    <ImageView
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:layout_margin="10dp"
+                        android:src="@drawable/green_box"
+                        android:alpha="0.6"
+                        />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="5dp"
+                        android:fontFamily="@font/poppins_normal"
+                        android:text="1x Bad" />
+                </TableRow>
+
+                <TableRow>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Bad"
+                        android:fontFamily="@font/siffon_titles"
+                        android:textColor="#000000"
+                        android:textAlignment="center"
+                        android:background="@drawable/red_box"
+                        android:padding="10px"
+                        android:layout_margin="10px"
+                        />
+                    <ImageView
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:layout_margin="10dp"
+                        android:src="@drawable/green_box"
+                        android:alpha="0.6"
+                        />
+
+                    <ImageView
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:layout_margin="10dp"
+                        android:src="@drawable/red_box"
+                        android:alpha="0.6"
+                        />
+
+                    <ImageView
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:layout_margin="10dp"
+                        android:src="@drawable/red_box"
+                        android:alpha="0.6"
+                        />
+
+                    <ImageView
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:layout_margin="10dp"
+                        android:src="@drawable/green_box"
+                        android:alpha="0.6"
+                        />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="5dp"
+                        android:fontFamily="@font/poppins_normal"
+                        android:text="2x Bad" />
+
+                </TableRow>
+
+                <TableRow>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Bad"
+                        android:fontFamily="@font/siffon_titles"
+                        android:textColor="#000000"
+                        android:textAlignment="center"
+                        android:background="@drawable/red_box"
+                        android:padding="10px"
+                        android:layout_margin="10px"
+                        />
+                    <ImageView
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:layout_margin="10dp"
+                        android:src="@drawable/green_box"
+                        android:alpha="0.6"
+                        />
+
+                    <ImageView
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:layout_margin="10dp"
+                        android:src="@drawable/red_box"
+                        android:alpha="0.6"
+                        />
+
+                    <ImageView
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:layout_margin="10dp"
+                        android:src="@drawable/red_box"
+                        android:alpha="0.6"
+                        />
+
+                    <ImageView
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:layout_margin="10dp"
+                        android:src="@drawable/red_box"
+                        android:alpha="0.6"
+                        />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="5dp"
+                        android:fontFamily="@font/poppins_normal"
+                        android:text="3x Bad" />
+
+                </TableRow>
+
+                <TableRow>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Bad"
+                        android:fontFamily="@font/siffon_titles"
+                        android:textColor="#000000"
+                        android:textAlignment="center"
+                        android:background="@drawable/red_box"
+                        android:padding="10px"
+                        android:layout_margin="10px"
+                        />
+                    <ImageView
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:layout_margin="10dp"
+                        android:src="@drawable/red_box"
+                        android:alpha="0.6"
+                        />
+
+                    <ImageView
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:layout_margin="10dp"
+                        android:src="@drawable/red_box"
+                        android:alpha="0.6"
+                        />
+
+                    <ImageView
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:layout_margin="10dp"
+                        android:src="@drawable/red_box"
+                        android:alpha="0.6"
+                        />
+
+                    <ImageView
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:layout_margin="10dp"
+                        android:src="@drawable/red_box"
+                        android:alpha="0.6"
+                        />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="5dp"
+                        android:fontFamily="@font/poppins_normal"
+                        android:text="4x Bad" />
+
+                </TableRow>
+
+
+
+                <TableRow>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Hazardous"
+                        android:fontFamily="@font/siffon_titles"
+                        android:textColor="#000000"
+                        android:padding="10px"
+                        android:layout_margin="10px"
+                        android:background="@drawable/purple_box"
+                        android:textAlignment="center"
+                        />
+                    <ImageView
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:layout_margin="10dp"
+                        android:src="@drawable/green_box"
+                        android:alpha="0.6"
+                        />
+
+                    <ImageView
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:layout_margin="10dp"
+                        android:src="@drawable/green_box"
+                        android:alpha="0.6"
+                        />
+
+                    <ImageView
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:layout_margin="10dp"
+                        android:src="@drawable/purple_box"
+                        android:alpha="0.6"
+                        />
+
+                    <ImageView
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:layout_margin="10dp"
+                        android:src="@drawable/green_box"
+                        android:alpha="0.6"
+                        />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="5dp"
+                        android:fontFamily="@font/poppins_normal"
+                            android:text="1x Hazardous" />
+                </TableRow>
+
+                <TableRow>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Hazardous"
+                        android:fontFamily="@font/siffon_titles"
+                        android:textColor="#000000"
+                        android:textAlignment="center"
+                        android:background="@drawable/purple_box"
+                        android:padding="10px"
+                        android:layout_margin="10px"
+                        />
+                    <ImageView
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:layout_margin="10dp"
+                        android:src="@drawable/green_box"
+                        android:alpha="0.6"
+                        />
+
+                    <ImageView
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:layout_margin="10dp"
+                        android:src="@drawable/purple_box"
+                        android:alpha="0.6"
+                        />
+
+                    <ImageView
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:layout_margin="10dp"
+                        android:src="@drawable/purple_box"
+                        android:alpha="0.6"
+                        />
+
+                    <ImageView
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:layout_margin="10dp"
+                        android:src="@drawable/green_box"
+                        android:alpha="0.6"
+                        />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="5dp"
+                        android:fontFamily="@font/poppins_normal"
+                        android:text="2x Hazardous" />
+
+                </TableRow>
+
+                <TableRow>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Hazardous"
+                        android:fontFamily="@font/siffon_titles"
+                        android:textColor="#000000"
+                        android:textAlignment="center"
+                        android:background="@drawable/purple_box"
+                        android:padding="10px"
+                        android:layout_margin="10px"
+                        />
+                    <ImageView
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:layout_margin="10dp"
+                        android:src="@drawable/green_box"
+                        android:alpha="0.6"
+                        />
+
+                    <ImageView
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:layout_margin="10dp"
+                        android:src="@drawable/purple_box"
+                        android:alpha="0.6"
+                        />
+
+                    <ImageView
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:layout_margin="10dp"
+                        android:src="@drawable/purple_box"
+                        android:alpha="0.6"
+                        />
+
+                    <ImageView
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:layout_margin="10dp"
+                        android:src="@drawable/purple_box"
+                        android:alpha="0.6"
+                        />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="5dp"
+                        android:fontFamily="@font/poppins_normal"
+                        android:text="3x Hazardous" />
+
+                </TableRow>
+
+                <TableRow>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Hazardous"
+                        android:fontFamily="@font/siffon_titles"
+                        android:textColor="#000000"
+                        android:textAlignment="center"
+                        android:background="@drawable/purple_box"
+                        android:padding="10px"
+                        android:layout_margin="10px"
+                        />
+                    <ImageView
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:layout_margin="10dp"
+                        android:src="@drawable/purple_box"
+                        android:alpha="0.6"
+                        />
+
+                    <ImageView
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:layout_margin="10dp"
+                        android:src="@drawable/purple_box"
+                        android:alpha="0.6"
+                        />
+
+                    <ImageView
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:layout_margin="10dp"
+                        android:src="@drawable/purple_box"
+                        android:alpha="0.6"
+                        />
+
+                    <ImageView
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:layout_margin="10dp"
+                        android:src="@drawable/purple_box"
+                        android:alpha="0.6"
+                        />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="5dp"
+                        android:fontFamily="@font/poppins_normal"
+                        android:text="4x Hazardous" />
+
+                </TableRow>
+            </TableLayout>
+        </LinearLayout>
+    </LinearLayout>
+
+
+</ScrollView>

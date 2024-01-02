@@ -18,10 +18,10 @@
 
     <string name="param_name_pm25">PM2.5</string>
     <string name="param_descr_pm25">PM2.5 particles are tiny airborne particles with a diameter of 2.5 micrometers or smaller. \n\n These can accumulate from various sources like cooking, cleaning products, and even outdoor air infiltration. \n\n Due to their minuscule size, PM2.5 particles can penetrate deep into the lungs when inhaled and even enter the bloodstream. They have been proven to cause respiratory problems, aggravating existing lung conditions (such as asthma), and even contributing to cardiovascular issues.</string>
-    <string name="good_values_pm25">0 - 12µg/m³</string>
-    <string name="medium_values_pm25">13 - 35µg/m³</string>
-    <string name="bad_values_pm25">36 - 50µg/m³</string>
-    <string name="very_bad_values_pm25">>50µg/m³</string>
+    <string name="good_values_pm25">0 - 12</string>
+    <string name="medium_values_pm25">13 - 35</string>
+    <string name="bad_values_pm25">36 - 50</string>
+    <string name="very_bad_values_pm25">>50</string>
     <string name="advice_pm25">
     • Ensure proper ventilation while cooking and cleaning.\n
     • Dust and vacuum frequently.\n
@@ -30,10 +30,10 @@
 
     <string name="param_name_pm10">PM10</string>
     <string name="param_descr_pm10">PM10 particles are airborne particles with a diameter of up to 10 micrometers. \n\n They originate from sources such as dust, pollen, smoke, and vehicle emissions.\n\n Although larger than PM2.5, these particles still pose health risks since they’re small enough to penetrate the lungs. Upon inhalation, they impact the respiratory system and can end up causing breathing difficulties and aggravated asthma. These are specially important to monitor for people with dust or pollen allergies.</string>
-    <string name="good_values_pm10">0 - 54 µg/m³</string>
-    <string name="medium_values_pm10">55 - 254 µg/m³</string>
-    <string name="bad_values_pm10">255 - 354 µg/m³</string>
-    <string name="very_bad_values_pm10">>354 µg/m³</string>
+    <string name="good_values_pm10">0 - 54</string>
+    <string name="medium_values_pm10">55 - 254</string>
+    <string name="bad_values_pm10">255 - 354</string>
+    <string name="very_bad_values_pm10">>354</string>
     <string name="advice_pm10">
     • Regularly clean indoor surfaces.\n
     • Use a vacuum cleaner equipped with HEPA filters and damp mop floors.\n
@@ -42,10 +42,10 @@
 
     <string name="param_name_voc">VOCs</string>
     <string name="param_descr_voc">Volatile Organic Compounds (VOC’s) are a group of chemicals that easily evaporate at room temperature such as Benzene, Formaldehyde and Toluene. \n\n VOC’s are present in many household items and are emitted from many paints and varnishes as they dry, cleaning supplies, disinfectants, air fresheners and even furniture and building materials such as plywood, carpets, adhesives, and certain types of insulation.\n\n These chemicals can linger indoors and lead to adverse health effects upon prolonged exposure, including eye, nose, and throat irritation, headaches, and even damage to the liver, kidney, or central nervous system.</string>
-    <string name="good_values_voc">0 - 400 ppb</string>
-    <string name="medium_values_voc">401 - 2200 ppb</string>
-    <string name="bad_values_voc">2201 - 30000 ppb</string>
-    <string name="very_bad_values_voc">>30000 ppb</string>
+    <string name="good_values_voc">0 - 400</string>
+    <string name="medium_values_voc">401 - 2200</string>
+    <string name="bad_values_voc">2201 - 30000</string>
+    <string name="very_bad_values_voc">>30000</string>
     <string name="advice_voc">
     • Choose paints, cleaning supplies, and furniture labelled as low VOC or VOC-free.\n
     • Ensure adequate ventilation by opening windows and using exhaust fans while painting, varnishing, or using cleaning products.\n
@@ -55,10 +55,10 @@
 
     <string name="param_name_co">CO</string>
     <string name="param_descr_co">Carbon Monoxide (CO) is a colorless, odorless gas produced incomplete combustion of by carbon-containing fuels.\n\n It’s emitted by malfunctioning or poorly maintained heating systems (like furnaces, boilers, water heaters), stoves, fireplaces, generators, and vehicle exhausts.\n\n CO is a significant concern because it binds to hemoglobin in red blood cells more readily than oxygen does. This prevents the blood from carrying oxygen effectively, leading to CO poisoning. Symptoms of CO exposure include headaches, dizziness, nausea, confusion, and in severe cases, unconsciousness, or death.</string>
-    <string name="good_values_co">0 - 50 ppm</string>
-    <string name="medium_values_co">51 - 100 ppm</string>
-    <string name="bad_values_co">101 - 199 ppm</string>
-    <string name="very_bad_values_co">>200 ppm</string>
+    <string name="good_values_co">0 - 50</string>
+    <string name="medium_values_co">51 - 100</string>
+    <string name="bad_values_co">101 - 199</string>
+    <string name="very_bad_values_co">>200</string>
     <string name="advice_co">
     • Ensure proper airflow by opening windows or using ventilation systems.\n
     • Minimize activities such as burning candles or using gas stoves without proper ventilation.\n

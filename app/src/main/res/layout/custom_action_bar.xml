@@ -45,12 +45,20 @@
             app:srcCompat="@drawable/aircare_logo" />
 
         <ImageView
-            android:id="@+id/menuButton"
+            android:id="@+id/infoButton"
             android:layout_width="35dp"
             android:layout_height="35dp"
             android:layout_gravity="center_vertical"
             android:layout_marginRight="8dp"
+            android:visibility="visible"
             app:srcCompat="@drawable/menu" />
+
+        <Space
+            android:id="@+id/infoButtonSpace"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_gravity="center_vertical"
+            android:visibility="gone" />
 
     </LinearLayout>
 </androidx.appcompat.widget.Toolbar>

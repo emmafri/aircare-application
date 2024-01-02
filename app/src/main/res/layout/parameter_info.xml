@@ -79,6 +79,17 @@
                         android:textAlignment="center"
                         android:textColor="#000000"
                         android:textSize="16sp" />
+                    <TextView
+                        android:id="@+id/GoodValuesMeasure"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="5dp"
+                        android:layout_weight="1"
+                        android:fontFamily="@font/poppins_normal"
+                        android:padding="8dp"
+                        android:textAlignment="center"
+                        android:textColor="#000000"
+                        android:textSize="16sp"/>
                 </TableRow>
 
                 <!-- Table Row 2 -->
@@ -109,6 +120,19 @@
                         android:textAlignment="center"
                         android:textColor="#000000"
                         android:textSize="16sp" />
+
+                    <TextView
+                        android:id="@+id/MediumValuesMeasure"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="5dp"
+                        android:layout_weight="1"
+                        android:fontFamily="@font/poppins_normal"
+                        android:padding="8dp"
+                        android:textAlignment="center"
+                        android:textColor="#000000"
+                        android:textSize="16sp"/>
+
                 </TableRow>
 
                 <!-- Table Row 3 -->
@@ -139,6 +163,17 @@
                         android:textAlignment="center"
                         android:textColor="#000000"
                         android:textSize="16sp" />
+                    <TextView
+                        android:id="@+id/BadMeasure"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="5dp"
+                        android:layout_weight="1"
+                        android:fontFamily="@font/poppins_normal"
+                        android:padding="8dp"
+                        android:textAlignment="center"
+                        android:textColor="#000000"
+                        android:textSize="16sp"/>
                 </TableRow>
 
                 <!-- Table Row 4 -->
@@ -152,7 +187,7 @@
                         android:background="@drawable/purple_box"
                         android:fontFamily="@font/poppins_normal"
                         android:padding="8dp"
-                        android:text="Very Bad"
+                        android:text="Hazardous"
                         android:textAlignment="center"
                         android:textColor="#000000"
                         android:textSize="16sp"
@@ -169,6 +204,17 @@
                         android:textAlignment="center"
                         android:textColor="#000000"
                         android:textSize="16sp" />
+                    <TextView
+                        android:id="@+id/VryBadMeasure"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="5dp"
+                        android:layout_weight="1"
+                        android:fontFamily="@font/poppins_normal"
+                        android:padding="8dp"
+                        android:textAlignment="center"
+                        android:textColor="#000000"
+                        android:textSize="16sp"/>
                 </TableRow>
             </TableLayout>
         </LinearLayout>

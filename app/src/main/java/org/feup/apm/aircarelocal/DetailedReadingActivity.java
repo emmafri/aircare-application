@@ -11,6 +11,8 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import androidx.appcompat.widget.Toolbar;
+
+import android.widget.Space;
 import android.widget.TextView;
 
 
@@ -34,14 +36,29 @@ public class DetailedReadingActivity extends AppCompatActivity {
         setContentView(R.layout.detailed_reading);
         String source = getIntent().getStringExtra("source");
 
-        Toolbar toolbar = findViewById(R.id.customToolbar); // Find your toolbar by its ID
-        setSupportActionBar(toolbar); // Set the toolbar as the ActionBar
-
+        // TOOLBAR
+        Toolbar toolbar = findViewById(R.id.customToolbar);
+        setSupportActionBar(toolbar);
+        //Hide back button on main activity and show empty space instead; Show info button
         ImageView backButton = findViewById(R.id.backButton);
-        ImageView menuButton = findViewById(R.id.menuButton);
-        dbHelper = new DatabaseHelper(this);
+        backButton.setVisibility(View.GONE);
+        Space backButtonSpace = findViewById(R.id.backButtonSpace);
+        backButtonSpace.setVisibility(View.VISIBLE);
+        ImageView infoButton = findViewById(R.id.infoButton);
+        infoButton.setVisibility(View.VISIBLE);
+        Space infoButtonSpace = findViewById(R.id.infoButtonSpace);
+        infoButtonSpace.setVisibility(View.GONE);
+        ImageView appLogo = findViewById(R.id.appLogo);
 
-        // Set OnClickListener for the backButton
+        appLogo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(DetailedReadingActivity.this, MainActivity.class);
+                intent.putExtra("source", "MainActivity");
+                startActivity(intent);
+            }
+        });
+
         backButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -49,14 +66,13 @@ public class DetailedReadingActivity extends AppCompatActivity {
             }
         });
 
-        // Set OnClickListener for the menuButton
-        menuButton.setOnClickListener(new View.OnClickListener() {
+        infoButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // Add  action when menuButton is clicked
+                Intent intent = new Intent(DetailedReadingActivity.this, InfoActivity.class);
+                startActivity(intent);
             }
         });
-
 
         Handler handler = new Handler();
         View historyButton = findViewById(R.id.HistoryButton);
@@ -137,6 +153,7 @@ public class DetailedReadingActivity extends AppCompatActivity {
                         intent.putExtra("BAD_VALUES", getString(R.string.bad_values_pm25));
                         intent.putExtra("VERYBAD_VALUES", getString(R.string.very_bad_values_pm25));
                         intent.putExtra("PARAM_ADVICE",getString(R.string.advice_pm25));
+                        intent.putExtra("PARAM_MEASURE", getString(R.string.pm_measure));
                         startActivity(intent);
                     }
                 }, 300);
@@ -173,6 +190,7 @@ public class DetailedReadingActivity extends AppCompatActivity {
                         intent.putExtra("BAD_VALUES", getString(R.string.bad_values_pm10));
                         intent.putExtra("VERYBAD_VALUES", getString(R.string.very_bad_values_pm10));
                         intent.putExtra("PARAM_ADVICE",getString(R.string.advice_pm10));
+                        intent.putExtra("PARAM_MEASURE", getString(R.string.pm_measure));
                         startActivity(intent);
                     }
                 }, 300);
@@ -208,6 +226,7 @@ public class DetailedReadingActivity extends AppCompatActivity {
                         intent.putExtra("BAD_VALUES", getString(R.string.bad_values_voc));
                         intent.putExtra("VERYBAD_VALUES", getString(R.string.very_bad_values_voc));
                         intent.putExtra("PARAM_ADVICE",getString(R.string.advice_voc));
+                        intent.putExtra("PARAM_MEASURE", getString(R.string.measure_VOC));
                         startActivity(intent);
                     }
                 }, 300);
@@ -243,6 +262,7 @@ public class DetailedReadingActivity extends AppCompatActivity {
                         intent.putExtra("BAD_VALUES", getString(R.string.bad_values_co));
                         intent.putExtra("VERYBAD_VALUES", getString(R.string.very_bad_values_co));
                         intent.putExtra("PARAM_ADVICE",getString(R.string.advice_co));
+                        intent.putExtra("PARAM_MEASURE", getString(R.string.measure_CO));
                         startActivity(intent);
                     }
                 }, 300);

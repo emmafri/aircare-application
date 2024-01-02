@@ -11,6 +11,7 @@ import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
+import android.widget.Space;
 
 import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -34,12 +35,28 @@ public class HistoryActivity extends AppCompatActivity implements HistoryScroll.
         super.onCreate(savedInstanceState);
         setContentView(R.layout.history);
 
-        //TOOLBAR
-        Toolbar toolbar = findViewById(R.id.customToolbar); // Find your toolbar by its ID
-        setSupportActionBar(toolbar); // Set the toolbar as the ActionBar
-
+        // TOOLBAR
+        Toolbar toolbar = findViewById(R.id.customToolbar);
+        setSupportActionBar(toolbar);
+        //Hide back button on main activity and show empty space instead; Show info button
         ImageView backButton = findViewById(R.id.backButton);
-        ImageView menuButton = findViewById(R.id.menuButton);
+        backButton.setVisibility(View.VISIBLE);
+        Space backButtonSpace = findViewById(R.id.backButtonSpace);
+        backButtonSpace.setVisibility(View.GONE);
+        ImageView infoButton = findViewById(R.id.infoButton);
+        infoButton.setVisibility(View.VISIBLE);
+        Space infoButtonSpace = findViewById(R.id.infoButtonSpace);
+        infoButtonSpace.setVisibility(View.GONE);
+        ImageView appLogo = findViewById(R.id.appLogo);
+
+        appLogo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(HistoryActivity.this, MainActivity.class);
+                intent.putExtra("source", "MainActivity");
+                startActivity(intent);
+            }
+        });
 
         backButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -48,11 +65,11 @@ public class HistoryActivity extends AppCompatActivity implements HistoryScroll.
             }
         });
 
-        menuButton.setOnClickListener(new View.OnClickListener() {
+        infoButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // Add  action when menuButton is clicked
-                // For example, show a popup menu or perform some action
+                Intent intent = new Intent(HistoryActivity.this, InfoActivity.class);
+                startActivity(intent);
             }
         });
 

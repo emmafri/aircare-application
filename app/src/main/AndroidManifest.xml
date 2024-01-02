@@ -40,6 +40,11 @@
             android:name=".HistoryActivity"
             android:label="History Activity">
         </activity>
+
+        <activity
+            android:name=".InfoActivity"
+            android:label="Info Activity">
+        </activity>
     </application>
 
 </manifest>

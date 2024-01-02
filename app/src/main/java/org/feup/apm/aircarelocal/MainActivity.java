@@ -101,12 +101,34 @@ public class MainActivity extends AppCompatActivity implements BluetoothHelper.C
         // TOOLBAR
         Toolbar toolbar = findViewById(R.id.customToolbar);
         setSupportActionBar(toolbar);
-        //Hide backbutton on main activity and show empty space instead
+        //Hide back button on main activity and show empty space instead; Show info button
         ImageView backButton = findViewById(R.id.backButton);
         backButton.setVisibility(View.GONE);
         Space backButtonSpace = findViewById(R.id.backButtonSpace);
         backButtonSpace.setVisibility(View.VISIBLE);
+        ImageView infoButton = findViewById(R.id.infoButton);
+        infoButton.setVisibility(View.VISIBLE);
+        Space infoButtonSpace = findViewById(R.id.infoButtonSpace);
+        infoButtonSpace.setVisibility(View.GONE);
+        ImageView appLogo = findViewById(R.id.appLogo);
 
+        appLogo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this, MainActivity.class);
+                intent.putExtra("source", "MainActivity");
+                startActivity(intent);
+            }
+        });
+
+        infoButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this, InfoActivity.class);
+                intent.putExtra("source", "MainActivity");
+                startActivity(intent);
+            }
+        });
 
 
         timeTextView = findViewById(R.id.Time);
@@ -166,7 +188,7 @@ public class MainActivity extends AppCompatActivity implements BluetoothHelper.C
                         startActivity(intent);
 
                     }
-                },300);
+                }, 300);
 
             }
         });
@@ -185,7 +207,7 @@ public class MainActivity extends AppCompatActivity implements BluetoothHelper.C
                         startActivity(intent);
 
                     }
-                },300);
+                }, 300);
 
             }
         });
