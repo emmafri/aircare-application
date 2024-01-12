@@ -40,7 +40,6 @@ public class BluetoothHelper {
     private String latestSensorData;
     private DatabaseHelper databaseHelper;
     private boolean isConnected = false;
-    private boolean isConnecting = false;
     private boolean isBluetoothOn = false;
 
     // This class is used to manage all the processes that relate to the bluetooth connection between the mobile device and the sensor
@@ -121,7 +120,6 @@ public class BluetoothHelper {
                                     Log.d(TAG, "Connected Successfully");
                                     retrieveSensorData();
                                     // Reset the connecting flag when the connection is established
-                                    isConnecting = false;
                                 }
                             }).execute();
 
@@ -155,7 +153,7 @@ public class BluetoothHelper {
     // Gets the sensor address from the nearby devices in order to ark for the data
     private String getSensorAddress() {
 
-            Toast.makeText(context, "Connecting to AmbiUnit...", Toast.LENGTH_SHORT).show();isConnecting = true;
+            Toast.makeText(context, "Connecting to AmbiUnit...", Toast.LENGTH_SHORT).show();
 
         if (ActivityCompat.checkSelfPermission(context, android.Manifest.permission.BLUETOOTH_CONNECT)
                 == PackageManager.PERMISSION_GRANTED) {
@@ -381,7 +379,6 @@ public class BluetoothHelper {
             Log.d(TAG, "Bluetooth connection closed");
 
             isConnected = false;
-            isConnecting = false;
         } catch (IOException e) {
             Log.e(TAG, "Error closing Bluetooth connection", e);
         }
