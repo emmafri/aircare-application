@@ -6,10 +6,7 @@ import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
-import android.preference.PreferenceManager;
 
-import java.io.File;
-import java.io.FileOutputStream;
 import java.util.Date;
 import java.util.Locale;
 

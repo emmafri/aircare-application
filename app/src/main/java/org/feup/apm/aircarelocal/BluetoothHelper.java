@@ -5,17 +5,12 @@ import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothSocket;
 
-import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.util.Set;
 import java.util.UUID;
 
-import android.bluetooth.BluetoothAdapter;
-import android.bluetooth.BluetoothDevice;
-import android.bluetooth.BluetoothSocket;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -28,11 +23,6 @@ import android.widget.Toast;
 
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
-
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.util.UUID;
 
 import android.Manifest;
 public class BluetoothHelper {
@@ -53,10 +43,7 @@ public class BluetoothHelper {
     private boolean isConnecting = false;
     private boolean isBluetoothOn = false;
 
-
-
-
-
+    // This class is used to manage all the processes that relate to the bluetooth connection between the mobile device and the sensor
     public BluetoothHelper(Context context, ConnectionListener listener) {
         this.context = context;
         bluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
@@ -65,6 +52,7 @@ public class BluetoothHelper {
         registerBluetoothStateReceiver(context);
 
     }
+    // Continuously records the state of bluetooth
     private void registerBluetoothStateReceiver(Context context) {
         // Register a BroadcastReceiver to listen for Bluetooth state changes
         IntentFilter filter = new IntentFilter(BluetoothAdapter.ACTION_STATE_CHANGED);
@@ -76,6 +64,7 @@ public class BluetoothHelper {
     public interface ConnectionCallback {
         void onConnectionEstablished();
     }
+    // Used at the start to ask the user for permission to see and access nearby devices
     public boolean initializeBluetooth() {
         // Check if the app has Bluetooth permissions
         if (ContextCompat.checkSelfPermission(context, Manifest.permission.BLUETOOTH_CONNECT) == PackageManager.PERMISSION_GRANTED) {
@@ -92,10 +81,15 @@ public class BluetoothHelper {
         // Return false if permission is not granted and not requested
         return false;
     }
+
+    // Main process to connect to the sensor and receive the data
     public void connectToSensor() {
-        // Check for Bluetooth permission
+        // Make sure no entries are reused
         latestSensorData = null;
+
+        // Only happens if the used has given permission to the app to see and interact with nearby devices
         if (initializeBluetooth()) {
+            // Make sure the is bluetooth permission
             if (context != null &&
                     ActivityCompat.checkSelfPermission(context, Manifest.permission.BLUETOOTH)
                             == PackageManager.PERMISSION_GRANTED) {
@@ -107,6 +101,7 @@ public class BluetoothHelper {
                     if (context instanceof Activity) {
                         ((Activity) context).startActivityForResult(enableBtIntent, MY_BLUETOOTH_PERMISSION_REQUEST);
                     }
+
 
                 } else {
 
@@ -150,21 +145,17 @@ public class BluetoothHelper {
                         return;
                     }
                 }
-
-
             }
         }
         else {
             Toast.makeText(context, "Bluetooth connection denied", Toast.LENGTH_SHORT).show();
-
         }
     }
+
+    // Gets the sensor address from the nearby devices in order to ark for the data
     private String getSensorAddress() {
 
-        if (!isConnected && !isConnecting) {
-            Toast.makeText(context, "Connecting to AmbiUnit...", Toast.LENGTH_SHORT).show();
-            isConnecting = true;
-        }
+            Toast.makeText(context, "Connecting to AmbiUnit...", Toast.LENGTH_SHORT).show();isConnecting = true;
 
         if (ActivityCompat.checkSelfPermission(context, android.Manifest.permission.BLUETOOTH_CONNECT)
                 == PackageManager.PERMISSION_GRANTED) {
@@ -189,6 +180,7 @@ public class BluetoothHelper {
                         if ("AmbiUnit 23".equals(deviceName)) {
                             return deviceAddress;
                         }
+
                     }
                 } else {
                     Log.e(TAG, "pairedDevices is null. Could not getBondedDevices.");
@@ -199,6 +191,7 @@ public class BluetoothHelper {
         Log.e(TAG, "BLUETOOTH_CONNECT Permission denied.");
         return null;
     }
+    // Used to store the data retrieved from the sensor into the database, with the appropriate format
     private void retrieveSensorData() {
         if (isConnected) {
             Log.d(TAG, "Retrieving data");
@@ -240,6 +233,7 @@ public class BluetoothHelper {
         public ConnectTask(ConnectionCallback callback) {
             this.callback = callback;
         }
+        // Used to check if the socket is used
         private boolean checkConnectionStatus() {
             return bluetoothSocket != null && bluetoothSocket.isConnected();
         }
@@ -248,6 +242,7 @@ public class BluetoothHelper {
             int maxRetries = 3;
             int retryCount = 0;
 
+            // Limits the amount of tries the system will do to retrieve data from the sensor
             while (retryCount < maxRetries) {
                 try {
                     // Check for Bluetooth connect permission
@@ -266,6 +261,7 @@ public class BluetoothHelper {
                             }
 
                         }
+                        // If the sensor is not yet connected to the phone
                         if (!isConnected) {
                             BluetoothDevice device = bluetoothAdapter.getRemoteDevice(sensorAddress);
                             // Create an insecure RFCOMM socket
@@ -274,7 +270,7 @@ public class BluetoothHelper {
                         }
                         Log.d(TAG, "Connected to AmbiUnit");
 
-
+                        // Requests the data from the sensor
                         new Thread(new Runnable() {
                             @Override
                             public void run() {
@@ -310,9 +306,9 @@ public class BluetoothHelper {
                     }
                 }
             }
-            Log.e(TAG, "Failed to connect after multiple attempts");
             return false;
         }
+        // Reads the data incoming from the sensor and stores it into a convenient String variable
         private String readSensorData() throws IOException {
             StringBuilder data = new StringBuilder();
             int byteRead;
@@ -329,7 +325,7 @@ public class BluetoothHelper {
                 Log.e(TAG, "Bluetooth socket closed. Cannot read sensor data.");
             }
 
-
+            // Only passes it to the latestSensorData variable if some data is actually received
             if (!data.toString().isEmpty()) {
                 latestSensorData = data.toString();
             }
@@ -350,16 +346,27 @@ public class BluetoothHelper {
                 }
             } else {
                 Log.e(TAG, "Failed to connect after multiple attempts");
+                if (context != null) {
+                    ((Activity) context).runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            Toast.makeText(context, "Failed to connect after multiple attempts", Toast.LENGTH_SHORT).show();
+                        }
+                    });
+                }
             }
             if (connectionListener != null) {
                 connectionListener.onConnectionResult(connectionSuccessful);
             }
         }
     }
+
+    // Permits access to the latestSensorData variable
     public String getLatestSensorData() {
         return latestSensorData;
     }
 
+    // Used for closing the connection
     public void closeBluetoothConnection() {
         try {
             if (outputStream != null) {
@@ -372,11 +379,15 @@ public class BluetoothHelper {
                 bluetoothSocket.close();
             }
             Log.d(TAG, "Bluetooth connection closed");
+
+            isConnected = false;
+            isConnecting = false;
         } catch (IOException e) {
             Log.e(TAG, "Error closing Bluetooth connection", e);
         }
     }
 
+    // Used for processing the typical data output from the sensor into the format needed
     public float parseSensorData(String sensorData, int index) {
         try {
             // Split the sensor data using ';' as the delimiter
@@ -395,6 +406,7 @@ public class BluetoothHelper {
         }
     }
 
+    // Keeps track of whether the bluetooth is turned off or on
     private final BroadcastReceiver bluetoothStateReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
@@ -415,15 +427,11 @@ public class BluetoothHelper {
                         isBluetoothOn = false;
                         isConnected = false;
                         Log.d(TAG, "Bluetooth turned off");
+                        closeBluetoothConnection();
                         break;
                 }
             }
         }
     };
-    /*public void insertNewEntry(float temperature, float humidity, float co, float voc, float pm10, float pm25) {
-
-        databaseHelper.insertNewEntry(temperature, humidity, co, voc, pm10, pm25);
-        Log.d(TAG, "Inserting new entry into the database");
-    }*/
 }
 
