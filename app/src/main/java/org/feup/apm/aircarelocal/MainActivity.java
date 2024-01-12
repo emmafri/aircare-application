@@ -78,9 +78,10 @@ public class MainActivity extends AppCompatActivity implements BluetoothHelper.C
         newReadingButton.setOnClickListener(view -> {
 
             bluetoothHelper.connectToSensor();
-            // Bluetooth data received (replace this with actual data)
-            //String sensorData = "&AMB21 30;0;1013.88;4;21.51;2541;7356;0;8;32;0;100|\n";
-            /*
+            /* LEAVE for testing purposes without sensor
+            //Bluetooth data received (replace this with actual data)
+            String sensorData = "&AMB21 30;0;1013.88;4;21.51;2541;7356;0;8;32;0;100|\n";
+
             String sensorData = bluetoothHelper.getLatestSensorData();
 
             // Parse sensor data to extract individual parameters
@@ -93,9 +94,8 @@ public class MainActivity extends AppCompatActivity implements BluetoothHelper.C
 
             // Insert a new entry in the database
             databaseHelper.insertNewEntry(temperature, humidity, co, voc, pm10, pm25);
-
             */
-            //update ui elements
+
         });
 
 
@@ -113,22 +113,16 @@ public class MainActivity extends AppCompatActivity implements BluetoothHelper.C
         infoButtonSpace.setVisibility(View.GONE);
         ImageView appLogo = findViewById(R.id.appLogo);
 
-        appLogo.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(MainActivity.this, MainActivity.class);
-                intent.putExtra("source", "MainActivity");
-                startActivity(intent);
-            }
+        appLogo.setOnClickListener(v -> {
+            Intent intent = new Intent(MainActivity.this, MainActivity.class);
+            intent.putExtra("source", "MainActivity");
+            startActivity(intent);
         });
 
-        infoButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(MainActivity.this, InfoActivity.class);
-                intent.putExtra("source", "MainActivity");
-                startActivity(intent);
-            }
+        infoButton.setOnClickListener(v -> {
+            Intent intent = new Intent(MainActivity.this, InfoActivity.class);
+            intent.putExtra("source", "MainActivity");
+            startActivity(intent);
         });
 
         timeTextView = findViewById(R.id.Time);
@@ -142,76 +136,55 @@ public class MainActivity extends AppCompatActivity implements BluetoothHelper.C
         View historyButton = findViewById(R.id.HistoryButton);
         View detailedButton = findViewById(R.id.BottomLayout);
 
-        detailedButton.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                switch (event.getAction()) {
-                    case MotionEvent.ACTION_DOWN:
-                        break;
+        detailedButton.setOnTouchListener((v, event) -> {
+            switch (event.getAction()) {
+                case MotionEvent.ACTION_DOWN:
+                    break;
 
-                    case MotionEvent.ACTION_UP:
-                        startPopUpAnimation(v);
-                        break;
-                }
-                return false;
+                case MotionEvent.ACTION_UP:
+                    startPopUpAnimation(v);
+                    break;
             }
+            return false;
         });
 
-        historyButton.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                switch (event.getAction()) {
-                    case MotionEvent.ACTION_DOWN:
-                        break;
+        historyButton.setOnTouchListener((v, event) -> {
+            switch (event.getAction()) {
+                case MotionEvent.ACTION_DOWN:
+                    break;
 
-                    case MotionEvent.ACTION_UP:
-                        startPopUpAnimation(v);
-                        break;
-                }
-                return false;
+                case MotionEvent.ACTION_UP:
+                    startPopUpAnimation(v);
+                    break;
             }
+            return false;
         });
 
 
         // Set OnClickListener for "test" layout
-        detailedButton.setOnClickListener(new View.OnClickListener() {
-
+        detailedButton.setOnClickListener(v -> handler.postDelayed(new Runnable() {
             @Override
-            public void onClick(View v) {
-
-                handler.postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        // Create an Intent to start ParameterInfoActivity
-                        Intent intent = new Intent(MainActivity.this, DetailedReadingActivity.class);
-                        intent.putExtra("source", "MainActivity");
-                        // Start the new activity
-                        startActivity(intent);
-
-                    }
-                }, 300);
+            public void run() {
+                // Create an Intent to start ParameterInfoActivity
+                Intent intent = new Intent(MainActivity.this, DetailedReadingActivity.class);
+                intent.putExtra("source", "MainActivity");
+                // Start the new activity
+                startActivity(intent);
 
             }
-        });
+        }, 300));
 
 
-        historyButton.setOnClickListener(new View.OnClickListener() {
+        historyButton.setOnClickListener(v -> handler.postDelayed(new Runnable() {
             @Override
-            public void onClick(View v) {
-
-                handler.postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        // Create an Intent to start ParameterInfoActivity
-                        Intent intent = new Intent(MainActivity.this, HistoryActivity.class);
-                        // Start the new activity
-                        startActivity(intent);
-
-                    }
-                }, 300);
+            public void run() {
+                // Create an Intent to start ParameterInfoActivity
+                Intent intent = new Intent(MainActivity.this, HistoryActivity.class);
+                // Start the new activity
+                startActivity(intent);
 
             }
-        });
+        }, 300));
 
     }
 
