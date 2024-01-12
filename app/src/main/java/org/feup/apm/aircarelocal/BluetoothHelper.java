@@ -16,8 +16,10 @@ import java.util.UUID;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothSocket;
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.pm.PackageManager;
 import android.os.AsyncTask;
 import android.os.Build;
@@ -49,6 +51,7 @@ public class BluetoothHelper {
     private DatabaseHelper databaseHelper;
     private boolean isConnected = false;
     private boolean isConnecting = false;
+    private boolean isBluetoothOn = false;
 
 
 
@@ -57,7 +60,13 @@ public class BluetoothHelper {
         bluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
         connectionListener = listener;
         databaseHelper = new DatabaseHelper(context);
+        registerBluetoothStateReceiver(context);
 
+    }
+    private void registerBluetoothStateReceiver(Context context) {
+        // Register a BroadcastReceiver to listen for Bluetooth state changes
+        IntentFilter filter = new IntentFilter(BluetoothAdapter.ACTION_STATE_CHANGED);
+        context.registerReceiver(bluetoothStateReceiver, filter);
     }
     public interface ConnectionListener {
         void onConnectionResult(boolean isConnected);
@@ -76,6 +85,7 @@ public class BluetoothHelper {
     }
     public void connectToSensor() {
         // Check for Bluetooth permission
+        latestSensorData = null;
         if (context != null &&
                 ActivityCompat.checkSelfPermission(context, Manifest.permission.BLUETOOTH)
                         == PackageManager.PERMISSION_GRANTED) {
@@ -87,6 +97,7 @@ public class BluetoothHelper {
                 if (context instanceof Activity) {
                     ((Activity) context).startActivityForResult(enableBtIntent, MY_BLUETOOTH_PERMISSION_REQUEST);
                 }
+
             } else {
 
                 sensorAddress = getSensorAddress();
@@ -174,22 +185,37 @@ public class BluetoothHelper {
             Log.e(TAG, "Retrieving data");
             // Fetch sensor data and update UI
             String sensorData = getLatestSensorData();
-            float temperature = parseSensorData(sensorData, 4);
-            float humidity = parseSensorData(sensorData, 3);
-            float co = parseSensorData(sensorData, 1);
-            float voc = parseSensorData(sensorData, 10);
-            float pm10 = parseSensorData(sensorData, 9);
-            float pm25 = parseSensorData(sensorData, 8);
+            float temperature = parseSensorData(sensorData, 6);
+            float humidity = parseSensorData(sensorData, 5);
+            float co = parseSensorData(sensorData, 2);
+            float voc = parseSensorData(sensorData, 12);
+            float pm10 = parseSensorData(sensorData, 11);
+            float pm25 = parseSensorData(sensorData, 10);
+            float battery = parseSensorData(sensorData, 13);
 
-            // Insert a new entry in the database
-            databaseHelper.insertNewEntry(temperature, humidity, co, voc, pm10, pm25);
+            if (temperature == 0 && humidity == 0 && co == 0 && voc == 0 && pm10 == 0 && pm25 == 0) {
+                Toast.makeText(context, "All sensor data values are zero. Error in reading", Toast.LENGTH_SHORT).show();
+                latestSensorData= null;
+                Log.e(TAG, "Not connected. Cannot retrieve sensor data.");
+            } else {
 
-            // Notify MainActivity to update UI elements
-            if (connectionListener != null) {
-                connectionListener.onConnectionResult(true);
+                if (battery == 0) {
+                    Toast.makeText(context, "The sensor is completely discharged, please charge", Toast.LENGTH_SHORT).show();
+                } else {
+
+                    Toast.makeText(context, "Sensor battery: " + battery + "%", Toast.LENGTH_SHORT).show();
+                }
+
+                // Insert a new entry in the database
+                databaseHelper.insertNewEntry(temperature, humidity, co, voc, pm10, pm25);
+                latestSensorData= null;
+
+
+                // Notify MainActivity to update UI elementsa
+                if (connectionListener != null) {
+                    connectionListener.onConnectionResult(true);
+                }
             }
-        } else {
-            Log.e(TAG, "Not connected. Cannot retrieve sensor data.");
         }
     }
     private class ConnectTask extends AsyncTask<Void, Void, Boolean> {
@@ -211,15 +237,27 @@ public class BluetoothHelper {
                     if (context != null &&
                             ActivityCompat.checkSelfPermission(context, android.Manifest.permission.BLUETOOTH)
                                     == PackageManager.PERMISSION_GRANTED) {
-                        isConnected = checkConnectionStatus();
+                        // Check if Bluetooth is on
+                        if (isBluetoothOn) {
+                            isConnected = checkConnectionStatus();
+                        } else {
+                            if (context instanceof Activity) {
+                                ActivityCompat.requestPermissions((Activity) context,
+                                        new String[]{Manifest.permission.BLUETOOTH_CONNECT},
+                                        MY_BLUETOOTH_PERMISSION_REQUEST);
+                                isConnected = checkConnectionStatus();
+                            }
+
+                        }
                         if (!isConnected) {
                             BluetoothDevice device = bluetoothAdapter.getRemoteDevice(sensorAddress);
                             // Create an insecure RFCOMM socket
                             bluetoothSocket = device.createInsecureRfcommSocketToServiceRecord(MY_UUID);
                             bluetoothSocket.connect();
-                            isConnected = true; // Update connection status
                         }
                         Log.d(TAG, "Connected to AmbiUnit");
+
+
                         new Thread(new Runnable() {
                             @Override
                             public void run() {
@@ -227,6 +265,7 @@ public class BluetoothHelper {
                                     inputStream = bluetoothSocket.getInputStream();
                                     outputStream = bluetoothSocket.getOutputStream();
                                     latestSensorData = readSensorData();
+
                                 } catch (IOException e) {
                                     Log.e(TAG, "Error reading sensor data", e);
                                 }
@@ -260,6 +299,7 @@ public class BluetoothHelper {
         private String readSensorData() throws IOException {
             StringBuilder data = new StringBuilder();
             int byteRead;
+            if (bluetoothSocket != null && bluetoothSocket.isConnected()) {
             while ((byteRead = inputStream.read()) != -1) {
                 char character = (char) byteRead;
                 data.append(character);
@@ -267,6 +307,11 @@ public class BluetoothHelper {
                     break;
                 }
             }
+            } else {
+                // Handle the situation where the socket is closed
+                Log.e(TAG, "Bluetooth socket closed. Cannot read sensor data.");
+            }
+
 
             if (!data.toString().isEmpty()) {
                 latestSensorData = data.toString();
@@ -297,7 +342,6 @@ public class BluetoothHelper {
 
     }
     public String getLatestSensorData() {
-        Log.e(TAG, "Trying");
         return latestSensorData;
     }
 
@@ -323,6 +367,11 @@ public class BluetoothHelper {
             // Split the sensor data using ';' as the delimiter
             String[] dataParts = sensorData.split(";");
 
+            if (dataParts[dataParts.length - 1].contains("|")) {
+                // If it does, split it using '|' and take the first part
+                dataParts[dataParts.length - 1] = dataParts[dataParts.length - 1].split("\\|")[0];
+            }
+
             // Extract the parameter at the specified index
             return Float.parseFloat(dataParts[index]);
         } catch (Exception e) {
@@ -331,11 +380,30 @@ public class BluetoothHelper {
         }
     }
 
-    public void insertNewEntry(float temperature, float humidity, float co, float voc, float pm10, float pm25) {
-        // Assuming you have a method to insert data into the database in this class
-        // Replace the following line with the actual implementation to insert data into the database
-        databaseHelper.insertNewEntry(temperature, humidity, co, voc, pm10, pm25);
-        Log.d(TAG, "Inserting new entry into the database");
-    }
+    private final BroadcastReceiver bluetoothStateReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            final String action = intent.getAction();
+
+            if (action.equals(BluetoothAdapter.ACTION_STATE_CHANGED)) {
+                final int state = intent.getIntExtra(BluetoothAdapter.EXTRA_STATE, BluetoothAdapter.ERROR);
+
+                switch (state) {
+                    case BluetoothAdapter.STATE_ON:
+                        // Bluetooth is turned on, update the isConnected variable accordingly
+                        isBluetoothOn = true;
+                        isConnected = false;
+                        Log.d(TAG, "Bluetooth turned on");
+                        break;
+                    case BluetoothAdapter.STATE_OFF:
+                        // Bluetooth is turned off, reset the isConnected variable
+                        isBluetoothOn = false;
+                        isConnected = false;
+                        Log.d(TAG, "Bluetooth turned off");
+                        break;
+                }
+            }
+        }
+    };
 }
 
