@@ -1,9 +1,11 @@
 package org.feup.apm.aircarelocal;
 
+import static androidx.constraintlayout.helper.widget.MotionEffect.TAG;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
+import android.app.Activity;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.content.Intent;
@@ -14,6 +16,7 @@ import android.media.Rating;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.animation.Animation;
@@ -32,12 +35,14 @@ import java.util.Set;
 
 
 public class MainActivity extends AppCompatActivity implements BluetoothHelper.ConnectionListener {
+    private static final int MY_BLUETOOTH_PERMISSION_REQUEST = 1;
     private DatabaseHelper databaseHelper;
     private SQLiteDatabase db = null;
     private TextView timeTextView, temperatureTextView, humidityTextView;
     private double pm25, pm10, co, voc;
     private BluetoothHelper bluetoothHelper;
     private BluetoothHelper.ConnectionListener connectionListener = this;
+    private boolean isConnected = false;
 
 
     @Override
@@ -50,8 +55,9 @@ public class MainActivity extends AppCompatActivity implements BluetoothHelper.C
         db = (databaseHelper).getWritableDatabase();
 
 
+
         // BLUETOOTH
-        bluetoothHelper = new BluetoothHelper(this, connectionListener);
+        bluetoothHelper = new BluetoothHelper(this, this);
         bluetoothHelper.initializeBluetooth();
 
         //Set OnClickListener for "New Reading" button
@@ -77,9 +83,9 @@ public class MainActivity extends AppCompatActivity implements BluetoothHelper.C
 
                 bluetoothHelper.connectToSensor();
                 // Bluetooth data received (replace this with actual data)
-                String sensorData = "&AMB21 30;0;1013.88;4;21.51;2541;7356;0;8;32;0;100|\n";
-
-                //String sensorData = bluetoothHelper.getLatestSensorData();
+                //String sensorData = "&AMB21 30;0;1013.88;4;21.51;2541;7356;0;8;32;0;100|\n";
+                /*
+                String sensorData = bluetoothHelper.getLatestSensorData();
 
                 // Parse sensor data to extract individual parameters
                 float temperature = parseSensorData(sensorData, 4);
@@ -92,8 +98,8 @@ public class MainActivity extends AppCompatActivity implements BluetoothHelper.C
                 // Insert a new entry in the database
                 databaseHelper.insertNewEntry(temperature, humidity, co, voc, pm10, pm25);
 
+                */
                 //update ui elements
-                updateLatestReading();
             }
         });
 
@@ -306,21 +312,6 @@ public class MainActivity extends AppCompatActivity implements BluetoothHelper.C
             }
         }
     }
-
-    // Helper method to parse sensor data and extract a specific parameter
-    private float parseSensorData(String sensorData, int index) {
-        try {
-            // Split the sensor data using ';' as the delimiter
-            String[] dataParts = sensorData.split(";");
-
-            // Extract the parameter at the specified index
-            return Float.parseFloat(dataParts[index]);
-        } catch (Exception e) {
-            e.printStackTrace();
-            return 0.0f;  // Default value if parsing fails
-        }
-    }
-
     // Format value from database to only show desired number of decimals
     private String formatValue(float originalValue, int decimalPlacesToShow) {
         String formattedValue = String.format("%." + decimalPlacesToShow + "f", originalValue);
@@ -346,7 +337,6 @@ public class MainActivity extends AppCompatActivity implements BluetoothHelper.C
         Animation popUpAnimation = AnimationUtils.loadAnimation(this, R.anim.pop_up);
         view.startAnimation(popUpAnimation);
     }
-
     @Override
     protected void onDestroy() {
         super.onDestroy();
@@ -363,11 +353,36 @@ public class MainActivity extends AppCompatActivity implements BluetoothHelper.C
     public void onConnectionResult(boolean isConnected) {
         if (isConnected) {
             // Connection successful
-            Toast.makeText(MainActivity.this, "Connected to AmbiUnit", Toast.LENGTH_SHORT).show();
+            if (!this.isConnected) {
+                // If it was not previously connected, show "Connected" message
+                Toast.makeText(MainActivity.this, "Connected to AmbiUnit", Toast.LENGTH_SHORT).show();
+            }
+            updateLatestReading();
         } else {
             // Connection failed
-            Toast.makeText(MainActivity.this, "Failed to connect to AmbiUnit", Toast.LENGTH_SHORT).show();
+            if (this.isConnected) {
+                // If it was previously connected, show "Disconnected" message
+                Toast.makeText(MainActivity.this, "Disconnected from AmbiUnit", Toast.LENGTH_SHORT).show();
+            }
+        }
+        this.isConnected = isConnected;
+    }
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (requestCode == MY_BLUETOOTH_PERMISSION_REQUEST) {
+            if (resultCode == Activity.RESULT_OK) {
+                // Bluetooth is now enabled
+                Log.d(TAG, "Bluetooth is now enabled");
+                bluetoothHelper.connectToSensor();
+            } else {
+                // User declined to enable Bluetooth or an error occurred
+                Log.e(TAG, "Bluetooth activation declined or an error occurred");
+                // Handle accordingly, e.g., show a message to the user
+            }
         }
     }
+
 }
 

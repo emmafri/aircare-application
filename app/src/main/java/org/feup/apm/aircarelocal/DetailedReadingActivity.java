@@ -35,6 +35,7 @@ public class DetailedReadingActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.detailed_reading);
         String source = getIntent().getStringExtra("source");
+        dbHelper = new DatabaseHelper(this);
 
         // TOOLBAR
         Toolbar toolbar = findViewById(R.id.customToolbar);
