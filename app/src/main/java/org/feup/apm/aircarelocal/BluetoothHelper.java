@@ -20,10 +20,12 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.util.Log;
 import android.widget.Toast;
 
 import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -64,18 +66,13 @@ public class BluetoothHelper {
         void onConnectionEstablished();
     }
     public void initializeBluetooth() {
-        if (bluetoothAdapter == null) {
-            Log.e(TAG, "Device doesn't support Bluetooth");
-            return;
+        // Check if the app has Bluetooth permissions
+        if (ContextCompat.checkSelfPermission(context, Manifest.permission.BLUETOOTH_CONNECT) == PackageManager.PERMISSION_DENIED) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+                ActivityCompat.requestPermissions((Activity) context, new String[]{Manifest.permission.BLUETOOTH_CONNECT}, 2);
+                return;
+            }
         }
-
-        if (!bluetoothAdapter.isEnabled()) {
-            Log.e(TAG, "Bluetooth is not enabled");
-
-        } else {
-            Log.d(TAG, "Bluetooth is enabled");
-        }
-        return;
     }
     public void connectToSensor() {
         // Check for Bluetooth permission

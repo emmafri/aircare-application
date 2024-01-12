@@ -4,11 +4,14 @@ import static androidx.constraintlayout.helper.widget.MotionEffect.TAG;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 
 import android.app.Activity;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
@@ -348,7 +351,6 @@ public class MainActivity extends AppCompatActivity implements BluetoothHelper.C
             db.close();
         }
     }
-
     @Override
     public void onConnectionResult(boolean isConnected) {
         if (isConnected) {
@@ -383,6 +385,7 @@ public class MainActivity extends AppCompatActivity implements BluetoothHelper.C
             }
         }
     }
+
 
 }
 
