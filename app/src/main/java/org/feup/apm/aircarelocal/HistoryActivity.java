@@ -35,9 +35,19 @@ public class HistoryActivity extends AppCompatActivity implements HistoryScroll.
         super.onCreate(savedInstanceState);
         setContentView(R.layout.history);
 
-        // TOOLBAR
+        // Configure toolbar and UI elements
+        configureUI();
+
+        // Set up RecyclerView and populate it with data from the database
+        setupRecyclerView();
+    }
+
+    // Configure UI elements, toolbar buttons, and back navigation
+    private void configureUI() {
+        // Set up toolbar
         Toolbar toolbar = findViewById(R.id.customToolbar);
         setSupportActionBar(toolbar);
+
         //Hide back button on main activity and show empty space instead; Show info button
         ImageView backButton = findViewById(R.id.backButton);
         backButton.setVisibility(View.VISIBLE);
@@ -72,18 +82,25 @@ public class HistoryActivity extends AppCompatActivity implements HistoryScroll.
                 startActivity(intent);
             }
         });
+    }
 
-
-
-
+    // Set up RecyclerView and populate it with data from the database
+    private void setupRecyclerView() {
         RecyclerView recyclerView = findViewById(R.id.historyList);
         recyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
 
+        // Fetch data from the database and create a list of HistoryScroll.Items
         List<HistoryScroll.Item> itemList = fetchItemFromDatabase();
+
+        // Initialize HistoryScroll adapter with the item list and set click listener
         HistoryScroll adapter = new HistoryScroll(itemList);
         adapter.setOnItemClickListener(this);
+
+        // Set the adapter for the RecyclerView
         recyclerView.setAdapter(adapter);
     }
+
+    // Fetch items from the database and create a list of HistoryScroll.Items
     private List<HistoryScroll.Item> fetchItemFromDatabase() {
         List<HistoryScroll.Item> itemList = new ArrayList<>();
         DatabaseHelper databaseHelper = new DatabaseHelper(this);
@@ -142,6 +159,8 @@ public class HistoryActivity extends AppCompatActivity implements HistoryScroll.
 
         return itemList;
     }
+
+    // Parse timestamp from a string to a Date object
     private Date parseTimestamp(String timestamp) {
         try {
             SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSSSSS", Locale.getDefault());
@@ -152,6 +171,7 @@ public class HistoryActivity extends AppCompatActivity implements HistoryScroll.
         }
     }
 
+    // Check if two dates are the same day
     private boolean isSameDay(Date date1, Date date2) {
         Calendar cal1 = Calendar.getInstance();
         cal1.setTime(date1);
@@ -163,6 +183,7 @@ public class HistoryActivity extends AppCompatActivity implements HistoryScroll.
                 cal1.get(Calendar.YEAR) == cal2.get(Calendar.YEAR);
     }
 
+    // Handle options menu item selection (e.g., Up button)
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle the Up button click
@@ -173,6 +194,7 @@ public class HistoryActivity extends AppCompatActivity implements HistoryScroll.
         return super.onOptionsItemSelected(item);
     }
 
+    // Handle item click in the RecyclerView
     @Override
     public void onItemClick(HistoryScroll.Item item) {
         // Handle the item click, e.g., start a new activity

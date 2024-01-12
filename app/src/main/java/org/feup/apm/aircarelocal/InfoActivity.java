@@ -12,13 +12,20 @@ import androidx.appcompat.app.AppCompatActivity;
 
 public class InfoActivity extends AppCompatActivity {
 
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.info);
 
+        // Set up UI elements and configure toolbar
+        configureUI();
+
+        // Set OnClickListeners for Parameter buttons
+        setParameterButtonListeners();
+    }
+
+    // Configure UI elements, toolbar buttons, and back navigation
+    private void configureUI() {
         ImageView backButton = findViewById(R.id.backButton);
         backButton.setVisibility(View.VISIBLE);
         Space backButtonSpace = findViewById(R.id.backButtonSpace);
@@ -43,9 +50,12 @@ public class InfoActivity extends AppCompatActivity {
                 onBackPressed();
             }
         });
+    }
 
+    private void setParameterButtonListeners() {
         View ParamButton_PM25 = findViewById(R.id.ParamButton_PM25);
 
+        // Set OnClickListener for ParamButton_PM25
         ParamButton_PM25.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -83,19 +93,19 @@ public class InfoActivity extends AppCompatActivity {
                 goToDetailedReadingActivity("VOC");
             }
         });
-
-
-
-
     }
 
+    // Start the pop-up animation for the given view
     private void startPopUpAnimation(View view) {
         Animation popUpAnimation = AnimationUtils.loadAnimation(this, R.anim.pop_up);
         view.startAnimation(popUpAnimation);
     }
 
+    // Navigate to DetailedReadingActivity with information about the selected parameter
     private void goToDetailedReadingActivity(String paramName) {
         Intent intent = new Intent(InfoActivity.this, ParameterInfoActivity.class);
+
+        // Set intent extras based on the selected parameter
         switch (paramName) {
             case "PM2.5":
                 intent.putExtra("PARAM_NAME", getString(R.string.param_name_pm25));
@@ -142,8 +152,8 @@ public class InfoActivity extends AppCompatActivity {
                 break;
         }
 
+        // Start DetailedReadingActivity with the prepared intent
         startActivity(intent);
-
     }
 }
 

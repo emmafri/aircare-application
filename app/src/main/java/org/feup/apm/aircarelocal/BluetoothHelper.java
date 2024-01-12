@@ -405,5 +405,10 @@ public class BluetoothHelper {
             }
         }
     };
+    public void insertNewEntry(float temperature, float humidity, float co, float voc, float pm10, float pm25) {
+
+        databaseHelper.insertNewEntry(temperature, humidity, co, voc, pm10, pm25);
+        Log.d(TAG, "Inserting new entry into the database");
+    }
 }
 

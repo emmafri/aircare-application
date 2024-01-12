@@ -20,11 +20,16 @@ import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
 public class DetailedReadingActivity extends AppCompatActivity {
+    // DatabaseHelper instance for handling database operations
     private DatabaseHelper dbHelper;
+
+    // TextViews to display air quality parameters
     private TextView pm25TextView;
     private TextView pm10TextView;
     private TextView coTextView;
     private TextView vocTextView;
+
+    // Buttons to display air quality categories
     private View pm25Button;
     private View pm10Button;
     private View coButton;
@@ -34,13 +39,16 @@ public class DetailedReadingActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.detailed_reading);
+
+        // Retrieve data source from the previous activity
         String source = getIntent().getStringExtra("source");
         dbHelper = new DatabaseHelper(this);
 
-        // TOOLBAR
+        // Toolbar setup for navigation and actions
         Toolbar toolbar = findViewById(R.id.customToolbar);
         setSupportActionBar(toolbar);
-        //Hide back button on main activity and show empty space instead; Show info button
+
+        // Hide back button on main activity and show empty space instead; Show info button
         ImageView backButton = findViewById(R.id.backButton);
         backButton.setVisibility(View.GONE);
         Space backButtonSpace = findViewById(R.id.backButtonSpace);
@@ -60,6 +68,7 @@ public class DetailedReadingActivity extends AppCompatActivity {
             }
         });
 
+        // Back button
         backButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -67,6 +76,7 @@ public class DetailedReadingActivity extends AppCompatActivity {
             }
         });
 
+        // Info button
         infoButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -87,6 +97,7 @@ public class DetailedReadingActivity extends AppCompatActivity {
         coTextView = findViewById(R.id.co_value);
         vocTextView = findViewById(R.id.vocs_value);
 
+        // Depending on the source, update the UI with the latest reading or a selected reading
         if ("MainActivity".equals(source)) {
             updateLatestReading();
         }
@@ -94,7 +105,7 @@ public class DetailedReadingActivity extends AppCompatActivity {
             getSelectedReading();
         }
 
-        //history button
+        // History button
         historyButton.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
@@ -125,7 +136,7 @@ public class DetailedReadingActivity extends AppCompatActivity {
             }
         });
 
-        //pm2.5 button
+        //PM2.5 button
         pm25Button.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
@@ -162,7 +173,7 @@ public class DetailedReadingActivity extends AppCompatActivity {
         });
 
 
-        //pm10 button
+        //PM10 button
         pm10Button.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
@@ -198,7 +209,7 @@ public class DetailedReadingActivity extends AppCompatActivity {
             }
         });
 
-        //voc button
+        //VOC button
         vocButton.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
@@ -234,7 +245,7 @@ public class DetailedReadingActivity extends AppCompatActivity {
             }
         });
 
-        //co button
+        //CO button
         coButton.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
@@ -273,14 +284,15 @@ public class DetailedReadingActivity extends AppCompatActivity {
 
     }
 
+    // Start the pop-up animation for the given view
     private void startPopUpAnimation(View view) {
         Animation popUpAnimation = AnimationUtils.loadAnimation(this, R.anim.pop_up);
         view.startAnimation(popUpAnimation);
     }
 
-
+    // Update UI with the latest reading from the database
     private void updateLatestReading() {
-        SQLiteDatabase db = dbHelper.getReadableDatabase(); // or getWritableDatabase() depending on your needs
+        SQLiteDatabase db = dbHelper.getReadableDatabase();
         String[] projection = {"Timestamp", "PM25", "PM10", "CO", "VOC"};
 
         Cursor cursor = db.query(
@@ -290,11 +302,11 @@ public class DetailedReadingActivity extends AppCompatActivity {
                 null,
                 null,
                 null,
-                "Timestamp DESC",  //descending order
+                "Timestamp DESC",  // Descending order
                 "1"  // Limit to 1 result to get only the latest values
         );
 
-        // Check if there is data in the cursor
+        // Retrieve and display air quality parameters
         if (cursor.moveToFirst()) {
             /*String timestampString = cursor.getString(cursor.getColumnIndexOrThrow("Timestamp"));
 
@@ -437,6 +449,7 @@ public class DetailedReadingActivity extends AppCompatActivity {
         cursor.close();
     }
 
+    // Get and display a selected reading passed from another activity
     private void getSelectedReading(){
         long timestamp = getIntent().getLongExtra("timestamp", 0L); // Replace with the default value or appropriate handling
         float pm25 = getIntent().getFloatExtra("pm25", 0.0f);
@@ -565,7 +578,8 @@ public class DetailedReadingActivity extends AppCompatActivity {
 
     }
 
-    // Format value from database to only show desired amount of decimals
+    // Format a float value to display a specific number of decimal places
+    // returns formatted value as a String
     private String formatValue(float originalValue, int decimalPlacesToShow) {
         String formattedValue = String.format("%." + decimalPlacesToShow + "f", originalValue);
         return formattedValue;
