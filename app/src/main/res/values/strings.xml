@@ -22,6 +22,7 @@
     <string name="medium_values_pm25">13 - 35</string>
     <string name="bad_values_pm25">36 - 50</string>
     <string name="very_bad_values_pm25">>50</string>
+    <string name="reference_pm25">Reference for the threshold values: "PM2.5 Explained", Indoor Air Hygiene Institute: https://www.indoorairhygiene.org/pm2-5-explained/</string>
     <string name="advice_pm25">
     • Ensure proper ventilation while cooking and cleaning.\n
     • Dust and vacuum frequently.\n
@@ -34,6 +35,7 @@
     <string name="medium_values_pm10">55 - 254</string>
     <string name="bad_values_pm10">255 - 354</string>
     <string name="very_bad_values_pm10">>354</string>
+    <string name="reference_pm10">Reference for the threshold values: "PM10 and Air Quality: What is the Impact of Coarse Particles (Particulate Matter)", kaiterra: https://learn.kaiterra.com/en/air-academy/pm10-particulate-matter-pollutes-air-quality</string>
     <string name="advice_pm10">
     • Regularly clean indoor surfaces.\n
     • Use a vacuum cleaner equipped with HEPA filters and damp mop floors.\n
@@ -46,6 +48,7 @@
     <string name="medium_values_voc">401 - 2200</string>
     <string name="bad_values_voc">2201 - 30000</string>
     <string name="very_bad_values_voc">>30000</string>
+    <string name="reference_voc">Reference for the threshold values: "Understanding VOC’s and its effects on health", uHoo: https://getuhoo.com/blog/home/understanding-vocs-and-its-effects-on-health/</string>
     <string name="advice_voc">
     • Choose paints, cleaning supplies, and furniture labelled as low VOC or VOC-free.\n
     • Ensure adequate ventilation by opening windows and using exhaust fans while painting, varnishing, or using cleaning products.\n
@@ -55,10 +58,11 @@
 
     <string name="param_name_co">CO</string>
     <string name="param_descr_co">Carbon Monoxide (CO) is a colorless, odorless gas produced incomplete combustion of by carbon-containing fuels.\n\n It’s emitted by malfunctioning or poorly maintained heating systems (like furnaces, boilers, water heaters), stoves, fireplaces, generators, and vehicle exhausts.\n\n CO is a significant concern because it binds to hemoglobin in red blood cells more readily than oxygen does. This prevents the blood from carrying oxygen effectively, leading to CO poisoning. Symptoms of CO exposure include headaches, dizziness, nausea, confusion, and in severe cases, unconsciousness, or death.</string>
-    <string name="good_values_co">0 - 50</string>
-    <string name="medium_values_co">51 - 100</string>
-    <string name="bad_values_co">101 - 199</string>
+    <string name="good_values_co">0 - 35</string>
+    <string name="medium_values_co">36 - 87</string>
+    <string name="bad_values_co">88 - 200</string>
     <string name="very_bad_values_co">>200</string>
+    <string name="reference_co">Reference for the threshold values: "Carbon Monoxide Levels Chart", CO2Meter: https://www.co2meter.com/blogs/news/carbon-monoxide-levels-chart</string>
     <string name="advice_co">
     • Ensure proper airflow by opening windows or using ventilation systems.\n
     • Minimize activities such as burning candles or using gas stoves without proper ventilation.\n

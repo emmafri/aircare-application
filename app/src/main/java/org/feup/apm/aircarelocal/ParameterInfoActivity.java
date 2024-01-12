@@ -61,6 +61,7 @@ public class ParameterInfoActivity extends AppCompatActivity {
             String vrybadValues = getIntent().getStringExtra("VERYBAD_VALUES");
             String parameterAdvice = getIntent().getStringExtra("PARAM_ADVICE");
             String parameterMeasure = getIntent().getStringExtra("PARAM_MEASURE");
+            String parameterRefe = getIntent().getStringExtra("PARAM_REF");
 
             // Set text views with parameter information
             TextView parameterTitle = findViewById(R.id.Parameter);
@@ -92,6 +93,8 @@ public class ParameterInfoActivity extends AppCompatActivity {
             BadMeasure.setText(parameterMeasure);
             TextView VryBadMeasure = findViewById(R.id.VryBadMeasure);
             VryBadMeasure.setText(parameterMeasure);
+            TextView parameterRefr = findViewById(R.id.parameterReference);
+            parameterRefr.setText(parameterRefe);
         }
     }
 

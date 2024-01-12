@@ -55,6 +55,8 @@ public class BluetoothHelper {
 
 
 
+
+
     public BluetoothHelper(Context context, ConnectionListener listener) {
         this.context = context;
         bluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
@@ -74,78 +76,94 @@ public class BluetoothHelper {
     public interface ConnectionCallback {
         void onConnectionEstablished();
     }
-    public void initializeBluetooth() {
+    public boolean initializeBluetooth() {
         // Check if the app has Bluetooth permissions
-        if (ContextCompat.checkSelfPermission(context, Manifest.permission.BLUETOOTH_CONNECT) == PackageManager.PERMISSION_DENIED) {
+        if (ContextCompat.checkSelfPermission(context, Manifest.permission.BLUETOOTH_CONNECT) == PackageManager.PERMISSION_GRANTED) {
+            // Bluetooth connect permission is already granted
+            return true;
+        } else {
+            // Request Bluetooth connect permission
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
                 ActivityCompat.requestPermissions((Activity) context, new String[]{Manifest.permission.BLUETOOTH_CONNECT}, 2);
-                return;
+                // Return false because the permission is not yet granted
+                return false;
             }
         }
+        // Return false if permission is not granted and not requested
+        return false;
     }
     public void connectToSensor() {
         // Check for Bluetooth permission
         latestSensorData = null;
-        if (context != null &&
-                ActivityCompat.checkSelfPermission(context, Manifest.permission.BLUETOOTH)
-                        == PackageManager.PERMISSION_GRANTED) {
-
-            // Check if Bluetooth is enabled
-            if (bluetoothAdapter == null || !bluetoothAdapter.isEnabled()) {
-                // Request to enable Bluetooth
-                Intent enableBtIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
-                if (context instanceof Activity) {
-                    ((Activity) context).startActivityForResult(enableBtIntent, MY_BLUETOOTH_PERMISSION_REQUEST);
-                }
-
-            } else {
-
-                sensorAddress = getSensorAddress();
-                if (sensorAddress != null && !"null".equals(sensorAddress)) {
-                    // Check for Bluetooth connect permission
-                    if (ActivityCompat.checkSelfPermission(context, Manifest.permission.BLUETOOTH_CONNECT)
+        if (initializeBluetooth()) {
+            if (context != null &&
+                    ActivityCompat.checkSelfPermission(context, Manifest.permission.BLUETOOTH)
                             == PackageManager.PERMISSION_GRANTED) {
 
-                        // Initiate the connection task
-                        new ConnectTask(new ConnectionCallback() {
-                            @Override
-                            public void onConnectionEstablished() {
-                                // Connection established callback
-                                // You can perform actions here after the connection is established
-                                // For example, you can initiate data retrieval
-                                Log.e(TAG, "Connected Successfully");
-                                retrieveSensorData();
-                                // Reset the connecting flag when the connection is established
-                                isConnecting = false;
-                            }
-                        }).execute();
-
-                    } else {
-                        // Request Bluetooth connect permission
-                        if (context instanceof Activity) {
-                            ActivityCompat.requestPermissions((Activity) context,
-                                    new String[]{Manifest.permission.BLUETOOTH_CONNECT},
-                                    MY_BLUETOOTH_PERMISSION_REQUEST);
-                        }
+                // Check if Bluetooth is enabled
+                if (bluetoothAdapter == null || !bluetoothAdapter.isEnabled()) {
+                    // Request to enable Bluetooth
+                    Intent enableBtIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
+                    if (context instanceof Activity) {
+                        ((Activity) context).startActivityForResult(enableBtIntent, MY_BLUETOOTH_PERMISSION_REQUEST);
                     }
+
                 } else {
-                    Log.e(TAG, "Sensor address is null or \"null\". Cannot connect.");
+
+                    sensorAddress = getSensorAddress();
+                    if (sensorAddress != null && !"null".equals(sensorAddress)) {
+                        // Check for Bluetooth connect permission
+                        if (ActivityCompat.checkSelfPermission(context, Manifest.permission.BLUETOOTH_CONNECT)
+                                == PackageManager.PERMISSION_GRANTED) {
+
+                            // Initiate the connection task
+                            new ConnectTask(new ConnectionCallback() {
+                                @Override
+                                public void onConnectionEstablished() {
+                                    // Connection established callback
+                                    // You can perform actions here after the connection is established
+                                    // For example, you can initiate data retrieval
+                                    Log.d(TAG, "Connected Successfully");
+                                    retrieveSensorData();
+                                    // Reset the connecting flag when the connection is established
+                                    isConnecting = false;
+                                }
+                            }).execute();
+
+                        } else {
+                            // Request Bluetooth connect permission
+                            if (context instanceof Activity) {
+                                ActivityCompat.requestPermissions((Activity) context,
+                                        new String[]{Manifest.permission.BLUETOOTH_CONNECT},
+                                        MY_BLUETOOTH_PERMISSION_REQUEST);
+                            }
+                        }
+                    } else {
+                        Log.e(TAG, "Sensor address is null or \"null\". Cannot connect.");
+                    }
                 }
+            } else {
+                // Request Bluetooth permission
+                if (ContextCompat.checkSelfPermission(context, Manifest.permission.BLUETOOTH_CONNECT) == PackageManager.PERMISSION_DENIED) {
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+                        ActivityCompat.requestPermissions((Activity) context, new String[]{Manifest.permission.BLUETOOTH_CONNECT}, 2);
+                        return;
+                    }
+                }
+
+
             }
-        } else {
-            // Request Bluetooth permission
-            if (context instanceof Activity) {
-                ActivityCompat.requestPermissions((Activity) context,
-                        new String[]{Manifest.permission.BLUETOOTH},
-                        MY_BLUETOOTH_PERMISSION_REQUEST);
-            }
+        }
+        else {
+            Toast.makeText(context, "Bluetooth connection denied", Toast.LENGTH_SHORT).show();
+
         }
     }
     private String getSensorAddress() {
 
         if (!isConnected && !isConnecting) {
             Toast.makeText(context, "Connecting to AmbiUnit...", Toast.LENGTH_SHORT).show();
-            isConnecting = true; // Set the connecting flag to true
+            isConnecting = true;
         }
 
         if (ActivityCompat.checkSelfPermission(context, android.Manifest.permission.BLUETOOTH_CONNECT)
@@ -159,6 +177,7 @@ public class BluetoothHelper {
                     for (BluetoothDevice device : pairedDevices) {
                         String deviceName = device.getName();
                         String deviceAddress = device.getAddress(); // This is the Bluetooth address
+
 
                         if (!deviceName.equals(null)) {
                             Log.d(TAG, "Found Bluetooth Device - Name: " + deviceName + ", Address: " + deviceAddress);
@@ -182,7 +201,7 @@ public class BluetoothHelper {
     }
     private void retrieveSensorData() {
         if (isConnected) {
-            Log.e(TAG, "Retrieving data");
+            Log.d(TAG, "Retrieving data");
             // Fetch sensor data and update UI
             String sensorData = getLatestSensorData();
             float temperature = parseSensorData(sensorData, 6);
@@ -196,7 +215,7 @@ public class BluetoothHelper {
             if (temperature == 0 && humidity == 0 && co == 0 && voc == 0 && pm10 == 0 && pm25 == 0) {
                 Toast.makeText(context, "All sensor data values are zero. Error in reading", Toast.LENGTH_SHORT).show();
                 latestSensorData= null;
-                Log.e(TAG, "Not connected. Cannot retrieve sensor data.");
+                Log.e(TAG, "Error in connection. Cannot retrieve sensor data.");
             } else {
 
                 if (battery == 0) {
@@ -208,8 +227,6 @@ public class BluetoothHelper {
 
                 // Insert a new entry in the database
                 databaseHelper.insertNewEntry(temperature, humidity, co, voc, pm10, pm25);
-                latestSensorData= null;
-
 
                 // Notify MainActivity to update UI elementsa
                 if (connectionListener != null) {

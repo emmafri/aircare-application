@@ -5,6 +5,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.os.Handler;
+import android.text.GetChars;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.animation.Animation;
@@ -146,6 +147,7 @@ public class DetailedReadingActivity extends AppCompatActivity {
             intent.putExtra("VERYBAD_VALUES", getString(R.string.very_bad_values_pm25));
             intent.putExtra("PARAM_ADVICE",getString(R.string.advice_pm25));
             intent.putExtra("PARAM_MEASURE", getString(R.string.pm_measure));
+            intent.putExtra("PARAM_REF", getString(R.string.reference_pm25));
             startActivity(intent);
         }, 300));
 
@@ -172,6 +174,8 @@ public class DetailedReadingActivity extends AppCompatActivity {
             intent.putExtra("VERYBAD_VALUES", getString(R.string.very_bad_values_pm10));
             intent.putExtra("PARAM_ADVICE",getString(R.string.advice_pm10));
             intent.putExtra("PARAM_MEASURE", getString(R.string.pm_measure));
+            intent.putExtra("PARAM_REF", getString(R.string.reference_pm10));
+
             startActivity(intent);
         }, 300));
 
@@ -197,6 +201,8 @@ public class DetailedReadingActivity extends AppCompatActivity {
             intent.putExtra("VERYBAD_VALUES", getString(R.string.very_bad_values_voc));
             intent.putExtra("PARAM_ADVICE",getString(R.string.advice_voc));
             intent.putExtra("PARAM_MEASURE", getString(R.string.measure_VOC));
+            intent.putExtra("PARAM_REF", getString(R.string.reference_voc));
+
             startActivity(intent);
         }, 300));
 
@@ -224,6 +230,8 @@ public class DetailedReadingActivity extends AppCompatActivity {
                 intent.putExtra("VERYBAD_VALUES", getString(R.string.very_bad_values_co));
                 intent.putExtra("PARAM_ADVICE",getString(R.string.advice_co));
                 intent.putExtra("PARAM_MEASURE", getString(R.string.measure_CO));
+                intent.putExtra("PARAM_REF", getString(R.string.reference_co));
+
                 startActivity(intent);
             }
         }, 300));
