@@ -22,16 +22,21 @@ import java.text.SimpleDateFormat;
 
 import android.util.Log;
 
+// DatabaseHelper class for managing the SQLite database used in the application.
+// It extends SQLiteOpenHelper to handle database creation, updates, and opening.
 public class DatabaseHelper extends SQLiteOpenHelper {
     private final Context context;
     private static final String DATABASE_NAME = "aircare_small.db";
     private static final int DATABASE_VERSION = 1;
 
+    // Constructor for the DatabaseHelper class
     public DatabaseHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
         this.context = context;
 
     }
+
+    // Called when the database is opened to perform additional actions
     @Override
     public void onOpen(SQLiteDatabase db) {
         super.onOpen(db);
@@ -56,6 +61,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         cursor.close();
     }
 
+    // Called when the database is created for the first time.
     @Override
     public void onCreate(SQLiteDatabase db) {
         /*String createTableQuery = "CREATE TABLE sensor_data (" +
@@ -70,11 +76,13 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.execSQL(createTableQuery);*/
     }
 
+    // Checks if the database has been copied to the application's data directory.
     private boolean isDatabaseCopied() {
         SharedPreferences preferences = context.getSharedPreferences("your_preference_name", Context.MODE_PRIVATE);
         return preferences.getBoolean("DATABASE_COPIED", false);
     }
 
+    // Sets the flag indicating that the database has been copied.
     private void setDatabaseCopied() {
         SharedPreferences preferences = context.getSharedPreferences("your_preference_name", Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = preferences.edit();
@@ -82,7 +90,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         editor.apply();
     }
 
-
+    // Copies the pre-populated database from the assets folder to the application's data directory.
     public void copyDatabase() {
         if (!isDatabaseCopied()) {
             try {
@@ -112,6 +120,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         }
     }
 
+    // Inserts a new entry into the sensor_data table with provided sensor readings.
     public void insertNewEntry(float temperature, float humidity, float co, float voc, float pm10, float pm25) {
         SQLiteDatabase db = this.getWritableDatabase();
 
@@ -132,7 +141,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             String formattedTime = dateFormat.format(new Date(currentTimeMillis));
 
             values.put("Timestamp", formattedTime);
-            //values.put("Timestamp", "2024-03-14 23:48:37.189509"); //CHANGE ONCE WE REMOVED FAKE VALUES IN DB
 
             // Insert the new entry
             db.insert("sensor_data", null, values);
@@ -146,8 +154,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         }
     }
 
-
-
+    // Called when the database needs to be upgraded.
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         android.util.Log.w("AirQualityData", "Upgrading database, which will destroy all old data");

@@ -45,6 +45,22 @@ public class DetailedReadingActivity extends AppCompatActivity {
         dbHelper = new DatabaseHelper(this);
 
         // Toolbar setup for navigation and actions
+        setupToolbar();
+
+        // Set up UI components and event listeners
+        initializeUI();
+
+        // Depending on the source, update the UI with the latest reading or a selected reading
+        if ("MainActivity".equals(source)) {
+            updateLatestReading();
+        }
+        else{
+            getSelectedReading();
+        }
+    }
+
+    // Toolbar setup for navigation and actions
+    private void setupToolbar() {
         Toolbar toolbar = findViewById(R.id.customToolbar);
         setSupportActionBar(toolbar);
 
@@ -59,32 +75,24 @@ public class DetailedReadingActivity extends AppCompatActivity {
         infoButtonSpace.setVisibility(View.GONE);
         ImageView appLogo = findViewById(R.id.appLogo);
 
-        appLogo.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(DetailedReadingActivity.this, MainActivity.class);
-                intent.putExtra("source", "MainActivity");
-                startActivity(intent);
-            }
+        appLogo.setOnClickListener(v -> {
+            Intent intent = new Intent(DetailedReadingActivity.this, MainActivity.class);
+            intent.putExtra("source", "MainActivity");
+            startActivity(intent);
         });
 
         // Back button
-        backButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                onBackPressed();
-            }
-        });
+        backButton.setOnClickListener(v -> onBackPressed());
 
         // Info button
-        infoButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(DetailedReadingActivity.this, InfoActivity.class);
-                startActivity(intent);
-            }
+        infoButton.setOnClickListener(v -> {
+            Intent intent = new Intent(DetailedReadingActivity.this, InfoActivity.class);
+            startActivity(intent);
         });
+    }
 
+    // Set up UI components and event listeners
+    private void initializeUI() {
         Handler handler = new Handler();
         View historyButton = findViewById(R.id.HistoryButton);
         pm25Button = findViewById(R.id.pm25_block);
@@ -97,191 +105,128 @@ public class DetailedReadingActivity extends AppCompatActivity {
         coTextView = findViewById(R.id.co_value);
         vocTextView = findViewById(R.id.vocs_value);
 
-        // Depending on the source, update the UI with the latest reading or a selected reading
-        if ("MainActivity".equals(source)) {
-            updateLatestReading();
-        }
-        else{
-            getSelectedReading();
-        }
-
         // History button
-        historyButton.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                switch (event.getAction()) {
-                    case MotionEvent.ACTION_DOWN:
-                        break;
+        historyButton.setOnTouchListener((v, event) -> {
+            switch (event.getAction()) {
+                case MotionEvent.ACTION_DOWN:
+                    break;
 
-                    case MotionEvent.ACTION_UP:
-                        startPopUpAnimation(v);
-                        break;
-                }
-                return false;
+                case MotionEvent.ACTION_UP:
+                    startPopUpAnimation(v);
+                    break;
             }
+            return false;
         });
-        historyButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                handler.postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        // Create an Intent to start ParameterInfoActivity
-                        Intent intent = new Intent(DetailedReadingActivity.this, HistoryActivity.class);
-                        // Start the new activity
-                        startActivity(intent);
-                    }
-                }, 300);
-
-            }
-        });
+        historyButton.setOnClickListener(v -> handler.postDelayed(() -> {
+            // Create an Intent to start ParameterInfoActivity
+            Intent intent = new Intent(DetailedReadingActivity.this, HistoryActivity.class);
+            // Start the new activity
+            startActivity(intent);
+        }, 300));
 
         //PM2.5 button
-        pm25Button.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                switch (event.getAction()) {
-                    case MotionEvent.ACTION_DOWN:
-                        break;
+        pm25Button.setOnTouchListener((v, event) -> {
+            switch (event.getAction()) {
+                case MotionEvent.ACTION_DOWN:
+                    break;
 
-                    case MotionEvent.ACTION_UP:
-                        startPopUpAnimation(v);
-                        break;
-                }
-                return false;
+                case MotionEvent.ACTION_UP:
+                    startPopUpAnimation(v);
+                    break;
             }
+            return false;
         });
-        pm25Button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                handler.postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        Intent intent = new Intent(DetailedReadingActivity.this, ParameterInfoActivity.class);
-                        intent.putExtra("PARAM_NAME", getString(R.string.param_name_pm25));
-                        intent.putExtra("PARAM_DESCR", getString(R.string.param_descr_pm25));
-                        intent.putExtra("GOOD_VALUES", getString(R.string.good_values_pm25));
-                        intent.putExtra("MEDIUM_VALUES", getString(R.string.medium_values_pm25));
-                        intent.putExtra("BAD_VALUES", getString(R.string.bad_values_pm25));
-                        intent.putExtra("VERYBAD_VALUES", getString(R.string.very_bad_values_pm25));
-                        intent.putExtra("PARAM_ADVICE",getString(R.string.advice_pm25));
-                        intent.putExtra("PARAM_MEASURE", getString(R.string.pm_measure));
-                        startActivity(intent);
-                    }
-                }, 300);
-            }
-        });
+        pm25Button.setOnClickListener(v -> handler.postDelayed(() -> {
+            Intent intent = new Intent(DetailedReadingActivity.this, ParameterInfoActivity.class);
+            intent.putExtra("PARAM_NAME", getString(R.string.param_name_pm25));
+            intent.putExtra("PARAM_DESCR", getString(R.string.param_descr_pm25));
+            intent.putExtra("GOOD_VALUES", getString(R.string.good_values_pm25));
+            intent.putExtra("MEDIUM_VALUES", getString(R.string.medium_values_pm25));
+            intent.putExtra("BAD_VALUES", getString(R.string.bad_values_pm25));
+            intent.putExtra("VERYBAD_VALUES", getString(R.string.very_bad_values_pm25));
+            intent.putExtra("PARAM_ADVICE",getString(R.string.advice_pm25));
+            intent.putExtra("PARAM_MEASURE", getString(R.string.pm_measure));
+            startActivity(intent);
+        }, 300));
 
 
         //PM10 button
-        pm10Button.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                switch (event.getAction()) {
-                    case MotionEvent.ACTION_DOWN:
-                        break;
+        pm10Button.setOnTouchListener((v, event) -> {
+            switch (event.getAction()) {
+                case MotionEvent.ACTION_DOWN:
+                    break;
 
-                    case MotionEvent.ACTION_UP:
-                        startPopUpAnimation(v);
-                        break;
-                }
-                return false;
+                case MotionEvent.ACTION_UP:
+                    startPopUpAnimation(v);
+                    break;
             }
+            return false;
         });
-        pm10Button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                handler.postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        Intent intent = new Intent(DetailedReadingActivity.this, ParameterInfoActivity.class);
-                        intent.putExtra("PARAM_NAME", getString(R.string.param_name_pm10));
-                        intent.putExtra("PARAM_DESCR", getString(R.string.param_descr_pm10));
-                        intent.putExtra("GOOD_VALUES", getString(R.string.good_values_pm10));
-                        intent.putExtra("MEDIUM_VALUES", getString(R.string.medium_values_pm10));
-                        intent.putExtra("BAD_VALUES", getString(R.string.bad_values_pm10));
-                        intent.putExtra("VERYBAD_VALUES", getString(R.string.very_bad_values_pm10));
-                        intent.putExtra("PARAM_ADVICE",getString(R.string.advice_pm10));
-                        intent.putExtra("PARAM_MEASURE", getString(R.string.pm_measure));
-                        startActivity(intent);
-                    }
-                }, 300);
-            }
-        });
+        pm10Button.setOnClickListener(v -> handler.postDelayed(() -> {
+            Intent intent = new Intent(DetailedReadingActivity.this, ParameterInfoActivity.class);
+            intent.putExtra("PARAM_NAME", getString(R.string.param_name_pm10));
+            intent.putExtra("PARAM_DESCR", getString(R.string.param_descr_pm10));
+            intent.putExtra("GOOD_VALUES", getString(R.string.good_values_pm10));
+            intent.putExtra("MEDIUM_VALUES", getString(R.string.medium_values_pm10));
+            intent.putExtra("BAD_VALUES", getString(R.string.bad_values_pm10));
+            intent.putExtra("VERYBAD_VALUES", getString(R.string.very_bad_values_pm10));
+            intent.putExtra("PARAM_ADVICE",getString(R.string.advice_pm10));
+            intent.putExtra("PARAM_MEASURE", getString(R.string.pm_measure));
+            startActivity(intent);
+        }, 300));
 
         //VOC button
-        vocButton.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                switch (event.getAction()) {
-                    case MotionEvent.ACTION_DOWN:
-                        break;
+        vocButton.setOnTouchListener((v, event) -> {
+            switch (event.getAction()) {
+                case MotionEvent.ACTION_DOWN:
+                    break;
 
-                    case MotionEvent.ACTION_UP:
-                        startPopUpAnimation(v);
-                        break;
-                }
-                return false;
+                case MotionEvent.ACTION_UP:
+                    startPopUpAnimation(v);
+                    break;
             }
+            return false;
         });
-        vocButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                handler.postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        Intent intent = new Intent(DetailedReadingActivity.this, ParameterInfoActivity.class);
-                        intent.putExtra("PARAM_NAME", getString(R.string.param_name_voc));
-                        intent.putExtra("PARAM_DESCR", getString(R.string.param_descr_voc));
-                        intent.putExtra("GOOD_VALUES", getString(R.string.good_values_voc));
-                        intent.putExtra("MEDIUM_VALUES", getString(R.string.medium_values_voc));
-                        intent.putExtra("BAD_VALUES", getString(R.string.bad_values_voc));
-                        intent.putExtra("VERYBAD_VALUES", getString(R.string.very_bad_values_voc));
-                        intent.putExtra("PARAM_ADVICE",getString(R.string.advice_voc));
-                        intent.putExtra("PARAM_MEASURE", getString(R.string.measure_VOC));
-                        startActivity(intent);
-                    }
-                }, 300);
-            }
-        });
+        vocButton.setOnClickListener(v -> handler.postDelayed(() -> {
+            Intent intent = new Intent(DetailedReadingActivity.this, ParameterInfoActivity.class);
+            intent.putExtra("PARAM_NAME", getString(R.string.param_name_voc));
+            intent.putExtra("PARAM_DESCR", getString(R.string.param_descr_voc));
+            intent.putExtra("GOOD_VALUES", getString(R.string.good_values_voc));
+            intent.putExtra("MEDIUM_VALUES", getString(R.string.medium_values_voc));
+            intent.putExtra("BAD_VALUES", getString(R.string.bad_values_voc));
+            intent.putExtra("VERYBAD_VALUES", getString(R.string.very_bad_values_voc));
+            intent.putExtra("PARAM_ADVICE",getString(R.string.advice_voc));
+            intent.putExtra("PARAM_MEASURE", getString(R.string.measure_VOC));
+            startActivity(intent);
+        }, 300));
 
         //CO button
-        coButton.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                switch (event.getAction()) {
-                    case MotionEvent.ACTION_DOWN:
-                        break;
+        coButton.setOnTouchListener((v, event) -> {
+            switch (event.getAction()) {
+                case MotionEvent.ACTION_DOWN:
+                    break;
 
-                    case MotionEvent.ACTION_UP:
-                        startPopUpAnimation(v);
-                        break;
-                }
-                return false;
+                case MotionEvent.ACTION_UP:
+                    startPopUpAnimation(v);
+                    break;
             }
+            return false;
         });
-        coButton.setOnClickListener(new View.OnClickListener() {
+        coButton.setOnClickListener(v -> handler.postDelayed(new Runnable() {
             @Override
-            public void onClick(View v) {
-                handler.postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        Intent intent = new Intent(DetailedReadingActivity.this, ParameterInfoActivity.class);
-                        intent.putExtra("PARAM_NAME", getString(R.string.param_name_co));
-                        intent.putExtra("PARAM_DESCR", getString(R.string.param_descr_co));
-                        intent.putExtra("GOOD_VALUES", getString(R.string.good_values_co));
-                        intent.putExtra("MEDIUM_VALUES", getString(R.string.medium_values_co));
-                        intent.putExtra("BAD_VALUES", getString(R.string.bad_values_co));
-                        intent.putExtra("VERYBAD_VALUES", getString(R.string.very_bad_values_co));
-                        intent.putExtra("PARAM_ADVICE",getString(R.string.advice_co));
-                        intent.putExtra("PARAM_MEASURE", getString(R.string.measure_CO));
-                        startActivity(intent);
-                    }
-                }, 300);
+            public void run() {
+                Intent intent = new Intent(DetailedReadingActivity.this, ParameterInfoActivity.class);
+                intent.putExtra("PARAM_NAME", getString(R.string.param_name_co));
+                intent.putExtra("PARAM_DESCR", getString(R.string.param_descr_co));
+                intent.putExtra("GOOD_VALUES", getString(R.string.good_values_co));
+                intent.putExtra("MEDIUM_VALUES", getString(R.string.medium_values_co));
+                intent.putExtra("BAD_VALUES", getString(R.string.bad_values_co));
+                intent.putExtra("VERYBAD_VALUES", getString(R.string.very_bad_values_co));
+                intent.putExtra("PARAM_ADVICE",getString(R.string.advice_co));
+                intent.putExtra("PARAM_MEASURE", getString(R.string.measure_CO));
+                startActivity(intent);
             }
-        });
-
-
+        }, 300));
     }
 
     // Start the pop-up animation for the given view

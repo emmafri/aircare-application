@@ -14,21 +14,26 @@ import java.util.Locale;
 
 public class HistoryScroll extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
+    // Constants to represent different view types
     private static final int VIEW_TYPE_ENTRY = 0;
     private static final int VIEW_TYPE_DIVIDER = 1;
 
+    // List to store history items
     private List<Item> itemList;
 
+    // Constructor to initialize the adapter with a list of items
     public HistoryScroll(List<Item> itemList) {
         this.itemList = itemList;
     }
 
+    // Override method to determine the view type at a given position
     @Override
     public int getItemViewType(int position) {
         Item item = itemList.get(position);
         return itemList.get(position).isDivider() ? VIEW_TYPE_DIVIDER : VIEW_TYPE_ENTRY;
     }
 
+    // Override method to create view holders for different view types
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         LayoutInflater inflater = LayoutInflater.from(parent.getContext());
@@ -42,17 +47,19 @@ public class HistoryScroll extends RecyclerView.Adapter<RecyclerView.ViewHolder>
         }
     }
 
+    // Interface for item click events
     public interface OnItemClickListener {
-
         void onItemClick(Item item);
     }
+    // Listener for item click events
     private OnItemClickListener onItemClickListener;
 
+    // Method to set the item click listener
     public void setOnItemClickListener(OnItemClickListener listener) {
         this.onItemClickListener = listener;
     }
 
-
+    // Override method to bind data to view holders
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
         Item item = itemList.get(position);
@@ -88,8 +95,6 @@ public class HistoryScroll extends RecyclerView.Adapter<RecyclerView.ViewHolder>
                 default:
                     // Handle default case if needed
                     break;
-
-
             }
 
             entryViewHolder.itemView.setOnTouchListener(new View.OnTouchListener() {
@@ -119,33 +124,37 @@ public class HistoryScroll extends RecyclerView.Adapter<RecyclerView.ViewHolder>
             String formattedDate = sdf.format(item.getTimestamp());
             dividerViewHolder.textView.setText(formattedDate);
         }
-
-
     }
 
+    // Override method to get the total number of items in the adapter
     @Override
     public int getItemCount() {
         return itemList.size();
     }
 
+    // ViewHolder for entry items in the history list
     public static class EntryViewHolder extends RecyclerView.ViewHolder {
         public TextView textView;
 
+        // Constructor for entry view holder
         public EntryViewHolder(View view) {
             super(view);
             textView = view.findViewById(R.id.textViewEntry);
         }
     }
 
+    // ViewHolder for divider items in the history list
     public static class DividerViewHolder extends RecyclerView.ViewHolder {
         public TextView textView;
 
+        // Constructor for divider view holder
         public DividerViewHolder(View view) {
             super(view);
             textView = view.findViewById(R.id.textViewDivider);
         }
     }
 
+    // Model class representing a history item
     public static class Item {
         private String data;
         private boolean isDivider;
@@ -157,6 +166,7 @@ public class HistoryScroll extends RecyclerView.Adapter<RecyclerView.ViewHolder>
         private int hour;
         private int minute;
 
+        // Constructor for creating a history item
         public Item( Date timestamp,Float pm25,Float pm10,Float co,Float voc, boolean isDivider) {
             this.data = data;
             this.isDivider = isDivider;
@@ -169,6 +179,7 @@ public class HistoryScroll extends RecyclerView.Adapter<RecyclerView.ViewHolder>
             this.minute = minute;
         }
 
+        // Getter methods for item properties
         public String getData() {
             return data;
         }
@@ -202,10 +213,9 @@ public class HistoryScroll extends RecyclerView.Adapter<RecyclerView.ViewHolder>
         }
     }
 
+    // Method to start a pop-up animation on a view
     private void startPopUpAnimation(View view) {
         Animation popUpAnimation = AnimationUtils.loadAnimation(view.getContext(), R.anim.pop_up);
         view.startAnimation(popUpAnimation);
     }
-
-
 }

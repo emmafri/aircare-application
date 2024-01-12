@@ -57,53 +57,45 @@ public class MainActivity extends AppCompatActivity implements BluetoothHelper.C
         databaseHelper.copyDatabase();
         db = (databaseHelper).getWritableDatabase();
 
-
-
-        // BLUETOOTH
+        // Bluetooth setup
         bluetoothHelper = new BluetoothHelper(this, this);
         bluetoothHelper.initializeBluetooth();
 
         //Set OnClickListener for "New Reading" button
         View newReadingButton = findViewById(R.id.NewReadingButton);
-        newReadingButton.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                switch (event.getAction()) {
-                    case MotionEvent.ACTION_DOWN:
-                        break;
+        newReadingButton.setOnTouchListener((v, event) -> {
+            switch (event.getAction()) {
+                case MotionEvent.ACTION_DOWN:
+                    break;
 
-                    case MotionEvent.ACTION_UP:
-                        startPopUpAnimation(v);
-                        break;
-                }
-                return false;
+                case MotionEvent.ACTION_UP:
+                    startPopUpAnimation(v);
+                    break;
             }
+            return false;
         });
 
-        newReadingButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
+        newReadingButton.setOnClickListener(view -> {
 
-                bluetoothHelper.connectToSensor();
-                // Bluetooth data received (replace this with actual data)
-                //String sensorData = "&AMB21 30;0;1013.88;4;21.51;2541;7356;0;8;32;0;100|\n";
-                /*
-                String sensorData = bluetoothHelper.getLatestSensorData();
+            bluetoothHelper.connectToSensor();
+            // Bluetooth data received (replace this with actual data)
+            //String sensorData = "&AMB21 30;0;1013.88;4;21.51;2541;7356;0;8;32;0;100|\n";
+            /*
+            String sensorData = bluetoothHelper.getLatestSensorData();
 
-                // Parse sensor data to extract individual parameters
-                float temperature = parseSensorData(sensorData, 4);
-                float humidity = parseSensorData(sensorData, 3);
-                float co = parseSensorData(sensorData, 1); //OBS its CO not CO2
-                float voc = parseSensorData(sensorData, 10);
-                float pm10 = parseSensorData(sensorData, 9);
-                float pm25 = parseSensorData(sensorData, 8);
+            // Parse sensor data to extract individual parameters
+            float temperature = parseSensorData(sensorData, 4);
+            float humidity = parseSensorData(sensorData, 3);
+            float co = parseSensorData(sensorData, 1); //OBS its CO not CO2
+            float voc = parseSensorData(sensorData, 10);
+            float pm10 = parseSensorData(sensorData, 9);
+            float pm25 = parseSensorData(sensorData, 8);
 
-                // Insert a new entry in the database
-                databaseHelper.insertNewEntry(temperature, humidity, co, voc, pm10, pm25);
+            // Insert a new entry in the database
+            databaseHelper.insertNewEntry(temperature, humidity, co, voc, pm10, pm25);
 
-                */
-                //update ui elements
-            }
+            */
+            //update ui elements
         });
 
 
@@ -139,12 +131,12 @@ public class MainActivity extends AppCompatActivity implements BluetoothHelper.C
             }
         });
 
-
         timeTextView = findViewById(R.id.Time);
         temperatureTextView = findViewById(R.id.temperature_value);
         humidityTextView = findViewById(R.id.humidity_value);
-        updateLatestReading();
 
+        // Update UI elements with values from latest reading
+        updateLatestReading();
 
         Handler handler = new Handler();
         View historyButton = findViewById(R.id.HistoryButton);
@@ -224,6 +216,7 @@ public class MainActivity extends AppCompatActivity implements BluetoothHelper.C
     }
 
 
+    // Update the UI with the latest sensor reading from the local database.
     private void updateLatestReading() {
         SQLiteDatabase db = null;
         Cursor cursor = null;
@@ -250,6 +243,7 @@ public class MainActivity extends AppCompatActivity implements BluetoothHelper.C
 
             // Check if there is data in the cursor
             if (cursor.moveToFirst()) {
+
                 // Retrieve the timestamp from the cursor
                 String timestampString = cursor.getString(cursor.getColumnIndexOrThrow("Timestamp"));
 
@@ -259,12 +253,14 @@ public class MainActivity extends AppCompatActivity implements BluetoothHelper.C
                 // Update the TextView with the formatted time
                 timeTextView.setText(formattedTime);
 
+                // Update temperature and humidity values in the UI
                 float temperature = cursor.getFloat(cursor.getColumnIndexOrThrow("Temperature"));
                 temperatureTextView.setText(formatValue(temperature, 1));
 
                 float humidity = cursor.getFloat(cursor.getColumnIndexOrThrow("Humidity"));
                 humidityTextView.setText(formatValue(humidity, 1));
 
+                // Retrieve sensor data for air quality calculation
                 pm25 = cursor.getDouble(cursor.getColumnIndexOrThrow("PM25"));
                 pm10 = cursor.getDouble(cursor.getColumnIndexOrThrow("PM10"));
                 co = cursor.getDouble(cursor.getColumnIndexOrThrow("CO"));
@@ -315,12 +311,14 @@ public class MainActivity extends AppCompatActivity implements BluetoothHelper.C
             }
         }
     }
+
     // Format value from database to only show desired number of decimals
     private String formatValue(float originalValue, int decimalPlacesToShow) {
         String formattedValue = String.format("%." + decimalPlacesToShow + "f", originalValue);
         return formattedValue;
     }
 
+    // Format a timestamp string from the database to a human-readable format.
     private String formatTimestamp(String timestampString) {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS", Locale.getDefault());
         Date date;
@@ -336,14 +334,16 @@ public class MainActivity extends AppCompatActivity implements BluetoothHelper.C
         return outputFormat.format(date);
     }
 
+    // Start a pop-up animation on a given view.
     private void startPopUpAnimation(View view) {
         Animation popUpAnimation = AnimationUtils.loadAnimation(this, R.anim.pop_up);
         view.startAnimation(popUpAnimation);
     }
+
+    // Handle actions to be performed when the activity is being destroyed.
     @Override
     protected void onDestroy() {
         super.onDestroy();
-
         bluetoothHelper.closeBluetoothConnection();
 
         // Close the database when the activity is destroyed
@@ -351,6 +351,8 @@ public class MainActivity extends AppCompatActivity implements BluetoothHelper.C
             db.close();
         }
     }
+
+    // Handles UI updates and notifications based on Bluetooth connection result.
     @Override
     public void onConnectionResult(boolean isConnected) {
         if (isConnected) {
@@ -369,6 +371,8 @@ public class MainActivity extends AppCompatActivity implements BluetoothHelper.C
         }
         this.isConnected = isConnected;
     }
+
+    // Handle the result of Bluetooth activation request.
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -385,7 +389,5 @@ public class MainActivity extends AppCompatActivity implements BluetoothHelper.C
             }
         }
     }
-
-
 }
 

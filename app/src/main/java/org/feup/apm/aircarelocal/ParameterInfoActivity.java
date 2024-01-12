@@ -12,17 +12,20 @@ import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
+// ParameterInfoActivity displays detailed information about a specific parameter.
 public class ParameterInfoActivity extends AppCompatActivity {
 
+    // Called when the activity is created.
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.parameter_info);
 
-        // TOOLBAR
+        // TOOLBAR SETUP
         Toolbar toolbar = findViewById(R.id.customToolbar);
         setSupportActionBar(toolbar);
-        //Hide back button on main activity and show empty space instead; Show info button
+
+        // Set up toolbar buttons and actions
         ImageView backButton = findViewById(R.id.backButton);
         backButton.setVisibility(View.VISIBLE);
         Space backButtonSpace = findViewById(R.id.backButtonSpace);
@@ -33,30 +36,21 @@ public class ParameterInfoActivity extends AppCompatActivity {
         infoButtonSpace.setVisibility(View.GONE);
         ImageView appLogo = findViewById(R.id.appLogo);
 
-        appLogo.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(ParameterInfoActivity.this, MainActivity.class);
-                intent.putExtra("source", "MainActivity");
-                startActivity(intent);
-            }
+        // Set click listeners for toolbar buttons
+        appLogo.setOnClickListener(v -> {
+            Intent intent = new Intent(ParameterInfoActivity.this, MainActivity.class);
+            intent.putExtra("source", "MainActivity");
+            startActivity(intent);
         });
 
-        backButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                onBackPressed();
-            }
+        backButton.setOnClickListener(v -> onBackPressed());
+
+        infoButton.setOnClickListener(v -> {
+            Intent intent = new Intent(ParameterInfoActivity.this, InfoActivity.class);
+            startActivity(intent);
         });
 
-        infoButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(ParameterInfoActivity.this, InfoActivity.class);
-                startActivity(intent);
-            }
-        });
-
+        // Get intent data to populate parameter information
         Intent intent = getIntent();
         if (intent != null) {
             String parameterName = getIntent().getStringExtra("PARAM_NAME");
@@ -68,6 +62,7 @@ public class ParameterInfoActivity extends AppCompatActivity {
             String parameterAdvice = getIntent().getStringExtra("PARAM_ADVICE");
             String parameterMeasure = getIntent().getStringExtra("PARAM_MEASURE");
 
+            // Set text views with parameter information
             TextView parameterTitle = findViewById(R.id.Parameter);
             parameterTitle.setText(parameterName);
 
@@ -89,19 +84,18 @@ public class ParameterInfoActivity extends AppCompatActivity {
             TextView parameterAdv = findViewById(R.id.advice);
             parameterAdv.setText(parameterAdvice);
 
-            TextView GoodMeasure =findViewById(R.id.GoodValuesMeasure);
+            TextView GoodMeasure = findViewById(R.id.GoodValuesMeasure);
             GoodMeasure.setText(parameterMeasure);
-            TextView MediumMeasure =findViewById(R.id.MediumValuesMeasure);
+            TextView MediumMeasure = findViewById(R.id.MediumValuesMeasure);
             MediumMeasure.setText(parameterMeasure);
-            TextView BadMeasure =findViewById(R.id.BadMeasure);
+            TextView BadMeasure = findViewById(R.id.BadMeasure);
             BadMeasure.setText(parameterMeasure);
-            TextView VryBadMeasure =findViewById(R.id.VryBadMeasure);
+            TextView VryBadMeasure = findViewById(R.id.VryBadMeasure);
             VryBadMeasure.setText(parameterMeasure);
-
         }
-
     }
 
+    // Handles options menu item selection.
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle the Up button click
